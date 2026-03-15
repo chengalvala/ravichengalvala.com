@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ravi Chengalvala | Technology Executive & Enterprise Architect</title>
+<meta name="description" content="Ravi Chengalvala — Technology Executive, Enterprise Architect, and Innovation Leader with 20+ years across automotive, manufacturing, and financial services." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<!-- Google Analytics 4 — replace G-XXXXXXXXXX with your tracking ID from analytics.google.com -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX');
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #080C18;
+    --navy-mid: #0E1525;
+    --navy-light: #15202F;
+    --navy-border: #1E2D42;
+    --gold: #C9962A;
+    --gold-light: #E8B84B;
+    --gold-dim: #8A6518;
+    --white: #F5F2EC;
+    --white-dim: #A8A49A;
+    --white-faint: #5A5650;
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --sans: 'DM Sans', system-ui, sans-serif;
+    --max: 1100px;
+    --gap: clamp(3rem, 8vw, 6rem);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--navy);
+    color: var(--white);
+    line-height: 1.7;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---- NAV ---- */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem clamp(1.5rem, 5vw, 3.5rem);
+    background: rgba(8, 12, 24, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(201, 150, 42, 0.12);
+  }
+
+  .nav-logo {
+    font-family: var(--serif);
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--gold-light);
+    letter-spacing: 0.03em;
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--white-dim);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--gold-light); }
+
+  .nav-cta {
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.55rem 1.4rem;
+    border: 1px solid var(--gold-dim);
+    color: var(--gold-light);
+    text-decoration: none;
+    border-radius: 2px;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .nav-cta:hover { background: var(--gold); color: var(--navy); }
+
+  /* ---- HERO ---- */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 8rem clamp(1.5rem, 8vw, 5rem) 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+    max-width: var(--max);
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .hero-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-eyebrow span {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .hero-line {
+    height: 1px;
+    width: 40px;
+    background: var(--gold-dim);
+  }
+
+  h1 {
+    font-family: var(--serif);
+    font-size: clamp(3rem, 6vw, 5rem);
+    font-weight: 600;
+    line-height: 1.08;
+    color: var(--white);
+    margin-bottom: 1.5rem;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--gold-light);
+  }
+
+  .hero-desc {
+    font-size: 1.05rem;
+    color: var(--white-dim);
+    line-height: 1.8;
+    max-width: 480px;
+    margin-bottom: 2.5rem;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    padding: 0.75rem 2rem;
+    background: var(--gold);
+    color: var(--navy);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.85rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border-radius: 2px;
+    transition: background 0.2s;
+  }
+
+  .btn-primary:hover { background: var(--gold-light); }
+
+  .btn-outline {
+    padding: 0.75rem 2rem;
+    border: 1px solid var(--navy-border);
+    color: var(--white-dim);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.85rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border-radius: 2px;
+    transition: border-color 0.2s, color 0.2s;
+  }
+
+  .btn-outline:hover { border-color: var(--gold-dim); color: var(--gold-light); }
+
+  .hero-stats {
+    display: grid;
+    grid-template-rows: repeat(3, auto);
+    gap: 2rem;
+    padding-left: 3rem;
+    border-left: 1px solid var(--navy-border);
+  }
+
+  .stat-item {}
+
+  .stat-number {
+    font-family: var(--serif);
+    font-size: 3.5rem;
+    font-weight: 600;
+    color: var(--gold-light);
+    line-height: 1;
+    margin-bottom: 0.3rem;
+  }
+
+  .stat-label {
+    font-size: 0.8rem;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    color: var(--white-faint);
+    text-transform: uppercase;
+  }
+
+  /* Decorative background geometry */
+  .hero-bg {
+    position: absolute;
+    top: 0; right: 0;
+    width: 50%;
+    height: 100%;
+    background: radial-gradient(ellipse at 80% 40%, rgba(201,150,42,0.04) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-circle {
+    position: absolute;
+    top: 15%;
+    right: 10%;
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    border: 1px solid rgba(201,150,42,0.08);
+    pointer-events: none;
+  }
+
+  .hero-circle-2 {
+    position: absolute;
+    top: 25%;
+    right: 18%;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    border: 1px solid rgba(201,150,42,0.12);
+    pointer-events: none;
+  }
+
+  /* ---- SECTION COMMONS ---- */
+  section {
+    padding: var(--gap) clamp(1.5rem, 8vw, 5rem);
+    max-width: calc(var(--max) + 10rem);
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .section-inner {
+    max-width: var(--max);
+    margin: 0 auto;
+  }
+
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .section-label span {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .section-label .line { height: 1px; width: 30px; background: var(--gold-dim); }
+
+  h2 {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 600;
+    line-height: 1.15;
+    color: var(--white);
+    margin-bottom: 1rem;
+  }
+
+  h2 em { font-style: italic; color: var(--gold-light); }
+
+  .section-intro {
+    font-size: 1rem;
+    color: var(--white-dim);
+    max-width: 600px;
+    margin-bottom: 3.5rem;
+    line-height: 1.8;
+  }
+
+  /* ---- ABOUT ---- */
+  #about { background: var(--navy-mid); }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 5rem;
+    align-items: start;
+  }
+
+  .about-credentials {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .credential-tag {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.9rem;
+    padding: 1rem 1.25rem;
+    background: var(--navy-light);
+    border: 1px solid var(--navy-border);
+    border-radius: 4px;
+  }
+
+  .credential-icon {
+    width: 32px;
+    height: 32px;
+    background: rgba(201,150,42,0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .credential-icon svg { width: 15px; height: 15px; stroke: var(--gold); fill: none; stroke-width: 1.5; }
+
+  .credential-text { font-size: 0.9rem; color: var(--white-dim); line-height: 1.5; }
+  .credential-text strong { display: block; color: var(--white); font-size: 0.95rem; margin-bottom: 0.15rem; }
+
+  .about-bio p {
+    font-size: 1.05rem;
+    color: var(--white-dim);
+    line-height: 1.85;
+    margin-bottom: 1.25rem;
+  }
+
+  .about-bio p strong { color: var(--white); font-weight: 500; }
+
+  /* ---- EXPERIENCE ---- */
+  #experience { background: var(--navy); }
+
+  .experience-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 4rem;
+  }
+
+  .exp-card {
+    padding: 1.75rem 2rem;
+    background: var(--navy-mid);
+    border: 1px solid var(--navy-border);
+    border-radius: 4px;
+    transition: border-color 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .exp-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px;
+    height: 100%;
+    background: var(--gold);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .exp-card:hover { border-color: var(--gold-dim); }
+  .exp-card:hover::before { opacity: 1; }
+
+  .exp-company {
+    font-family: var(--serif);
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 0.25rem;
+  }
+
+  .exp-role {
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+
+  .exp-period {
+    font-size: 0.78rem;
+    color: var(--white-faint);
+    margin-bottom: 1rem;
+    letter-spacing: 0.04em;
+  }
+
+  .exp-bullets {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+
+  .exp-bullets li {
+    font-size: 0.88rem;
+    color: var(--white-dim);
+    padding-left: 1rem;
+    position: relative;
+    line-height: 1.5;
+  }
+
+  .exp-bullets li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 4px;
+    height: 4px;
+    background: var(--gold-dim);
+    border-radius: 50%;
+  }
+
+  /* Patents */
+  .patents-banner {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--navy-border);
+    border: 1px solid var(--navy-border);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .patent-cell {
+    background: var(--navy-mid);
+    padding: 2rem;
+    text-align: center;
+  }
+
+  .patent-number {
+    font-family: var(--serif);
+    font-size: 2.8rem;
+    font-weight: 600;
+    color: var(--gold-light);
+    display: block;
+    margin-bottom: 0.35rem;
+  }
+
+  .patent-desc {
+    font-size: 0.82rem;
+    color: var(--white-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+  }
+
+  /* ---- THOUGHT LEADERSHIP ---- */
+  #thought-leadership { background: var(--navy-mid); }
+
+  .articles-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .article-card {
+    padding: 1.75rem;
+    background: var(--navy-light);
+    border: 1px solid var(--navy-border);
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    transition: border-color 0.2s;
+  }
+
+  .article-card:hover { border-color: var(--gold-dim); }
+
+  .article-tag {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.75rem;
+  }
+
+  .article-title {
+    font-family: var(--serif);
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--white);
+    line-height: 1.35;
+    margin-bottom: 0.75rem;
+    flex-grow: 1;
+  }
+
+  .article-excerpt {
+    font-size: 0.87rem;
+    color: var(--white-dim);
+    line-height: 1.6;
+    margin-bottom: 1.25rem;
+  }
+
+  .article-link {
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gold);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: gap 0.2s;
+  }
+
+  .article-link:hover { gap: 0.7rem; }
+  .article-link::after { content: '→'; }
+
+  /* MIT badge */
+  .credentials-strip {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 3rem;
+    padding-top: 3rem;
+    border-top: 1px solid var(--navy-border);
+  }
+
+  .credential-badge {
+    padding: 0.55rem 1.25rem;
+    border: 1px solid var(--navy-border);
+    border-radius: 2px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--white-dim);
+    background: var(--navy);
+  }
+
+  /* ---- CONSULTING ---- */
+  #consulting { background: var(--navy); }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .service-card {
+    padding: 2rem 1.75rem;
+    border: 1px solid var(--navy-border);
+    border-radius: 4px;
+    background: var(--navy-mid);
+    transition: border-color 0.2s;
+  }
+
+  .service-card:hover { border-color: var(--gold-dim); }
+
+  .service-num {
+    font-family: var(--serif);
+    font-size: 2rem;
+    font-weight: 400;
+    color: var(--gold-dim);
+    opacity: 0.5;
+    margin-bottom: 1rem;
+    line-height: 1;
+  }
+
+  .service-title {
+    font-family: var(--serif);
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 0.75rem;
+    line-height: 1.3;
+  }
+
+  .service-desc {
+    font-size: 0.88rem;
+    color: var(--white-dim);
+    line-height: 1.7;
+  }
+
+  /* ---- BLOG PREVIEW ---- */
+  #blog { background: var(--navy-mid); }
+
+  .blog-coming-soon {
+    text-align: center;
+    padding: 4rem 2rem;
+    border: 1px dashed var(--navy-border);
+    border-radius: 4px;
+  }
+
+  .blog-coming-soon p {
+    font-size: 1rem;
+    color: var(--white-faint);
+    margin-bottom: 0.5rem;
+  }
+
+  .blog-coming-soon strong {
+    font-family: var(--serif);
+    font-size: 1.6rem;
+    color: var(--white-dim);
+    display: block;
+    margin-bottom: 0.75rem;
+  }
+
+  .blog-coming-soon em {
+    font-style: italic;
+    color: var(--gold-dim);
+    font-size: 0.9rem;
+  }
+
+  .contact-form-card {
+    background: var(--navy-mid);
+    border: 1px solid var(--navy-border);
+    border-radius: 6px;
+    padding: 2rem 2.25rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .contact-form-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 3px;
+    background: linear-gradient(90deg, var(--gold-dim), var(--gold-light));
+  }
+
+  .contact-form-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-bottom: 1.75rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--navy-border);
+  }
+
+  .contact-form-title {
+    font-family: var(--serif);
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--white);
+  }
+
+  .contact-form-sub {
+    font-size: 0.8rem;
+    color: var(--white-faint);
+    letter-spacing: 0.04em;
+  }
+
+  /* ---- CONTACT ---- */
+  #contact { background: var(--navy); }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 5rem;
+    align-items: start;
+  }
+
+  .contact-info h3 {
+    font-family: var(--serif);
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 1rem;
+    line-height: 1.25;
+  }
+
+  .contact-info p {
+    font-size: 0.95rem;
+    color: var(--white-dim);
+    line-height: 1.8;
+    margin-bottom: 2rem;
+  }
+
+  .contact-links { display: flex; flex-direction: column; gap: 0.75rem; }
+
+  .contact-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.88rem;
+    color: var(--white-dim);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .contact-link:hover { color: var(--gold-light); }
+
+  .contact-link svg { width: 16px; height: 16px; stroke: var(--gold-dim); fill: none; stroke-width: 1.5; flex-shrink: 0; }
+
+  .contact-form { display: flex; flex-direction: column; gap: 1.25rem; }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+  label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--white-faint);
+    display: block;
+    margin-bottom: 0.4rem;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  textarea,
+  select {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    background: var(--navy-light);
+    border: 1px solid var(--navy-border);
+    color: var(--white);
+    font-family: var(--sans);
+    font-size: 0.92rem;
+    border-radius: 3px;
+    outline: none;
+    transition: border-color 0.2s;
+    resize: vertical;
+  }
+
+  input:focus, textarea:focus, select:focus {
+    border-color: var(--gold-dim);
+  }
+
+  input::placeholder, textarea::placeholder {
+    color: var(--white-faint);
+    font-size: 0.88rem;
+  }
+
+  textarea { min-height: 130px; }
+
+  .btn-submit {
+    padding: 0.85rem 2.5rem;
+    background: var(--gold);
+    color: var(--navy);
+    border: none;
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-radius: 2px;
+    cursor: pointer;
+    align-self: flex-start;
+    transition: background 0.2s;
+  }
+
+  .btn-submit:hover { background: var(--gold-light); }
+
+  /* ---- FOOTER ---- */
+  footer {
+    padding: 2.5rem clamp(1.5rem, 8vw, 5rem);
+    border-top: 1px solid var(--navy-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .footer-name {
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--gold-light);
+  }
+
+  .footer-copy {
+    font-size: 0.78rem;
+    color: var(--white-faint);
+  }
+
+  .footer-links { display: flex; gap: 1.5rem; }
+
+  .footer-links a {
+    font-size: 0.78rem;
+    color: var(--white-faint);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--gold-light); }
+
+  /* ---- RESPONSIVE ---- */
+  @media (max-width: 900px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .hero-stats { padding-left: 0; border-left: none; border-top: 1px solid var(--navy-border); padding-top: 2rem; grid-template-rows: none; grid-template-columns: repeat(3, 1fr); }
+    .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .experience-grid { grid-template-columns: 1fr; }
+    .articles-grid { grid-template-columns: 1fr; }
+    .services-grid { grid-template-columns: 1fr 1fr; }
+    .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .patents-banner { grid-template-columns: 1fr; gap: 1px; }
+    .form-row { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+  }
+
+  @media (max-width: 600px) {
+    .services-grid { grid-template-columns: 1fr; }
+    .hero-stats { grid-template-columns: 1fr 1fr; }
+  }
+
+  /* ---- SCROLL ANIMATIONS ---- */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.65s ease, transform 0.65s ease;
+  }
+
+  .fade-in.visible {
+    opacity: 1;
+    transform: none;
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo">Ravi Chengalvala</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#thought-leadership">Insights</a></li>
+    <li><a href="#consulting">Consulting</a></li>
+    <li><a href="#blog">Blog</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="mailto:ravi@ravichengalvala.com" class="nav-cta">Get in Touch</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-circle"></div>
+  <div class="hero-circle-2"></div>
+  <div class="hero-grid">
+    <div class="hero-content">
+      <div class="hero-eyebrow">
+        <span class="hero-line"></span>
+        <span>Technology Executive &amp; Innovator</span>
+      </div>
+      <h1>Ravi<br /><em>Chengalvala</em></h1>
+      <p class="hero-desc">
+        Enterprise Architect and Technology Leader with 20+ years driving digital transformation in automotive, manufacturing, and financial services. TOGAF 9 and PMP certified. MIT Sloan and Stanford Engineering executive education.
+      </p>
+      <div class="hero-actions">
+        <a href="#consulting" class="btn-primary">Consulting Services</a>
+        <a href="#contact" class="btn-outline">Connect with Me</a>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-number">20+</div>
+        <div class="stat-label">Years of experience</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">13</div>
+        <div class="stat-label">Granted patents</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">26</div>
+        <div class="stat-label">Countries reached by architecture</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-inner">
+    <div class="section-label">
+      <span class="line"></span>
+      <span>About</span>
+    </div>
+    <h2>Enterprise vision.<br /><em>Delivered at scale.</em></h2>
+    <div class="about-grid fade-in">
+      <div class="about-credentials">
+        <div class="credential-tag">
+          <div class="credential-icon">
+            <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          </div>
+          <div class="credential-text">
+            <strong>MIT Sloan &amp; Stanford Engineering</strong>
+            Executive Education
+          </div>
+        </div>
+        <div class="credential-tag">
+          <div class="credential-icon">
+            <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><path d="M21 12c0 4.97-4.03 9-9 9S3 16.97 3 12 7.03 3 12 3s9 4.03 9 9z"/></svg>
+          </div>
+          <div class="credential-text">
+            <strong>TOGAF 9 &amp; PMP Certified</strong>
+            Enterprise Architecture and Project Management Professional
+          </div>
+        </div>
+        <div class="credential-tag">
+          <div class="credential-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <div class="credential-text">
+            <strong>MIT SMR Research Panel Member</strong>
+            Contributing analyst and thought leader
+          </div>
+        </div>
+        <div class="credential-tag">
+          <div class="credential-icon">
+            <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </div>
+          <div class="credential-text">
+            <strong>Bank of America Customer Advisory Panel</strong>
+            Executive advisory council member
+          </div>
+        </div>
+        <div class="credential-tag">
+          <div class="credential-icon">
+            <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><path d="M21 12c0 4.97-4.03 9-9 9S3 16.97 3 12 7.03 3 12 3s9 4.03 9 9z"/></svg>
+          </div>
+          <div class="credential-text">
+            <strong>13 Granted Patents</strong>
+            12 U.S. + 1 German — connected vehicles, AI, cybersecurity
+          </div>
+        </div>
+      </div>
+
+      <div class="about-bio">
+        <p>
+          I am a <strong>technology executive and enterprise architect</strong> with a track record of translating complex organizational strategy into scalable, high-impact technology platforms. My career spans Fortune 50 automotive OEMs, global manufacturing, and financial services — where I have consistently led architecture at the intersection of emerging technology and enterprise reality.
+        </p>
+        <p>
+          At <strong>Ford Motor Company</strong>, I served as a standing member of the Autonomous Vehicle Technical Council and led enterprise architecture initiatives spanning connected vehicles, UBI frameworks deployed across 26 countries, and AV platform strategy. At <strong>DaimlerChrysler/FCA/Stellantis</strong>, I led post-merger application portfolio rationalization through structured architecture governance, and architected the Global Bill of Materials for Mopar Strategic Services.
+        </p>
+        <p>
+          Across every engagement, my focus has been the same: build architecture that endures, enables business agility, and delivers measurable outcomes. I bring deep expertise in TOGAF-based EA governance, SOA/BIAN transformation, AI-driven integration platforms, and digital transformation at enterprise scale.
+        </p>
+        <p>
+          What distinguishes my approach is the ability to operate at multiple altitudes — from enterprise strategy and governance to hands-on architecture design — and to translate that thinking across industries as different as automotive OEM, financial services, and industrial manufacturing.
+        </p>
+        <p>
+          I hold <strong>13 granted patents</strong> (12 U.S., 1 German) spanning connected vehicles, artificial intelligence, and cybersecurity — and I publish regularly on technology strategy and the future of mobility.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-inner">
+    <div class="section-label">
+      <span class="line"></span>
+      <span>Experience</span>
+    </div>
+    <h2>A career built on<br /><em>consequential work.</em></h2>
+    <p class="section-intro">
+      Enterprise Architecture and Technology Leadership across Fortune 50 automotive OEMs, global manufacturing, and financial services.
+    </p>
+
+    <div class="experience-grid fade-in">
+
+      <div class="exp-card">
+        <div class="exp-company">Ford Motor Company</div>
+        <div class="exp-role">Enterprise Architect | AV Technical Council</div>
+        <div class="exp-period">2017 — 2022</div>
+        <ul class="exp-bullets">
+          <li>Standing member, Autonomous Vehicle Technical Council</li>
+          <li>Led Architecture Review Board for connected vehicle platforms</li>
+          <li>Designed UBI framework deployed across 26 countries, powering 1.5M+ connected vehicles</li>
+          <li>Developed enterprise integration strategy for connected vehicle cloud services</li>
+          <li>Led architecture governance across cross-functional teams spanning software, hardware, and telematics</li>
+          <li>Enterprise architecture strategy for AV and connected services</li>
+        </ul>
+      </div>
+
+      <div class="exp-card">
+        <div class="exp-company">DaimlerChrysler / FCA / Stellantis</div>
+        <div class="exp-role">Enterprise Architect | Dealer Management Platforms</div>
+        <div class="exp-period">Multi-year engagement</div>
+        <ul class="exp-bullets">
+          <li>Led post-merger application portfolio rationalization through architecture governance</li>
+          <li>Architected Global Bill of Materials platform for Mopar Strategic Services</li>
+          <li>Established architecture governance framework for post-merger technology integration</li>
+          <li>Dealer Management Platform architecture and governance</li>
+          <li>End-to-end enterprise integration design</li>
+        </ul>
+      </div>
+
+      <div class="exp-card">
+        <div class="exp-company">Cummins Inc.</div>
+        <div class="exp-role">Technology Strategy &amp; Architecture</div>
+        <div class="exp-period">Consulting engagement via Softura</div>
+        <ul class="exp-bullets">
+          <li>Grew client engagement significantly through expanded advisory scope</li>
+          <li>Delivered enterprise architecture strategy across manufacturing and industrial verticals</li>
+          <li>Designed AI-driven integration platforms reducing operational complexity</li>
+          <li>Enterprise architecture consulting across manufacturing verticals</li>
+        </ul>
+      </div>
+
+      <div class="exp-card">
+        <div class="exp-company">Comerica Bank</div>
+        <div class="exp-role">SOA / BIAN Transformation Architect</div>
+        <div class="exp-period">Consulting engagement via DocuTell Inc.</div>
+        <ul class="exp-bullets">
+          <li>Invented the Comerica Transaction Integration Pattern</li>
+          <li>IBM DataPower SG45 + MQ + Message Broker integration design</li>
+          <li>Designed assured delivery patterns for high-volume financial transaction processing</li>
+          <li>Delivered SOA modernization aligned to BIAN banking industry standards</li>
+          <li>Led SOA-to-BIAN transformation architecture</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="patents-banner fade-in">
+      <div class="patent-cell">
+        <span class="patent-number">13</span>
+        <span class="patent-desc">Granted patents</span>
+      </div>
+      <div class="patent-cell">
+        <span class="patent-number">3</span>
+        <span class="patent-desc">Domains: Connected vehicles, AI &amp; Cybersecurity</span>
+      </div>
+      <div class="patent-cell">
+        <span class="patent-number">26</span>
+        <span class="patent-desc">Countries reached by architecture</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- THOUGHT LEADERSHIP -->
+<section id="thought-leadership">
+  <div class="section-inner">
+    <div class="section-label">
+      <span class="line"></span>
+      <span>Thought Leadership</span>
+    </div>
+    <h2>Insights on the<br /><em>future of technology.</em></h2>
+    <p class="section-intro">
+      Strategic analysis on EV transformation, enterprise architecture, and the forces reshaping the automotive and technology industries.
+    </p>
+
+    <div class="articles-grid fade-in">
+
+      <div class="article-card">
+        <div class="article-tag">EV Strategy Series</div>
+        <div class="article-title">The $50 Billion Skills Gap Nobody Talks About</div>
+        <div class="article-excerpt">Why Detroit's EV write-downs reveal a deeper workforce and architecture challenge that financial metrics alone cannot capture.</div>
+        <a href="https://www.linkedin.com/in/ravichengalvala" target="_blank" class="article-link">Read on LinkedIn</a>
+      </div>
+
+      <div class="article-card">
+        <div class="article-tag">EV Strategy Series</div>
+        <div class="article-title">The $30,000 Electric Vehicle Moment Is Here</div>
+        <div class="article-excerpt">An analysis of the emerging affordable EV inflection point and what it means for automakers, suppliers, and the broader mobility ecosystem.</div>
+        <a href="https://www.linkedin.com/in/ravichengalvala" target="_blank" class="article-link">Read on LinkedIn</a>
+      </div>
+
+      <div class="article-card">
+        <div class="article-tag">Enterprise Architecture</div>
+        <div class="article-title">When Detroit Bet $50B on EVs and Lost</div>
+        <div class="article-excerpt">A strategic post-mortem on Detroit's EV investment write-downs — examining the architecture, strategy, and organizational decisions that led here.</div>
+        <a href="https://www.linkedin.com/in/ravichengalvala" target="_blank" class="article-link">Read on LinkedIn</a>
+      </div>
+
+    </div>
+
+    <div class="credentials-strip fade-in">
+      <div class="credential-badge">MIT SMR Research Panel</div>
+      <div class="credential-badge">MIT Technology Review Reader</div>
+      <div class="credential-badge">MIT Sloan Executive Education</div>
+      <div class="credential-badge">Stanford Engineering Executive Education</div>
+      <div class="credential-badge">TOGAF 9 Certified</div>
+      <div class="credential-badge">PMP Certified</div>
+      <div class="credential-badge">Bank of America Customer Advisory Panel</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONSULTING -->
+<section id="consulting">
+  <div class="section-inner">
+    <div class="section-label">
+      <span class="line"></span>
+      <span>Consulting Services</span>
+    </div>
+    <h2>Strategic advisory for<br /><em>technology leaders.</em></h2>
+    <p class="section-intro">
+      Fractional and interim advisory engagements for enterprises navigating digital transformation, platform modernization, and technology strategy.
+    </p>
+
+    <div class="services-grid fade-in">
+
+      <div class="service-card">
+        <div class="service-num">01</div>
+        <div class="service-title">Enterprise Architecture Leadership</div>
+        <div class="service-desc">TOGAF-based EA governance, Architecture Review Board setup, capability roadmapping, and architecture rationalization for merger and acquisition scenarios. Engagements include ARB establishment, governance model design, and post-merger technology portfolio rationalization across automotive and financial services.</div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-num">02</div>
+        <div class="service-title">Digital Transformation Strategy</div>
+        <div class="service-desc">End-to-end digital transformation advisory combining Westerman's Digital Mastery Framework with TOGAF ADM — from current-state assessment to target architecture. Delivered transformation roadmaps for Fortune 50 enterprises spanning connected vehicle platforms, dealer management systems, and banking technology modernization.</div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-num">03</div>
+        <div class="service-title">Connected Vehicle &amp; Mobility Platforms</div>
+        <div class="service-desc">Architecture strategy for connected vehicle ecosystems, OTA update frameworks, UBI platforms, and autonomous vehicle technical infrastructure. Hands-on experience architecting UBI frameworks deployed across 26 countries and serving on autonomous vehicle technical councils at the OEM level.</div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-num">04</div>
+        <div class="service-title">AI &amp; Integration Architecture</div>
+        <div class="service-desc">AI-driven integration platform design, SOA/BIAN transformation, API strategy, and assured-delivery messaging patterns for complex enterprise environments. Proven patterns include assured-delivery messaging, store-and-forward transaction recovery, and AI-augmented integration layer design for high-availability environments.</div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-num">05</div>
+        <div class="service-title">Technology Due Diligence</div>
+        <div class="service-desc">Pre-acquisition and post-merger technology assessment — architecture health checks, technical debt quantification, and integration complexity analysis. Experience spanning post-merger scenarios at Tier 1 automotive OEMs and financial institutions, with structured assessment frameworks grounded in TOGAF ADM.</div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-num">06</div>
+        <div class="service-title">IP Strategy &amp; Patent Advisory</div>
+        <div class="service-desc">Emerging technology IP landscape analysis, innovation pipeline structuring, and patent strategy guidance for connected vehicles, AI, and cybersecurity domains. Holder of 13 granted patents with direct experience navigating the IP lifecycle from invention disclosure through grant.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- BLOG -->
+<section id="blog">
+  <div class="section-inner">
+    <div class="section-label">
+      <span class="line"></span>
+      <span>Blog</span>
+    </div>
+    <h2>Longer reads.<br /><em>Coming soon.</em></h2>
+    <div class="blog-coming-soon fade-in">
+      <strong>Perspectives from the front lines of technology leadership</strong>
+      <p>In-depth articles on enterprise architecture, digital transformation, connected mobility, and the evolving role of technology executives.</p>
+      <em>Launching soon — follow me on LinkedIn for updates.</em>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner">
+    <div class="section-label">
+      <span class="line"></span>
+      <span>Contact</span>
+    </div>
+    <h2>Let's work<br /><em>together.</em></h2>
+    <div class="contact-grid">
+
+      <div class="contact-info">
+        <h3>Open to advisory, consulting, and executive leadership conversations.</h3>
+        <p>Whether you are exploring a VP or Director-level engagement, a consulting partnership, or a speaking opportunity — I would welcome a conversation.</p>
+        <div class="contact-links">
+          <a href="https://www.linkedin.com/in/ravichengalvala" target="_blank" class="contact-link">
+            <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            linkedin.com/in/ravichengalvala
+          </a>
+          <a href="mailto:ravi@ravichengalvala.com" class="contact-link">
+            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            ravi@ravichengalvala.com
+          </a>
+          <a href="#" class="contact-link">
+            <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Troy, Michigan
+          </a>
+        </div>
+      </div>
+
+      <div class="contact-form-card">
+        <div class="contact-form-header">
+          <span class="contact-form-title">Send a Message</span>
+          <span class="contact-form-sub">I typically respond within 24 hours</span>
+        </div>
+        <form class="contact-form" onsubmit="handleSubmit(event)">
+          <div class="form-row">
+            <div>
+              <label for="fname">First Name</label>
+              <input type="text" id="fname" name="fname" placeholder="Jane" required />
+            </div>
+            <div>
+              <label for="lname">Last Name</label>
+              <input type="text" id="lname" name="lname" placeholder="Smith" required />
+            </div>
+          </div>
+          <div>
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" placeholder="jane@company.com" required />
+          </div>
+          <div>
+            <label for="company">Company / Organization</label>
+            <input type="text" id="company" name="company" placeholder="Acme Corporation" />
+          </div>
+          <div>
+            <label for="subject">Reason for Contact</label>
+            <select id="subject" name="subject" required>
+              <option value="">Select one...</option>
+              <option>Executive Leadership Role</option>
+              <option>Consulting Engagement</option>
+              <option>Speaking / Panel Opportunity</option>
+              <option>Advisory Board</option>
+              <option>General Inquiry</option>
+            </select>
+          </div>
+          <div>
+            <label for="message">Message</label>
+            <textarea id="message" name="message" placeholder="Tell me about your organization and the challenge you are working through..."></textarea>
+          </div>
+          <button type="submit" class="btn-submit">Send Message</button>
+          <div id="form-status" style="font-size:0.85rem; color: var(--gold); display:none; margin-top: 0.25rem;">Thank you — I will be in touch shortly.</div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-name">Ravi Chengalvala</div>
+  <div class="footer-copy">&copy; 2026 Ravi Chengalvala. All rights reserved. &nbsp;|&nbsp; Views expressed are my own and do not represent any employer, past or present.</div>
+  <div class="footer-links">
+    <a href="#about">About</a>
+    <a href="#experience">Experience</a>
+    <a href="#consulting">Consulting</a>
+    <a href="https://www.linkedin.com/in/ravichengalvala" target="_blank">LinkedIn</a>
+  </div>
+</footer>
+
+<script>
+  // Scroll animations
+  const faders = document.querySelectorAll('.fade-in');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+    });
+  }, { threshold: 0.1 });
+  faders.forEach(el => observer.observe(el));
+
+  // Form submit
+  function handleSubmit(e) {
+    e.preventDefault();
+    const status = document.getElementById('form-status');
+    status.style.display = 'block';
+    e.target.reset();
+  }
+
+  // Nav active state
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s
