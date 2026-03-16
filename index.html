@@ -898,7 +898,7 @@
     <li><a href="#blog">Blog</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
-  <a href="mailto:ravi@ravichengalvala.com" class="nav-cta">Get in Touch</a>
+  <a href="/cdn-cgi/l/email-protection#cfbdaeb9a68fbdaeb9a6aca7aaa1a8aea3b9aea3aee1aca0a2" class="nav-cta">Get in Touch</a>
 </nav>
 
 <!-- HERO -->
@@ -1242,9 +1242,9 @@
             <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
             linkedin.com/in/ravichengalvala
           </a>
-          <a href="mailto:ravi@ravichengalvala.com" class="contact-link">
+          <a href="/cdn-cgi/l/email-protection#d3a1b2a5ba93a1b2a5bab0bbb6bdb4b2bfa5b2bfb2fdb0bcbe" class="contact-link">
             <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-            ravi@ravichengalvala.com
+            <span class="__cf_email__" data-cfemail="acdecddac5ecdecddac5cfc4c9c2cbcdc0dacdc0cd82cfc3c1">[email&#160;protected]</span>
           </a>
           <a href="#" class="contact-link">
             <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
@@ -1313,7 +1313,7 @@
   </div>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   // Scroll animations
   const faders = document.querySelectorAll('.fade-in');
   const observer = new IntersectionObserver((entries) => {
@@ -1355,5 +1355,383 @@
     });
   }
 </script>
+
+<!-- AI PORTFOLIO ASSISTANT -->
+<style>
+  #ai-chat-bubble {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    z-index: 9999;
+    font-family: 'Georgia', serif;
+  }
+
+  #ai-chat-toggle {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: #C9962A;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(201,150,42,0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+    margin-left: auto;
+  }
+
+  #ai-chat-toggle:hover {
+    transform: scale(1.08);
+    box-shadow: 0 6px 28px rgba(201,150,42,0.5);
+  }
+
+  #ai-chat-toggle svg { width: 26px; height: 26px; fill: #080C18; }
+
+  #ai-chat-window {
+    display: none;
+    flex-direction: column;
+    width: 360px;
+    height: 520px;
+    background: #0E1525;
+    border: 1px solid #1E2D42;
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 14px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  }
+
+  #ai-chat-window.open { display: flex; }
+
+  .ai-chat-header {
+    background: #080C18;
+    border-bottom: 1px solid #1E2D42;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .ai-chat-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #C9962A;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    color: #080C18;
+    flex-shrink: 0;
+  }
+
+  .ai-chat-header-text { flex: 1; }
+  .ai-chat-header-name { font-size: 13px; font-weight: 600; color: #E8B84B; letter-spacing: 0.3px; }
+  .ai-chat-header-status { font-size: 11px; color: #4a6a8a; margin-top: 1px; }
+
+  #ai-chat-close {
+    background: none;
+    border: none;
+    color: #4a6a8a;
+    cursor: pointer;
+    font-size: 20px;
+    line-height: 1;
+    padding: 0;
+    transition: color 0.2s;
+  }
+  #ai-chat-close:hover { color: #E8B84B; }
+
+  #ai-chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    scrollbar-width: thin;
+    scrollbar-color: #1E2D42 transparent;
+  }
+
+  .ai-msg {
+    max-width: 88%;
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .ai-msg.assistant {
+    background: #15202F;
+    color: #c8d8e8;
+    border: 1px solid #1E2D42;
+    align-self: flex-start;
+    border-bottom-left-radius: 4px;
+  }
+
+  .ai-msg.user {
+    background: #C9962A;
+    color: #080C18;
+    align-self: flex-end;
+    border-bottom-right-radius: 4px;
+    font-weight: 500;
+  }
+
+  .ai-typing {
+    display: flex;
+    gap: 4px;
+    padding: 12px 14px;
+    background: #15202F;
+    border: 1px solid #1E2D42;
+    border-radius: 12px;
+    border-bottom-left-radius: 4px;
+    align-self: flex-start;
+  }
+
+  .ai-typing span {
+    width: 6px;
+    height: 6px;
+    background: #4a6a8a;
+    border-radius: 50%;
+    animation: typing-bounce 1.2s infinite;
+  }
+  .ai-typing span:nth-child(2) { animation-delay: 0.2s; }
+  .ai-typing span:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes typing-bounce {
+    0%, 60%, 100% { transform: translateY(0); }
+    30% { transform: translateY(-6px); }
+  }
+
+  .ai-suggestions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 0 16px 12px;
+  }
+
+  .ai-suggestion-btn {
+    background: none;
+    border: 1px solid #1E2D42;
+    color: #4a6a8a;
+    font-size: 11px;
+    padding: 5px 10px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+
+  .ai-suggestion-btn:hover {
+    border-color: #C9962A;
+    color: #E8B84B;
+  }
+
+  .ai-chat-input-row {
+    display: flex;
+    gap: 8px;
+    padding: 12px 16px;
+    border-top: 1px solid #1E2D42;
+    background: #080C18;
+  }
+
+  #ai-chat-input {
+    flex: 1;
+    background: #15202F;
+    border: 1px solid #1E2D42;
+    color: #c8d8e8;
+    font-size: 13px;
+    padding: 9px 13px;
+    border-radius: 8px;
+    outline: none;
+    font-family: inherit;
+    transition: border-color 0.2s;
+  }
+
+  #ai-chat-input:focus { border-color: #C9962A; }
+  #ai-chat-input::placeholder { color: #2E4060; }
+
+  #ai-chat-send {
+    background: #C9962A;
+    border: none;
+    border-radius: 8px;
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+    flex-shrink: 0;
+  }
+
+  #ai-chat-send:hover { background: #E8B84B; }
+  #ai-chat-send svg { width: 16px; height: 16px; fill: #080C18; }
+
+  .ai-chat-label {
+    font-size: 10px;
+    color: #2E4060;
+    text-align: center;
+    padding: 0 16px 8px;
+    background: #080C18;
+  }
+</style>
+
+<div id="ai-chat-bubble">
+  <div id="ai-chat-window">
+    <div class="ai-chat-header">
+      <div class="ai-chat-avatar">RC</div>
+      <div class="ai-chat-header-text">
+        <div class="ai-chat-header-name">Ravi's AI Assistant</div>
+        <div class="ai-chat-header-status">Ask me anything about Ravi's work</div>
+      </div>
+      <button id="ai-chat-close" onclick="toggleChat()">&times;</button>
+    </div>
+    <div id="ai-chat-messages"></div>
+    <div class="ai-suggestions" id="ai-suggestions">
+      <button class="ai-suggestion-btn" onclick="sendSuggestion(this)">Patents & innovations</button>
+      <button class="ai-suggestion-btn" onclick="sendSuggestion(this)">Ford experience</button>
+      <button class="ai-suggestion-btn" onclick="sendSuggestion(this)">Consulting services</button>
+      <button class="ai-suggestion-btn" onclick="sendSuggestion(this)">EA frameworks</button>
+    </div>
+    <div class="ai-chat-input-row">
+      <input id="ai-chat-input" type="text" placeholder="Ask about experience, patents, consulting..." />
+      <button id="ai-chat-send" onclick="sendMessage()">
+        <svg viewBox="0 0 24 24"><path d="M22 2L11 13M22 2L15 22 11 13 2 9l20-7z"/></svg>
+      </button>
+    </div>
+    <div class="ai-chat-label">Powered by Claude AI</div>
+  </div>
+  <button id="ai-chat-toggle" onclick="toggleChat()" title="Ask about Ravi's work">
+    <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+  </button>
+</div>
+
+<script>
+  const SYSTEM_PROMPT = `You are an AI assistant representing Ravi Chengalvala, a senior Enterprise Architect and Technology Executive with 20+ years of experience. Answer questions about Ravi's background, experience, patents, and consulting services concisely and professionally.
+
+KEY FACTS ABOUT RAVI:
+- TOGAF 9 and PMP certified Enterprise Architect based in Troy, Michigan
+- MIT Sloan and Stanford Engineering executive education
+- 13 granted patents (12 US, 1 German) in connected vehicles, AI, and cybersecurity, with 30+ pending
+- MIT SMR Research Panel member
+
+CAREER HISTORY:
+- Ford Motor Company (2017-2022): Standing member of Autonomous Vehicle Technical Council, led Architecture Review Board, designed UBI framework deployed across 26 countries powering 1.5M+ connected vehicles
+- DaimlerChrysler/FCA/Stellantis: Led post-merger application portfolio rationalization, architected Global Bill of Materials for Mopar Strategic Services, Dealer Management Platform architecture
+- Cummins Inc. (via Softura consulting): Grew engagement 8x from $250K to $2M, collaborated with CDO and Security Architects on EA and AWS cloud security, AI-driven integration platforms
+- Comerica Bank (via DocuTell Inc. consulting): Invented the Comerica Transaction Integration Pattern, IBM DataPower + MQ + Message Broker integration, SOA/BIAN transformation
+
+CONSULTING SERVICES:
+1. Enterprise Architecture Leadership - TOGAF-based EA governance, ARB setup, post-merger rationalization
+2. Digital Transformation Strategy - Westerman Digital Mastery Framework + TOGAF ADM
+3. Connected Vehicle & Mobility Platforms - OTA frameworks, UBI platforms, AV infrastructure
+4. AI & Integration Architecture - AI-driven integration, SOA/BIAN, assured-delivery patterns
+5. Technology Due Diligence - Pre-acquisition assessments, technical debt quantification
+6. IP Strategy & Patent Advisory - Patent lifecycle, innovation pipeline, connected vehicles/AI/cybersecurity
+
+CONTACT: ravi@ravichengalvala.com | ravichengalvala.com | linkedin.com/in/ravichengalvala
+
+Keep answers concise (2-4 sentences). Be warm and professional. If asked about availability or to set up a meeting, direct them to the contact form or ravi@ravichengalvala.com. Never fabricate specific dates, numbers, or details not listed above.`;
+
+  let chatHistory = [];
+  let chatOpen = false;
+  let greeted = false;
+
+  function toggleChat() {
+    chatOpen = !chatOpen;
+    const win = document.getElementById('ai-chat-window');
+    win.classList.toggle('open', chatOpen);
+    if (chatOpen && !greeted) {
+      greeted = true;
+      appendMessage('assistant', "Hi! I'm Ravi's AI assistant. I can tell you about his enterprise architecture experience, patents, consulting services, or anything else on his background. What would you like to know?");
+    }
+    if (chatOpen) {
+      setTimeout(() => document.getElementById('ai-chat-input').focus(), 100);
+    }
+  }
+
+  function appendMessage(role, text) {
+    const msgs = document.getElementById('ai-chat-messages');
+    const div = document.createElement('div');
+    div.className = 'ai-msg ' + role;
+    div.textContent = text;
+    msgs.appendChild(div);
+    msgs.scrollTop = msgs.scrollHeight;
+    return div;
+  }
+
+  function showTyping() {
+    const msgs = document.getElementById('ai-chat-messages');
+    const div = document.createElement('div');
+    div.className = 'ai-typing';
+    div.id = 'ai-typing-indicator';
+    div.innerHTML = '<span></span><span></span><span></span>';
+    msgs.appendChild(div);
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+
+  function removeTyping() {
+    const t = document.getElementById('ai-typing-indicator');
+    if (t) t.remove();
+  }
+
+  function sendSuggestion(btn) {
+    const text = btn.textContent;
+    document.getElementById('ai-suggestions').style.display = 'none';
+    processMessage(text);
+  }
+
+  function sendMessage() {
+    const input = document.getElementById('ai-chat-input');
+    const text = input.value.trim();
+    if (!text) return;
+    input.value = '';
+    document.getElementById('ai-suggestions').style.display = 'none';
+    processMessage(text);
+  }
+
+  async function processMessage(text) {
+    appendMessage('user', text);
+    chatHistory.push({ role: 'user', content: text });
+    showTyping();
+
+    const input = document.getElementById('ai-chat-input');
+    const sendBtn = document.getElementById('ai-chat-send');
+    input.disabled = true;
+    sendBtn.disabled = true;
+
+    try {
+      const response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 1000,
+          system: SYSTEM_PROMPT,
+          messages: chatHistory
+        })
+      });
+
+      const data = await response.json();
+      const reply = data.content?.[0]?.text || "I'm sorry, I couldn't process that. Please try again or email ravi@ravichengalvala.com directly.";
+      removeTyping();
+      appendMessage('assistant', reply);
+      chatHistory.push({ role: 'assistant', content: reply });
+    } catch (err) {
+      removeTyping();
+      appendMessage('assistant', "I'm having trouble connecting right now. Please reach out directly at ravi@ravichengalvala.com.");
+    }
+
+    input.disabled = false;
+    sendBtn.disabled = false;
+    input.focus();
+  }
+
+  document.getElementById('ai-chat-input').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') sendMessage();
+  });
+</script>
+
 </body>
 </html>
