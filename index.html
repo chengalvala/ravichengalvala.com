@@ -890,7 +890,7 @@
     <li><a href="#blog">Blog</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
-  <a href="mailto:ravi@ravichengalvala.com" class="nav-cta">Get in Touch</a>
+  <a href="/cdn-cgi/l/email-protection#255744534c655744534c464d404b424449534449440b464a48" class="nav-cta">Get in Touch</a>
 </nav>
 
 <!-- HERO -->
@@ -1234,9 +1234,9 @@
             <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
             linkedin.com/in/ravichengalvala
           </a>
-          <a href="mailto:ravi@ravichengalvala.com" class="contact-link">
+          <a href="/cdn-cgi/l/email-protection#374556415e774556415e545f525950565b41565b561954585a" class="contact-link">
             <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-            ravi@ravichengalvala.com
+            <span class="__cf_email__" data-cfemail="a8dac9dec1e8dac9dec1cbc0cdc6cfc9c4dec9c4c986cbc7c5">[email&#160;protected]</span>
           </a>
           <a href="#" class="contact-link">
             <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
@@ -1305,7 +1305,7 @@
   </div>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   // Scroll animations
   const faders = document.querySelectorAll('.fade-in');
   const observer = new IntersectionObserver((entries) => {
@@ -1318,14 +1318,34 @@
   // Form submit
   function handleSubmit(e) {
     e.preventDefault();
+    const form = e.target;
     const status = document.getElementById('form-status');
-    status.style.display = 'block';
-    e.target.reset();
+    const submitBtn = form.querySelector('.btn-submit');
+    submitBtn.textContent = 'Sending...';
+    submitBtn.disabled = true;
+    fetch('https://formspree.io/f/xkoqqypn', {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { 'Accept': 'application/json' }
+    }).then(response => {
+      if (response.ok) {
+        status.style.display = 'block';
+        form.reset();
+        submitBtn.textContent = 'Send Message';
+        submitBtn.disabled = false;
+      } else {
+        status.textContent = 'Something went wrong. Please email ravi@ravichengalvala.com directly.';
+        status.style.display = 'block';
+        submitBtn.textContent = 'Send Message';
+        submitBtn.disabled = false;
+      }
+    }).catch(() => {
+      status.textContent = 'Something went wrong. Please email ravi@ravichengalvala.com directly.';
+      status.style.display = 'block';
+      submitBtn.textContent = 'Send Message';
+      submitBtn.disabled = false;
+    });
   }
-
-  // Nav active state
-  const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('.nav-links a');
-  window.addEventListener('scroll', () => {
-    let current = '';
-    sections.forEach(s
+</script>
+</body>
+</html>
