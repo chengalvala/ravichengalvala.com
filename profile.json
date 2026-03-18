@@ -1,0 +1,181 @@
+{
+  "name": "Ravi Chengalvala",
+  "title": "Enterprise Architect & Technology Executive",
+  "location": "Troy, Michigan",
+  "summary": "Senior Enterprise Architect and Technology Executive with 20+ years of experience across Fortune 50 automotive OEMs, global manufacturing, and financial services.",
+
+  "key_facts": [
+    "TOGAF 9 and PMP certified Enterprise Architect based in Troy, Michigan",
+    "MIT Sloan and Stanford Engineering executive education",
+    "13 granted patents (12 US, 1 German) in connected vehicles, AI, and cybersecurity, with 30+ pending",
+    "MIT SMR Research Panel member",
+    "Bank of America Customer Advisory Panel member",
+    "AWS Certified Cloud Practitioner and AWS Certified AI Practitioner"
+  ],
+
+  "career": [
+    {
+      "company": "Ford Motor Company",
+      "period": "2017-2022",
+      "highlights": [
+        "Standing member of Autonomous Vehicles Technical Council for TaaS (Transportation as a Service)",
+        "Standing Member of Architecture Review Board for connected vehicle platforms",
+        "Designed UBI framework deployed across 26 countries powering 1.5M+ connected vehicles",
+        "Enterprise integration strategy for connected vehicle cloud services",
+        "Architecture governance across cross-functional teams spanning software, hardware, and telematics"
+      ]
+    },
+    {
+      "company": "DaimlerChrysler / FCA / Stellantis",
+      "period": "Multi-year engagement",
+      "highlights": [
+        "Led post-merger application portfolio rationalization through architecture governance",
+        "Architected Global Bill of Materials platform for Mopar Strategic Services",
+        "Established architecture governance framework for post-merger technology integration",
+        "Dealer Management Platform architecture and governance",
+        "End-to-end enterprise integration design"
+      ]
+    },
+    {
+      "company": "Cummins Inc.",
+      "engagement": "Consulting via Softura",
+      "highlights": [
+        "Grew client engagement from $250K to $2M through expanded advisory scope",
+        "Collaborated with CDO and Security Architects on Enterprise Architecture and AWS cloud security",
+        "Designed centralized integration platforms incorporating AI for predictive and prescriptive actions reducing warranty costs",
+        "Delivered enterprise architecture strategy across manufacturing and industrial verticals"
+      ]
+    },
+    {
+      "company": "General Motors",
+      "engagement": "Engagement via Compuware Corporation",
+      "highlights": [
+        "Completed pilot to migrate manufacturing applications from HP Unix to Enterprise Linux at Warren Tech Center",
+        "Architected complex interfaces to Manufacturing Systems using C, C++, Java, WebLogic, Oracle, Oracle AQ, and PLC integrations",
+        "Delivered full-stack migration in a high-stakes manufacturing environment requiring zero downtime"
+      ]
+    },
+    {
+      "company": "Comerica Bank",
+      "engagement": "Consulting via DocuTell Inc.",
+      "highlights": [
+        "Invented the Comerica Transaction Integration Pattern",
+        "IBM DataPower SG45 + MQ + Message Broker integration design",
+        "Designed assured delivery patterns for high-volume financial transaction processing",
+        "Delivered SOA modernization aligned to BIAN banking industry standards"
+      ]
+    }
+  ],
+
+  "education": [
+    {
+      "institution": "MIT Sloan School of Management",
+      "program": "Executive Education Certificate Program",
+      "period": "2019-2021",
+      "courses": [
+        "Artificial Intelligence: Implications for Business Strategy",
+        "Machine Learning in Business",
+        "Internet of Things: Business Implications and Opportunities",
+        "Breakthrough Customer Experience (CX) Strategy"
+      ]
+    },
+    {
+      "institution": "Stanford University — Engineering",
+      "programs": [
+        "Engineering Leadership Program: Becoming a Good Leader (XELP110), Communicating with Confidence (XELP120), Getting Buy-In for Your Ideas (XELP215), Making High-Quality Decisions (XELP240), Negotiating for What You Want (XELP260)",
+        "Foundations for Digital Transformation (XDGT100)",
+        "Advanced Cybersecurity Program: Foundations of Information Security (XACS101), Using Cryptography Correctly (XACS130), Exploiting and Protecting Web Applications (XACS133), Mobile Security (XACS215), Network Security (XACS255), Cybersecurity and Executive Strategy (XACS302)"
+      ]
+    },
+    {
+      "institution": "Birla Institute of Technology and Sciences (BITS), Pilani",
+      "degree": "Master of Engineering — Electronics and Control",
+      "location": "Rajasthan, India"
+    },
+    {
+      "institution": "JNTU College of Engineering, Hyderabad",
+      "degree": "Bachelor of Technology — Electrical and Electronics Engineering",
+      "location": "Hyderabad, India"
+    }
+  ],
+
+  "certifications": [
+    "TOGAF 9 Certified — The Open Group, Enterprise Architecture Framework",
+    "Project Management Professional (PMP) — Project Management Institute",
+    "AWS Certified Cloud Practitioner — Amazon Web Services",
+    "AWS Certified AI Practitioner — Amazon Web Services"
+  ],
+
+  "patents": {
+    "total_granted": 13,
+    "us_patents": 12,
+    "german_patents": 1,
+    "pending": 30,
+    "domains": ["Connected Vehicles", "Artificial Intelligence", "Cybersecurity"],
+    "portfolio_url": "https://patents.google.com/?inventor=Venkata+Maruthe+Chengalvala"
+  },
+
+  "consulting_services": [
+    {
+      "name": "Enterprise Architecture Leadership",
+      "description": "TOGAF-based EA governance, Architecture Review Board setup, capability roadmapping, and architecture rationalization for merger and acquisition scenarios"
+    },
+    {
+      "name": "Digital Transformation Strategy",
+      "description": "End-to-end digital transformation advisory combining Westerman's Digital Mastery Framework with TOGAF ADM"
+    },
+    {
+      "name": "Connected Vehicle & Mobility Platforms",
+      "description": "Architecture strategy for connected vehicle ecosystems, OTA update frameworks, UBI platforms, and autonomous vehicle technical infrastructure"
+    },
+    {
+      "name": "AI & Integration Architecture",
+      "description": "AI-driven integration platform design, SOA/BIAN transformation, API strategy, and assured-delivery messaging patterns"
+    },
+    {
+      "name": "Technology Due Diligence",
+      "description": "Pre-acquisition and post-merger technology assessment — architecture health checks, technical debt quantification, and integration complexity analysis"
+    },
+    {
+      "name": "IP Strategy & Patent Advisory",
+      "description": "Emerging technology IP landscape analysis, innovation pipeline structuring, and patent strategy guidance for connected vehicles, AI, and cybersecurity"
+    }
+  ],
+
+  "thought_leadership": [
+    {
+      "title": "When Detroit Bet $50B on EVs and Lost",
+      "series": "EV Strategy Series Part 1 of 4",
+      "url": "https://www.linkedin.com/pulse/50-billion-question-detroit-automakers-never-asked-ravi-chengalvala-ngfwf/"
+    },
+    {
+      "title": "The $50 Billion Skills Gap Nobody Talks About",
+      "series": "EV Strategy Series Part 2 of 4",
+      "url": "https://www.linkedin.com/pulse/frameworks-could-have-caught-strategic-toolkit-every-team-ravi-czxnc/"
+    },
+    {
+      "title": "Strategic Skills That Separate Automotive Leaders",
+      "series": "EV Strategy Series Part 3 of 4",
+      "url": "https://www.linkedin.com/pulse/strategic-skills-separate-automotive-leaders-ravi-chengalvala-cqamc/"
+    },
+    {
+      "title": "The Problem-Solving Toolkit Every Leadership Team Needs",
+      "series": "EV Strategy Series Part 4 of 4",
+      "url": "https://www.linkedin.com/pulse/problem-solving-toolkit-every-leadership-team-needs-ravi-chengalvala-odqhc/"
+    },
+    {
+      "title": "The $30,000 Electric Vehicle Moment Is Here",
+      "series": "Mobility & EV",
+      "url": "https://www.linkedin.com/in/ravichengalvala"
+    }
+  ],
+
+  "contact": {
+    "email": "ravi@ravichengalvala.com",
+    "website": "https://ravichengalvala.com",
+    "linkedin": "https://www.linkedin.com/in/ravichengalvala",
+    "location": "Troy, Michigan"
+  },
+
+  "ai_instructions": "You are an AI assistant representing Ravi Chengalvala. Answer questions about his background, experience, education, patents, and consulting services concisely and professionally. Keep answers to 2-4 sentences. Be warm and professional. If asked about availability or to set up a meeting, direct them to the contact form or ravi@ravichengalvala.com. Never fabricate specific dates, numbers, or details not listed in this profile."
+}
