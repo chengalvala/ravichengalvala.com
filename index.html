@@ -2047,32 +2047,45 @@ async function applyLanguage(code, save) {
     return;
   }
 
-  // Fetch translation from worker
+  // Fetch translation — load static pre-translated JSON file
+  // Files live at /translations/{code}.json in the GitHub repo
+  // Generated once by running: node generate_translations.js
   showLoading(lang.native);
   try {
-    const resp = await fetch(WORKER_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        mode: 'translate',
-        language: code,
-        languageName: lang.name,
-        content: englishContent
-      })
-    });
-    if (!resp.ok) throw new Error('Worker error ' + resp.status);
-    const data = await resp.json();
-    const translated = data.translated || englishContent;
+    const resp = await fetch(`/translations/${code}.json`);
+    if (!resp.ok) throw new Error(`translations/${code}.json not found (${resp.status})`);
+    const translated = await resp.json();
     translationCache.set(code, translated);
     applyTranslations(translated);
     showDisclaimer();
   } catch (err) {
-    console.warn('Translation failed, showing English:', err);
-    applyTranslations(englishContent);
-    hideDisclaimer();
-    currentLang = 'en';
-    updateLangButton('en');
-    updateActiveOption('en');
+    console.warn(`Static translation file not found for ${code}, falling back to live translation:`, err);
+    // Fallback — call the worker if static file is missing
+    try {
+      const resp2 = await fetch(WORKER_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          mode: 'translate',
+          language: code,
+          languageName: lang.name,
+          content: englishContent
+        })
+      });
+      if (!resp2.ok) throw new Error('Worker error ' + resp2.status);
+      const data = await resp2.json();
+      const translated = data.translated || englishContent;
+      translationCache.set(code, translated);
+      applyTranslations(translated);
+      showDisclaimer();
+    } catch (err2) {
+      console.warn('Translation failed, showing English:', err2);
+      applyTranslations(englishContent);
+      hideDisclaimer();
+      currentLang = 'en';
+      updateLangButton('en');
+      updateActiveOption('en');
+    }
   } finally {
     hideLoading();
   }
