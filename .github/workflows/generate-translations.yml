@@ -1,0 +1,133 @@
+name: Generate Translations
+
+# Triggers whenever index.html or the generator script itself is pushed
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'index.html'
+      - 'generate_translations.js'
+      - 'translations_en.json'
+
+  # Also allows manual trigger from the GitHub Actions tab
+  workflow_dispatch:
+
+jobs:
+  translate:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write   # Needed to commit translation files back to the repo
+
+    steps:
+
+      # 1. Check out the repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # 2. Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # 3. Extract fresh English content from index.html
+      #    This runs a small Python script to pull all data-i18n values
+      #    and writes translations_en.json — the source of truth for translations
+      - name: Extract English content from index.html
+        run: |
+          python3 << 'PYEOF'
+          import re, json
+          from html.parser import HTMLParser
+
+          class I18nExtractor(HTMLParser):
+              def __init__(self):
+                  super().__init__()
+                  self.content = {}
+                  self.current_key = None
+                  self.capture = False
+                  self.depth = 0
+                  self.buffer = ''
+
+              def handle_starttag(self, tag, attrs):
+                  attrs_dict = dict(attrs)
+                  if 'data-i18n' in attrs_dict:
+                      self.current_key = attrs_dict['data-i18n']
+                      self.capture = True
+                      self.depth = 1
+                      self.buffer = ''
+                  elif self.capture:
+                      self.depth += 1
+                      attr_str = ''
+                      for k, v in attrs:
+                          if v:
+                              attr_str += f' {k}="{v}"'
+                          else:
+                              attr_str += f' {k}'
+                      self.buffer += f'<{tag}{attr_str}>'
+
+              def handle_endtag(self, tag):
+                  if self.capture:
+                      self.depth -= 1
+                      if self.depth == 0:
+                          val = self.buffer.strip()
+                          if val and self.current_key:
+                              self.content[self.current_key] = val
+                          self.capture = False
+                          self.current_key = None
+                          self.buffer = ''
+                      else:
+                          self.buffer += f'</{tag}>'
+
+              def handle_data(self, data):
+                  if self.capture:
+                      self.buffer += data
+
+              def handle_entityref(self, name):
+                  if self.capture:
+                      self.buffer += f'&{name};'
+
+              def handle_charref(self, name):
+                  if self.capture:
+                      self.buffer += f'&#{name};'
+
+          with open('index.html', 'r', encoding='utf-8') as f:
+              html = f.read()
+
+          extractor = I18nExtractor()
+          extractor.feed(html)
+
+          cleaned = {k: v.strip() for k, v in extractor.content.items() if v.strip()}
+
+          with open('translations_en.json', 'w', encoding='utf-8') as f:
+              json.dump(cleaned, f, indent=2, ensure_ascii=False)
+
+          print(f"Extracted {len(cleaned)} English keys → translations_en.json")
+          PYEOF
+
+      # 4. Run the translation generator
+      - name: Generate all language translation files
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: node generate_translations.js
+
+      # 5. Commit the generated translation files back to the repo
+      #    Only commits if files actually changed — skips if nothing changed
+      - name: Commit translation files
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add translations/ translations_en.json
+
+          # Only commit if there are actual changes
+          if git diff --staged --quiet; then
+            echo "No translation changes detected — skipping commit."
+          else
+            git commit -m "auto: regenerate translations [skip ci]"
+            git push
+            echo "Translation files committed and pushed."
+          fi
