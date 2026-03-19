@@ -866,6 +866,108 @@
     opacity: 1;
     transform: none;
   }
+
+  /* ---- LANGUAGE SELECTOR ---- */
+  .lang-selector { position: relative; margin: 0 1rem; }
+  .lang-btn { display: flex; align-items: center; gap: 0.4rem; background: transparent; border: 1px solid rgba(201,150,42,0.25); color: var(--white-dim); font-family: var(--sans); font-size: 0.8rem; font-weight: 500; letter-spacing: 0.06em; padding: 0.4rem 0.75rem; border-radius: 2px; cursor: pointer; transition: border-color 0.2s, color 0.2s; white-space: nowrap; }
+  .lang-btn:hover { border-color: var(--gold-dim); color: var(--gold-light); }
+  .lang-flag { font-size: 14px; line-height: 1; }
+  .lang-code { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+  .lang-chevron { width: 10px; height: 10px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; transition: transform 0.2s; flex-shrink: 0; }
+  .lang-selector.open .lang-chevron { transform: rotate(180deg); }
+  .lang-menu { display: none; position: absolute; top: calc(100% + 8px); right: 0; background: var(--navy-mid); border: 1px solid var(--navy-border); border-radius: 4px; overflow: hidden; min-width: 165px; box-shadow: 0 12px 40px rgba(0,0,0,0.5); z-index: 200; }
+  .lang-selector.open .lang-menu { display: block; }
+  .lang-option { display: flex; align-items: center; gap: 0.6rem; width: 100%; padding: 0.65rem 1rem; background: transparent; border: none; color: var(--white-dim); font-family: var(--sans); font-size: 0.82rem; cursor: pointer; text-align: left; transition: background 0.15s, color 0.15s; }
+  .lang-option:hover { background: var(--navy-light); color: var(--white); }
+  .lang-option.active { color: var(--gold-light); }
+  .lang-option .lo-flag { font-size: 15px; line-height: 1; }
+  .lang-option .lo-native { font-size: 0.88rem; font-weight: 500; }
+  .lang-option .lo-en { font-size: 0.72rem; color: var(--white-faint); margin-left: auto; }
+  body.translating::after { content: ''; position: fixed; inset: 0; background: rgba(8,12,24,0.45); z-index: 9998; pointer-events: none; }
+  .lang-loading { position: fixed; top: 80px; left: 50%; transform: translateX(-50%); background: var(--navy-mid); border: 1px solid var(--gold-dim); color: var(--gold-light); font-family: var(--sans); font-size: 0.82rem; font-weight: 500; letter-spacing: 0.06em; padding: 0.6rem 1.4rem; border-radius: 20px; z-index: 9999; display: none; align-items: center; gap: 0.5rem; }
+  .lang-loading.show { display: flex; }
+  .lang-spinner { width: 14px; height: 14px; border: 2px solid rgba(201,150,42,0.3); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.7s linear infinite; flex-shrink: 0; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ---- AI TRANSLATION DISCLAIMER BANNER ---- */
+  #lang-disclaimer-banner {
+    display: none;
+    position: fixed;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9990;
+    max-width: 680px;
+    width: calc(100% - 3rem);
+    background: var(--navy-mid);
+    border: 1px solid rgba(201,150,42,0.35);
+    border-left: 3px solid var(--gold-dim);
+    border-radius: 4px;
+    padding: 0.85rem 1rem 0.85rem 1.1rem;
+    display: none;
+    align-items: flex-start;
+    gap: 0.85rem;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    animation: slideUp 0.3s ease;
+  }
+  #lang-disclaimer-banner.show { display: flex; }
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateX(-50%) translateY(12px); }
+    to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+  }
+  .disclaimer-icon {
+    font-size: 15px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    opacity: 0.85;
+  }
+  .disclaimer-body { flex: 1; }
+  .disclaimer-title {
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.2rem;
+  }
+  .disclaimer-text {
+    font-size: 0.8rem;
+    color: var(--white-dim);
+    line-height: 1.6;
+  }
+  .disclaimer-close {
+    background: none;
+    border: none;
+    color: var(--white-faint);
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0;
+    flex-shrink: 0;
+    transition: color 0.2s;
+    margin-top: -1px;
+  }
+  .disclaimer-close:hover { color: var(--gold-light); }
+
+  /* Persistent footer disclaimer — only visible in non-English */
+  #lang-disclaimer-footer {
+    display: none;
+    width: 100%;
+    text-align: center;
+    font-size: 0.72rem;
+    color: var(--white-faint);
+    letter-spacing: 0.04em;
+    padding: 0.6rem clamp(1.5rem, 8vw, 5rem);
+    border-top: 1px solid var(--navy-border);
+    background: var(--navy);
+    line-height: 1.6;
+  }
+  #lang-disclaimer-footer.show { display: block; }
+  #lang-disclaimer-footer a {
+    color: var(--gold-dim);
+    text-decoration: none;
+  }
+  #lang-disclaimer-footer a:hover { color: var(--gold-light); }
 </style>
 </head>
 <body>
@@ -874,15 +976,43 @@
 <nav>
   <a href="#hero" class="nav-logo">Ravi Chengalvala</a>
   <ul class="nav-links">
-    <li><a href="#about">About</a></li>
-    <li><a href="#experience">Experience</a></li>
-    <li><a href="#education">Education</a></li>
-    <li><a href="#thought-leadership">Insights</a></li>
-    <li><a href="#consulting">Consulting</a></li>
-    <li><a href="#contact">Contact</a></li>
+    <li><a href="#about" data-i18n="nav.about">About</a></li>
+    <li><a href="#experience" data-i18n="nav.experience">Experience</a></li>
+    <li><a href="#education" data-i18n="nav.education">Education</a></li>
+    <li><a href="#thought-leadership" data-i18n="nav.insights">Insights</a></li>
+    <li><a href="#consulting" data-i18n="nav.consulting">Consulting</a></li>
+    <li><a href="#contact" data-i18n="nav.contact">Contact</a></li>
   </ul>
-  <a href="mailto:ravi@ravichengalvala.com" class="nav-cta">Get in Touch</a>
+  <div class="lang-selector" id="langSelector">
+    <button class="lang-btn" id="langBtn" onclick="toggleLangMenu()" aria-label="Select language">
+      <span class="lang-flag" id="langFlag">&#x1F1FA;&#x1F1F8;</span>
+      <span class="lang-code" id="langCode">EN</span>
+      <svg class="lang-chevron" viewBox="0 0 12 8"><polyline points="1,1 6,7 11,1"/></svg>
+    </button>
+    <div class="lang-menu" id="langMenu"></div>
+  </div>
+  <a href="/cdn-cgi/l/email-protection#700211061930021106191318151e17111c06111c115e131f1d" class="nav-cta" data-i18n="nav.cta">Get in Touch</a>
 </nav>
+
+<!-- Translation loading indicator -->
+<div class="lang-loading" id="langLoading">
+  <div class="lang-spinner"></div>
+  <span id="langLoadingText">Translating...</span>
+</div>
+
+<!-- AI Translation disclaimer banner — shown once per language switch -->
+<div id="lang-disclaimer-banner" role="status" aria-live="polite">
+  <span class="disclaimer-icon">&#9432;</span>
+  <div class="disclaimer-body">
+    <div class="disclaimer-title">AI Translation — For Illustrative Purposes</div>
+    <div class="disclaimer-text">
+      This translation is generated by an AI language model and is provided to demonstrate AI-powered multilingual capabilities.
+      It may not be an exact or professionally certified representation of the original English content.
+      The authoritative version of this site is in <a href="#" onclick="selectLanguage('en');return false;">English</a>.
+    </div>
+  </div>
+  <button class="disclaimer-close" onclick="dismissDisclaimer()" aria-label="Dismiss">&times;</button>
+</div>
 
 <!-- HERO -->
 <section id="hero">
@@ -893,29 +1023,29 @@
     <div class="hero-content">
       <div class="hero-eyebrow">
         <span class="hero-line"></span>
-        <span>Technology Executive &amp; Innovator</span>
+        <span data-i18n="hero.eyebrow">Technology Executive &amp; Innovator</span>
       </div>
       <h1>Ravi<br /><em>Chengalvala</em></h1>
-      <p class="hero-desc">
+      <p class="hero-desc" data-i18n="hero.desc">
         Enterprise Architect and Technology Leader with 20+ years driving digital transformation in automotive, manufacturing, and financial services. TOGAF 9 and PMP certified. MIT Sloan and Stanford Engineering executive education.
       </p>
       <div class="hero-actions">
-        <a href="#consulting" class="btn-primary">Consulting Services</a>
-        <a href="#contact" class="btn-outline">Connect with Me</a>
+        <a href="#consulting" class="btn-primary" data-i18n="hero.btn.primary">Consulting Services</a>
+        <a href="#contact" class="btn-outline" data-i18n="hero.btn.outline">Connect with Me</a>
       </div>
     </div>
     <div class="hero-stats">
       <div class="stat-item">
         <div class="stat-number">20+</div>
-        <div class="stat-label">Years of experience</div>
+        <div class="stat-label" data-i18n="hero.stat.years">Years of experience</div>
       </div>
       <div class="stat-item">
         <div class="stat-number">13</div>
-        <div class="stat-label">Granted patents</div>
+        <div class="stat-label" data-i18n="hero.stat.patents">Granted patents</div>
       </div>
       <div class="stat-item">
         <div class="stat-number">26</div>
-        <div class="stat-label">Countries reached by architecture</div>
+        <div class="stat-label" data-i18n="hero.stat.countries">Countries reached by architecture</div>
       </div>
     </div>
   </div>
@@ -926,9 +1056,9 @@
   <div class="section-inner">
     <div class="section-label">
       <span class="line"></span>
-      <span>About</span>
+      <span data-i18n="about.label">About</span>
     </div>
-    <h2>Enterprise vision.<br /><em>Delivered at scale.</em></h2>
+    <h2><span data-i18n="about.h2.main">Enterprise vision.</span><br /><em data-i18n="about.h2.em">Delivered at scale.</em></h2>
     <div class="about-grid">
       <div class="about-credentials">
         <img src="headshot.jpg" alt="Ravi Chengalvala" class="about-headshot" />
@@ -938,7 +1068,7 @@
           </div>
           <div class="credential-text">
             <strong>MIT Sloan &amp; Stanford Engineering</strong>
-            Executive Education
+            <span data-i18n="about.cred.exec">Executive Education</span>
           </div>
         </div>
         <div class="credential-tag">
@@ -947,7 +1077,7 @@
           </div>
           <div class="credential-text">
             <strong>TOGAF 9 &amp; PMP Certified</strong>
-            Enterprise Architecture and Project Management Professional
+            <span data-i18n="about.cred.togaf">Enterprise Architecture and Project Management Professional</span>
           </div>
         </div>
         <div class="credential-tag">
@@ -956,7 +1086,7 @@
           </div>
           <div class="credential-text">
             <strong>MIT SMR Research Panel Member</strong>
-            Contributing analyst and thought leader
+            <span data-i18n="about.cred.mit">Contributing analyst and thought leader</span>
           </div>
         </div>
         <div class="credential-tag">
@@ -965,7 +1095,7 @@
           </div>
           <div class="credential-text">
             <strong>Bank of America Customer Advisory Panel</strong>
-            Executive advisory council member
+            <span data-i18n="about.cred.boa">Executive advisory council member</span>
           </div>
         </div>
         <div class="credential-tag">
@@ -974,28 +1104,28 @@
           </div>
           <div class="credential-text">
             <strong>13 Granted Patents</strong>
-            12 U.S. + 1 German — connected vehicles, AI, cybersecurity
+            <span data-i18n="about.cred.patents">12 U.S. + 1 German — connected vehicles, AI, cybersecurity</span>
           </div>
         </div>
       </div>
 
       <div class="about-bio">
-        <p>
+        <p data-i18n="about.bio.1">
           I am a <strong>technology executive and enterprise architect</strong> with a track record of translating complex organizational strategy into scalable, high-impact technology platforms. My career spans Fortune 50 automotive OEMs, global manufacturing, and financial services — where I have consistently led architecture at the intersection of emerging technology and enterprise reality.
         </p>
-        <p>
+        <p data-i18n="about.bio.2">
           At <strong>Ford Motor Company</strong>, I served as a standing member of the Autonomous Vehicle Technical Council and led enterprise architecture initiatives spanning connected vehicles, UBI frameworks deployed across 26 countries, and AV platform strategy. At <strong>DaimlerChrysler/FCA/Stellantis</strong>, I led post-merger application portfolio rationalization through structured architecture governance, and architected the Global Bill of Materials for Mopar Strategic Services.
         </p>
-        <p>
+        <p data-i18n="about.bio.3">
           Across every engagement, my focus has been the same: build architecture that endures, enables business agility, and delivers measurable outcomes. I bring deep expertise in TOGAF-based EA governance, SOA/BIAN transformation, AI-driven integration platforms, and digital transformation at enterprise scale.
         </p>
-        <p>
+        <p data-i18n="about.bio.4">
           What distinguishes my approach is the ability to operate at multiple altitudes — from enterprise strategy and governance to hands-on architecture design — and to translate that thinking across industries as different as automotive OEM, financial services, and industrial manufacturing.
         </p>
-        <p>
+        <p data-i18n="about.bio.5">
           Throughout my career I have led and mentored cross-functional teams of architects and engineers, guiding both technical direction and individual professional growth across complex enterprise programs.
         </p>
-        <p>
+        <p data-i18n="about.bio.6">
           I hold <strong>13 granted patents</strong> (12 U.S., 1 German) spanning connected vehicles, artificial intelligence, and cybersecurity — and I publish regularly on technology strategy and the future of mobility.
         </p>
       </div>
@@ -1008,9 +1138,9 @@
   <div class="section-inner">
     <div class="section-label">
       <span class="line"></span>
-      <span>Experience</span>
+      <span data-i18n="exp.label">Experience</span>
     </div>
-    <h2>A career built on<br /><em>consequential work.</em></h2>
+    <h2><span data-i18n="exp.h2.main">A career built on</span><br /><em data-i18n="exp.h2.em">consequential work.</em></h2>
     <p class="section-intro">
       Enterprise Architecture and Technology Leadership across Fortune 50 automotive OEMs, global manufacturing, and financial services.
     </p>
@@ -1085,15 +1215,15 @@
     <div class="patents-banner">
       <div class="patent-cell">
         <span class="patent-number">13</span>
-        <span class="patent-desc">Granted patents</span>
+        <span class="patent-desc" data-i18n="exp.patent.granted">Granted patents</span>
       </div>
       <div class="patent-cell">
         <span class="patent-number">3</span>
-        <span class="patent-desc">Domains: Connected vehicles, AI &amp; Cybersecurity</span>
+        <span class="patent-desc" data-i18n="exp.patent.domains">Domains: Connected vehicles, AI &amp; Cybersecurity</span>
       </div>
       <div class="patent-cell">
         <span class="patent-number">26</span>
-        <span class="patent-desc">Countries reached by architecture</span>
+        <span class="patent-desc" data-i18n="exp.patent.countries">Countries reached by architecture</span>
       </div>
     </div>
     <div style="text-align:center; margin-top: 1.5rem;">
@@ -1109,9 +1239,9 @@
   <div class="section-inner">
     <div class="section-label">
       <span class="line"></span>
-      <span>Education</span>
+      <span data-i18n="edu.label">Education</span>
     </div>
-    <h2>Academic foundation &amp;<br /><em>executive development.</em></h2>
+    <h2><span data-i18n="edu.h2.main">Academic foundation &amp;</span><br /><em data-i18n="edu.h2.em">executive development.</em></h2>
 
     <div class="experience-grid">
 
@@ -1192,60 +1322,60 @@
   <div class="section-inner">
     <div class="section-label">
       <span class="line"></span>
-      <span>Thought Leadership</span>
+      <span data-i18n="tl.label">Thought Leadership</span>
     </div>
-    <h2>Insights on the<br /><em>future of technology.</em></h2>
-    <p class="section-intro">
+    <h2><span data-i18n="tl.h2.main">Insights on the</span><br /><em data-i18n="tl.h2.em">future of technology.</em></h2>
+    <p class="section-intro" data-i18n="tl.intro">
       Strategic analysis on EV transformation, enterprise architecture, and the forces reshaping the automotive and technology industries.
     </p>
 
     <div class="articles-grid">
 
       <div class="article-card">
-        <div class="article-tag">EV Strategy Series — Part 1 of 4</div>
-        <div class="article-title">When Detroit Bet $50B on EVs and Lost</div>
-        <div class="article-excerpt">A strategic post-mortem on Detroit's EV investment write-downs — examining the architecture, strategy, and organizational decisions that led here.</div>
-        <a href="https://www.linkedin.com/pulse/50-billion-question-detroit-automakers-never-asked-ravi-chengalvala-ngfwf/" target="_blank" class="article-link">Read on LinkedIn</a>
+        <div class="article-tag" data-i18n="tl.art1.tag">EV Strategy Series — Part 1 of 4</div>
+        <div class="article-title" data-i18n="tl.art1.title">When Detroit Bet $50B on EVs and Lost</div>
+        <div class="article-excerpt" data-i18n="tl.art1.excerpt">A strategic post-mortem on Detroit's EV investment write-downs — examining the architecture, strategy, and organizational decisions that led here.</div>
+        <a href="https://www.linkedin.com/pulse/50-billion-question-detroit-automakers-never-asked-ravi-chengalvala-ngfwf/" target="_blank" class="article-link" data-i18n="tl.readmore">Read on LinkedIn</a>
       </div>
 
       <div class="article-card">
-        <div class="article-tag">EV Strategy Series — Part 2 of 4</div>
-        <div class="article-title">The $50 Billion Skills Gap Nobody Talks About</div>
-        <div class="article-excerpt">Why Detroit's EV write-downs reveal a deeper workforce and architecture challenge that financial metrics alone cannot capture.</div>
-        <a href="https://www.linkedin.com/pulse/frameworks-could-have-caught-strategic-toolkit-every-team-ravi-czxnc/" target="_blank" class="article-link">Read on LinkedIn</a>
+        <div class="article-tag" data-i18n="tl.art2.tag">EV Strategy Series — Part 2 of 4</div>
+        <div class="article-title" data-i18n="tl.art2.title">The $50 Billion Skills Gap Nobody Talks About</div>
+        <div class="article-excerpt" data-i18n="tl.art2.excerpt">Why Detroit's EV write-downs reveal a deeper workforce and architecture challenge that financial metrics alone cannot capture.</div>
+        <a href="https://www.linkedin.com/pulse/frameworks-could-have-caught-strategic-toolkit-every-team-ravi-czxnc/" target="_blank" class="article-link" data-i18n="tl.readmore">Read on LinkedIn</a>
       </div>
 
       <div class="article-card">
-        <div class="article-tag">EV Strategy Series — Part 3 of 4</div>
-        <div class="article-title">Strategic Skills That Separate Automotive Leaders</div>
-        <div class="article-excerpt">The leadership capabilities and strategic thinking that distinguish executives who navigate technology transformation from those who don't.</div>
-        <a href="https://www.linkedin.com/pulse/strategic-skills-separate-automotive-leaders-ravi-chengalvala-cqamc/" target="_blank" class="article-link">Read on LinkedIn</a>
+        <div class="article-tag" data-i18n="tl.art3.tag">EV Strategy Series — Part 3 of 4</div>
+        <div class="article-title" data-i18n="tl.art3.title">Strategic Skills That Separate Automotive Leaders</div>
+        <div class="article-excerpt" data-i18n="tl.art3.excerpt">The leadership capabilities and strategic thinking that distinguish executives who navigate technology transformation from those who don't.</div>
+        <a href="https://www.linkedin.com/pulse/strategic-skills-separate-automotive-leaders-ravi-chengalvala-cqamc/" target="_blank" class="article-link" data-i18n="tl.readmore">Read on LinkedIn</a>
       </div>
 
       <div class="article-card">
-        <div class="article-tag">EV Strategy Series — Part 4 of 4</div>
-        <div class="article-title">The Problem-Solving Toolkit Every Leadership Team Needs</div>
-        <div class="article-excerpt">A practical framework for leadership teams navigating complex technology decisions, drawn from lessons in the automotive EV transformation.</div>
-        <a href="https://www.linkedin.com/pulse/problem-solving-toolkit-every-leadership-team-needs-ravi-chengalvala-odqhc/" target="_blank" class="article-link">Read on LinkedIn</a>
+        <div class="article-tag" data-i18n="tl.art4.tag">EV Strategy Series — Part 4 of 4</div>
+        <div class="article-title" data-i18n="tl.art4.title">The Problem-Solving Toolkit Every Leadership Team Needs</div>
+        <div class="article-excerpt" data-i18n="tl.art4.excerpt">A practical framework for leadership teams navigating complex technology decisions, drawn from lessons in the automotive EV transformation.</div>
+        <a href="https://www.linkedin.com/pulse/problem-solving-toolkit-every-leadership-team-needs-ravi-chengalvala-odqhc/" target="_blank" class="article-link" data-i18n="tl.readmore">Read on LinkedIn</a>
       </div>
 
       <div class="article-card">
         <div class="article-tag">Mobility & EV</div>
-        <div class="article-title">The $30,000 Electric Vehicle Moment Is Here</div>
-        <div class="article-excerpt">An analysis of the emerging affordable EV inflection point and what it means for automakers, suppliers, and the broader mobility ecosystem.</div>
-        <a href="https://www.linkedin.com/pulse/30000-electric-vehicle-moment-here-ravi-chengalvala-zw2gc/" target="_blank" class="article-link">Read on LinkedIn</a>
+        <div class="article-title" data-i18n="tl.art5.title">The $30,000 Electric Vehicle Moment Is Here</div>
+        <div class="article-excerpt" data-i18n="tl.art5.excerpt">An analysis of the emerging affordable EV inflection point and what it means for automakers, suppliers, and the broader mobility ecosystem.</div>
+        <a href="https://www.linkedin.com/pulse/30000-electric-vehicle-moment-here-ravi-chengalvala-zw2gc/" target="_blank" class="article-link" data-i18n="tl.readmore">Read on LinkedIn</a>
       </div>
 
     </div>
 
     <div class="credentials-strip">
-      <div class="credential-badge">MIT SMR Research Panel</div>
-      <div class="credential-badge">MIT Technology Review Reader</div>
-      <div class="credential-badge">MIT Sloan Executive Education</div>
-      <div class="credential-badge">Stanford Engineering Executive Education</div>
-      <div class="credential-badge">TOGAF 9 Certified</div>
-      <div class="credential-badge">PMP Certified</div>
-      <div class="credential-badge">Bank of America Customer Advisory Panel</div>
+      <div class="credential-badge" data-i18n="tl.badge.1">MIT SMR Research Panel</div>
+      <div class="credential-badge" data-i18n="tl.badge.2">MIT Technology Review Reader</div>
+      <div class="credential-badge" data-i18n="tl.badge.3">MIT Sloan Executive Education</div>
+      <div class="credential-badge" data-i18n="tl.badge.4">Stanford Engineering Executive Education</div>
+      <div class="credential-badge" data-i18n="tl.badge.5">TOGAF 9 Certified</div>
+      <div class="credential-badge" data-i18n="tl.badge.6">PMP Certified</div>
+      <div class="credential-badge" data-i18n="tl.badge.7">Bank of America Customer Advisory Panel</div>
     </div>
   </div>
 </section>
@@ -1255,10 +1385,10 @@
   <div class="section-inner">
     <div class="section-label">
       <span class="line"></span>
-      <span>Consulting Services</span>
+      <span data-i18n="con.label">Consulting Services</span>
     </div>
-    <h2>Strategic advisory for<br /><em>technology leaders.</em></h2>
-    <p class="section-intro">
+    <h2><span data-i18n="con.h2.main">Strategic advisory for</span><br /><em data-i18n="con.h2.em">technology leaders.</em></h2>
+    <p class="section-intro" data-i18n="con.intro">
       Fractional and interim advisory engagements for enterprises navigating digital transformation, platform modernization, and technology strategy.
     </p>
 
@@ -1266,38 +1396,38 @@
 
       <div class="service-card">
         <div class="service-num">01</div>
-        <div class="service-title">Enterprise Architecture Leadership</div>
-        <div class="service-desc">TOGAF-based EA governance, Architecture Review Board setup, capability roadmapping, and architecture rationalization for merger and acquisition scenarios. Engagements include ARB establishment, governance model design, and post-merger technology portfolio rationalization across automotive and financial services.</div>
+        <div class="service-title" data-i18n="con.s1.title">Enterprise Architecture Leadership</div>
+        <div class="service-desc" data-i18n="con.s1.desc">TOGAF-based EA governance, Architecture Review Board setup, capability roadmapping, and architecture rationalization for merger and acquisition scenarios. Engagements include ARB establishment, governance model design, and post-merger technology portfolio rationalization across automotive and financial services.</div>
       </div>
 
       <div class="service-card">
         <div class="service-num">02</div>
-        <div class="service-title">Digital Transformation Strategy</div>
-        <div class="service-desc">End-to-end digital transformation advisory combining Westerman's Digital Mastery Framework with TOGAF ADM — from current-state assessment to target architecture. Delivered transformation roadmaps for Fortune 50 enterprises spanning connected vehicle platforms, dealer management systems, and banking technology modernization.</div>
+        <div class="service-title" data-i18n="con.s2.title">Digital Transformation Strategy</div>
+        <div class="service-desc" data-i18n="con.s2.desc">End-to-end digital transformation advisory combining Westerman's Digital Mastery Framework with TOGAF ADM — from current-state assessment to target architecture. Delivered transformation roadmaps for Fortune 50 enterprises spanning connected vehicle platforms, dealer management systems, and banking technology modernization.</div>
       </div>
 
       <div class="service-card">
         <div class="service-num">03</div>
-        <div class="service-title">Connected Vehicle &amp; Mobility Platforms</div>
-        <div class="service-desc">Architecture strategy for connected vehicle ecosystems, OTA update frameworks, UBI platforms, and autonomous vehicle technical infrastructure. Hands-on experience architecting UBI frameworks deployed across 26 countries and serving on autonomous vehicle technical councils at the OEM level.</div>
+        <div class="service-title" data-i18n="con.s3.title">Connected Vehicle &amp; Mobility Platforms</div>
+        <div class="service-desc" data-i18n="con.s3.desc">Architecture strategy for connected vehicle ecosystems, OTA update frameworks, UBI platforms, and autonomous vehicle technical infrastructure. Hands-on experience architecting UBI frameworks deployed across 26 countries and serving on autonomous vehicle technical councils at the OEM level.</div>
       </div>
 
       <div class="service-card">
         <div class="service-num">04</div>
-        <div class="service-title">AI &amp; Integration Architecture</div>
-        <div class="service-desc">AI-driven integration platform design, SOA/BIAN transformation, API strategy, and assured-delivery messaging patterns for complex enterprise environments. Proven patterns include assured-delivery messaging, store-and-forward transaction recovery, and AI-augmented integration layer design for high-availability environments.</div>
+        <div class="service-title" data-i18n="con.s4.title">AI &amp; Integration Architecture</div>
+        <div class="service-desc" data-i18n="con.s4.desc">AI-driven integration platform design, SOA/BIAN transformation, API strategy, and assured-delivery messaging patterns for complex enterprise environments. Proven patterns include assured-delivery messaging, store-and-forward transaction recovery, and AI-augmented integration layer design for high-availability environments.</div>
       </div>
 
       <div class="service-card">
         <div class="service-num">05</div>
-        <div class="service-title">Technology Due Diligence</div>
-        <div class="service-desc">Pre-acquisition and post-merger technology assessment — architecture health checks, technical debt quantification, and integration complexity analysis. Experience spanning post-merger scenarios at Tier 1 automotive OEMs and financial institutions, with structured assessment frameworks grounded in TOGAF ADM.</div>
+        <div class="service-title" data-i18n="con.s5.title">Technology Due Diligence</div>
+        <div class="service-desc" data-i18n="con.s5.desc">Pre-acquisition and post-merger technology assessment — architecture health checks, technical debt quantification, and integration complexity analysis. Experience spanning post-merger scenarios at Tier 1 automotive OEMs and financial institutions, with structured assessment frameworks grounded in TOGAF ADM.</div>
       </div>
 
       <div class="service-card">
         <div class="service-num">06</div>
-        <div class="service-title">IP Strategy &amp; Patent Advisory</div>
-        <div class="service-desc">Emerging technology IP landscape analysis, innovation pipeline structuring, and patent strategy guidance for connected vehicles, AI, and cybersecurity domains. Holder of 13 granted patents with direct experience navigating the IP lifecycle from invention disclosure through grant.</div>
+        <div class="service-title" data-i18n="con.s6.title">IP Strategy &amp; Patent Advisory</div>
+        <div class="service-desc" data-i18n="con.s6.desc">Emerging technology IP landscape analysis, innovation pipeline structuring, and patent strategy guidance for connected vehicles, AI, and cybersecurity domains. Holder of 13 granted patents with direct experience navigating the IP lifecycle from invention disclosure through grant.</div>
       </div>
 
     </div>
@@ -1309,22 +1439,22 @@
   <div class="section-inner">
     <div class="section-label">
       <span class="line"></span>
-      <span>Contact</span>
+      <span data-i18n="contact.label">Contact</span>
     </div>
-    <h2>Let's work<br /><em>together.</em></h2>
+    <h2><span data-i18n="contact.h2.main">Let's work</span><br /><em data-i18n="contact.h2.em">together.</em></h2>
     <div class="contact-grid">
 
       <div class="contact-info">
-        <h3>Open to advisory, consulting, and executive leadership conversations.</h3>
-        <p>Whether you are exploring a VP or Director-level engagement, a consulting partnership, or a speaking opportunity — I would welcome a conversation.</p>
+        <h3 data-i18n="contact.h3">Open to advisory, consulting, and executive leadership conversations.</h3>
+        <p data-i18n="contact.p">Whether you are exploring a VP or Director-level engagement, a consulting partnership, or a speaking opportunity — I would welcome a conversation.</p>
         <div class="contact-links">
           <a href="https://www.linkedin.com/in/ravichengalvala" target="_blank" class="contact-link">
             <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
             linkedin.com/in/ravichengalvala
           </a>
-          <a href="mailto:ravi@ravichengalvala.com" class="contact-link">
+          <a href="/cdn-cgi/l/email-protection#661407100f261407100f050e030801070a10070a074805090b" class="contact-link">
             <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-            ravi@ravichengalvala.com
+            <span class="__cf_email__" data-cfemail="6d1f0c1b042d1f0c1b040e0508030a0c011b0c010c430e0200">[email&#160;protected]</span>
           </a>
           <a href="#" class="contact-link">
             <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
@@ -1341,24 +1471,24 @@
         <form class="contact-form" onsubmit="handleSubmit(event)">
           <div class="form-row">
             <div>
-              <label for="fname">First Name</label>
+              <label for="fname" data-i18n="form.fname">First Name</label>
               <input type="text" id="fname" name="fname" placeholder="Jane" required />
             </div>
             <div>
-              <label for="lname">Last Name</label>
+              <label for="lname" data-i18n="form.lname">Last Name</label>
               <input type="text" id="lname" name="lname" placeholder="Smith" required />
             </div>
           </div>
           <div>
-            <label for="email">Email Address</label>
+            <label for="email" data-i18n="form.email">Email Address</label>
             <input type="email" id="email" name="email" placeholder="jane@company.com" required />
           </div>
           <div>
-            <label for="company">Company / Organization</label>
+            <label for="company" data-i18n="form.company">Company / Organization</label>
             <input type="text" id="company" name="company" placeholder="Acme Corporation" />
           </div>
           <div>
-            <label for="subject">Reason for Contact</label>
+            <label for="subject" data-i18n="form.subject">Reason for Contact</label>
             <select id="subject" name="subject" required>
               <option value="">Select one...</option>
               <option>Executive Leadership Role</option>
@@ -1369,11 +1499,11 @@
             </select>
           </div>
           <div>
-            <label for="message">Message</label>
+            <label for="message" data-i18n="form.message">Message</label>
             <textarea id="message" name="message" placeholder="Tell me about your organization and the challenge you are working through..."></textarea>
           </div>
-          <button type="submit" class="btn-submit">Send Message</button>
-          <div id="form-status" style="font-size:0.85rem; color: var(--gold); display:none; margin-top: 0.25rem;">Thank you — I will be in touch shortly.</div>
+          <button type="submit" class="btn-submit" data-i18n="form.submit">Send Message</button>
+          <div id="form-status" style="font-size:0.85rem; color: var(--gold); display:none; margin-top: 0.25rem;" data-i18n="form.thanks">Thank you — I will be in touch shortly.</div>
         </form>
       </div>
 
@@ -1381,19 +1511,25 @@
   </div>
 </section>
 
+<!-- Persistent AI translation disclaimer — visible only in non-English modes -->
+<div id="lang-disclaimer-footer">
+  &#9432;&nbsp; AI Translation Notice: Content displayed in non-English languages is machine-translated for illustrative purposes and may not be an exact representation of the original.
+  The authoritative version of this site is in <a href="#" onclick="selectLanguage('en');return false;">English</a>.
+</div>
+
 <!-- FOOTER -->
 <footer>
   <div class="footer-name">Ravi Chengalvala</div>
-  <div class="footer-copy">&copy; 2026 Ravi Chengalvala. All rights reserved. &nbsp;|&nbsp; Views expressed are my own and do not represent any employer, past or present.</div>
+  <div class="footer-copy"><span data-i18n="footer.copy">&copy; 2026 Ravi Chengalvala. All rights reserved. &nbsp;|&nbsp; Views expressed are my own and do not represent any employer, past or present.</span></div>
   <div class="footer-links">
-    <a href="#about">About</a>
-    <a href="#experience">Experience</a>
-    <a href="#consulting">Consulting</a>
+    <a href="#about" data-i18n="nav.about">About</a>
+    <a href="#experience" data-i18n="nav.experience">Experience</a>
+    <a href="#consulting" data-i18n="nav.consulting">Consulting</a>
     <a href="https://www.linkedin.com/in/ravichengalvala" target="_blank">LinkedIn</a>
   </div>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   // Scroll animations
   const faders = document.querySelectorAll('.fade-in');
   const observer = new IntersectionObserver((entries) => {
@@ -1663,16 +1799,16 @@
       <div class="ai-chat-avatar">RC</div>
       <div class="ai-chat-header-text">
         <div class="ai-chat-header-name">Ravi's AI Assistant</div>
-        <div class="ai-chat-header-status">Ask me anything about Ravi's work</div>
+        <div class="ai-chat-header-status" data-i18n="chat.status">Ask me anything about Ravi's work</div>
       </div>
       <button id="ai-chat-close" onclick="toggleChat()">&times;</button>
     </div>
     <div id="ai-chat-messages"></div>
     <div class="ai-suggestions" id="ai-suggestions">
       <button class="ai-suggestion-btn" onclick="sendSuggestion(this)">Patents & innovations</button>
-      <button class="ai-suggestion-btn" onclick="sendSuggestion(this)">Ford experience</button>
-      <button class="ai-suggestion-btn" onclick="sendSuggestion(this)">Consulting services</button>
-      <button class="ai-suggestion-btn" onclick="sendSuggestion(this)">EA frameworks</button>
+      <button class="ai-suggestion-btn" data-i18n="chat.s2" onclick="sendSuggestion(this)">Ford experience</button>
+      <button class="ai-suggestion-btn" data-i18n="chat.s3" onclick="sendSuggestion(this)">Consulting services</button>
+      <button class="ai-suggestion-btn" data-i18n="chat.s4" onclick="sendSuggestion(this)">EA frameworks</button>
     </div>
     <div class="ai-chat-input-row">
       <input id="ai-chat-input" type="text" placeholder="Ask about experience, patents, consulting..." />
@@ -1680,7 +1816,7 @@
         <svg viewBox="0 0 24 24"><path d="M22 2L11 13M22 2L15 22 11 13 2 9l20-7z"/></svg>
       </button>
     </div>
-    <div class="ai-chat-label">Powered by Claude AI</div>
+    <div class="ai-chat-label" data-i18n="chat.powered">Powered by Claude AI</div>
   </div>
   <button id="ai-chat-toggle" onclick="toggleChat()" title="Ask about Ravi's work">
     <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
@@ -1775,17 +1911,299 @@
       chatHistory.push({ role: 'assistant', content: reply });
     } catch (err) {
       removeTyping();
-      appendMessage('assistant', "I'm having trouble connecting right now. Please reach out directly at ravi@ravichengalvala.com.");
+      appendMessage('assistant', "I'm having trouble connecting right now. Please      appendMessage('assistant', "I'm having trouble connecting right now. Please email ravi@ravichengalvala.com directly.");
+    } finally {
+      input.disabled = false;
+      sendBtn.disabled = false;
+      input.focus();
     }
-
-    input.disabled = false;
-    sendBtn.disabled = false;
-    input.focus();
   }
 
   document.getElementById('ai-chat-input').addEventListener('keydown', function(e) {
     if (e.key === 'Enter') sendMessage();
   });
+</script>
+
+<!-- =====================================================
+     TRANSLATION ENGINE
+     To add a new language: append one entry to LANGUAGES.
+     Everything else is automatic.
+===================================================== -->
+<script>
+const LANGUAGES = [
+  { code: 'en', name: 'English',  flag: '\uD83C\uDDFA\uD83C\uDDF8', native: 'English'    },
+  { code: 'es', name: 'Spanish',  flag: '\uD83C\uDDE7\uD83C\uDDFB', native: 'Espa\u00F1ol'   },
+  { code: 'hi', name: 'Hindi',    flag: '\uD83C\uDDEE\uD83C\uDDF3', native: '\u0939\u093F\u0928\u094D\u0926\u0940'     },
+  { code: 'te', name: 'Telugu',   flag: '\uD83C\uDDEE\uD83C\uDDF3', native: '\u0C24\u0C46\u0C32\u0C41\u0C17\u0C41'    },
+  { code: 'de', name: 'German',   flag: '\uD83C\uDDE9\uD83C\uDDEA', native: 'Deutsch'    },
+  { code: 'fr', name: 'French',   flag: '\uD83C\uDDEB\uD83C\uDDF7', native: 'Fran\u00E7ais'   },
+  // To add more languages, just uncomment and add entries below:
+  // { code: 'pt', name: 'Portuguese', flag: '\uD83C\uDDF5\uD83C\uDDF9', native: 'Portugu\u00EAs' },
+  // { code: 'it', name: 'Italian',    flag: '\uD83C\uDDEE\uD83C\uDDF9', native: 'Italiano'   },
+  // { code: 'ja', name: 'Japanese',   flag: '\uD83C\uDDEF\uD83C\uDDF5', native: '\u65E5\u672C\u8A9E'   },
+  // { code: 'zh', name: 'Chinese',    flag: '\uD83C\uDDE8\uD83C\uDDF3', native: '\u4E2D\u6587'   },
+  // { code: 'ko', name: 'Korean',     flag: '\uD83C\uDDF0\uD83C\uDDF7', native: '\uD55C\uAD6D\uC5B4'   },
+  // { code: 'ar', name: 'Arabic',     flag: '\uD83C\uDDF8\uD83C\uDDE6', native: '\u0627\u0644\u0639\u0631\u0628\u064A\u0629'   },
+];
+
+const WORKER_URL = 'https://ravi-ai-proxy.ravi-8cf.workers.dev/';
+
+// Language-aware greeting messages — add a key per language code
+const GREETINGS = {
+  en: "Hi! I'm Ravi's AI assistant. I can tell you about his enterprise architecture experience, patents, consulting services, or anything else on his background. What would you like to know?",
+  es: "¡Hola! Soy el asistente de IA de Ravi. Puedo contarle sobre su experiencia en arquitectura empresarial, patentes, servicios de consultoría o cualquier aspecto de su trayectoria. ¿Qué le gustaría saber?",
+  hi: "नमस्ते! मैं रवि का AI सहायक हूँ। मैं उनके एंटरप्राइज़ आर्किटेक्चर अनुभव, पेटेंट, परामर्श सेवाओं या पृष्ठभूमि के बारे में बता सकता हूँ। आप क्या जानना चाहेंगे?",
+  te: "నమస్కారం! నేను రవి యొక్క AI సహాయకుడిని. వారి ఎంటర్‌ప్రైజ్ ఆర్కిటెక్చర్ అనుభవం, పేటెంట్లు, కన్సల్టింగ్ సేవలు లేదా నేపథ్యం గురించి చెప్పగలను. మీరు ఏమి తెలుసుకోవాలనుకుంటున్నారు?",
+  de: "Hallo! Ich bin Ravis KI-Assistent. Ich kann Ihnen über seine Unternehmensarchitektur-Erfahrung, Patente, Beratungsleistungen oder seinen beruflichen Werdegang berichten. Was möchten Sie wissen?",
+  fr: "Bonjour! Je suis l'assistant IA de Ravi. Je peux vous parler de son expérience en architecture d'entreprise, ses brevets, ses services de conseil ou son parcours. Que souhaitez-vous savoir?",
+};
+
+// ── STATE ──────────────────────────────────────────────────────
+let currentLang   = 'en';
+let chatLangCode  = 'en';
+let chatLangName  = 'English';
+const translationCache = new Map();
+let englishContent = null;
+
+// ── INIT ───────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  captureEnglish();
+  buildLangMenu();
+  const saved = localStorage.getItem('rc_lang') || 'en';
+  updateLangButton(saved);
+  updateActiveOption(saved);
+  if (saved !== 'en') {
+    applyLanguage(saved, false);
+  }
+  // Close menu on outside click
+  document.addEventListener('click', e => {
+    if (!document.getElementById('langSelector').contains(e.target)) {
+      closeLangMenu();
+    }
+  });
+});
+
+// ── CAPTURE ENGLISH ORIGINALS ──────────────────────────────────
+function captureEnglish() {
+  englishContent = {};
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    // Store innerHTML for elements that may contain strong/em/a children
+    const rich = el.querySelector('strong, em, a');
+    englishContent[key] = rich ? el.innerHTML.trim() : el.textContent.trim();
+  });
+  translationCache.set('en', englishContent);
+}
+
+// ── BUILD DROPDOWN ─────────────────────────────────────────────
+function buildLangMenu() {
+  const menu = document.getElementById('langMenu');
+  menu.innerHTML = LANGUAGES.map(lang => `
+    <button class="lang-option" data-code="${lang.code}" onclick="selectLanguage('${lang.code}')">
+      <span class="lo-flag">${lang.flag}</span>
+      <span class="lo-native">${lang.native}</span>
+      <span class="lo-en">${lang.name}</span>
+    </button>`).join('');
+}
+
+function toggleLangMenu() {
+  document.getElementById('langSelector').classList.toggle('open');
+}
+
+function closeLangMenu() {
+  document.getElementById('langSelector').classList.remove('open');
+}
+
+// ── SELECT + APPLY ─────────────────────────────────────────────
+async function selectLanguage(code) {
+  closeLangMenu();
+  if (code === currentLang) return;
+  await applyLanguage(code, true);
+}
+
+async function applyLanguage(code, save) {
+  const lang = LANGUAGES.find(l => l.code === code);
+  if (!lang) return;
+
+  currentLang  = code;
+  chatLangCode = code;
+  chatLangName = lang.name;
+  if (save) localStorage.setItem('rc_lang', code);
+
+  updateLangButton(code);
+  updateActiveOption(code);
+  updateChatInputHint(code, lang.name);
+
+  if (code === 'en') {
+    applyTranslations(englishContent);
+    hideDisclaimer();
+    return;
+  }
+
+  // Served from cache — instant
+  if (translationCache.has(code)) {
+    applyTranslations(translationCache.get(code));
+    showDisclaimer();
+    return;
+  }
+
+  // Fetch translation from worker
+  showLoading(lang.native);
+  try {
+    const resp = await fetch(WORKER_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        mode: 'translate',
+        language: code,
+        languageName: lang.name,
+        content: englishContent
+      })
+    });
+    if (!resp.ok) throw new Error('Worker error ' + resp.status);
+    const data = await resp.json();
+    const translated = data.translated || englishContent;
+    translationCache.set(code, translated);
+    applyTranslations(translated);
+    showDisclaimer();
+  } catch (err) {
+    console.warn('Translation failed, showing English:', err);
+    applyTranslations(englishContent);
+    hideDisclaimer();
+    currentLang = 'en';
+    updateLangButton('en');
+    updateActiveOption('en');
+  } finally {
+    hideLoading();
+  }
+}
+
+// ── APPLY TO DOM ───────────────────────────────────────────────
+function applyTranslations(content) {
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    const val = content[key];
+    if (!val) return;
+    const rich = el.querySelector('strong, em, a');
+    if (rich) {
+      el.innerHTML = val;
+    } else {
+      el.textContent = val;
+    }
+  });
+  // Keep html lang attribute in sync
+  document.documentElement.lang = currentLang;
+}
+
+// ── LOADING ────────────────────────────────────────────────────
+function showLoading(langName) {
+  document.body.classList.add('translating');
+  const el = document.getElementById('langLoading');
+  document.getElementById('langLoadingText').textContent = 'Translating to ' + langName + '...';
+  el.classList.add('show');
+}
+
+function hideLoading() {
+  document.body.classList.remove('translating');
+  document.getElementById('langLoading').classList.remove('show');
+}
+
+// ── DISCLAIMER ─────────────────────────────────────────────────
+function showDisclaimer() {
+  // Banner — shown each time a new language is applied (dismissible)
+  const banner = document.getElementById('lang-disclaimer-banner');
+  banner.classList.add('show');
+  // Auto-dismiss after 10 seconds so it doesn't linger
+  clearTimeout(window._disclaimerTimer);
+  window._disclaimerTimer = setTimeout(() => dismissDisclaimer(), 10000);
+  // Footer notice — persistent for the whole non-English session
+  document.getElementById('lang-disclaimer-footer').classList.add('show');
+}
+
+function hideDisclaimer() {
+  dismissDisclaimer();
+  document.getElementById('lang-disclaimer-footer').classList.remove('show');
+}
+
+function dismissDisclaimer() {
+  clearTimeout(window._disclaimerTimer);
+  document.getElementById('lang-disclaimer-banner').classList.remove('show');
+}
+
+// ── BUTTON + MENU VISUAL STATE ─────────────────────────────────
+function updateLangButton(code) {
+  const lang = LANGUAGES.find(l => l.code === code) || LANGUAGES[0];
+  document.getElementById('langFlag').textContent = lang.flag;
+  document.getElementById('langCode').textContent  = lang.code.toUpperCase();
+}
+
+function updateActiveOption(code) {
+  document.querySelectorAll('.lang-option').forEach(btn => {
+    btn.classList.toggle('active', btn.getAttribute('data-code') === code);
+  });
+}
+
+// ── CHAT INTEGRATION ───────────────────────────────────────────
+function updateChatInputHint(code, name) {
+  const input = document.getElementById('ai-chat-input');
+  if (!input) return;
+  input.placeholder = (code === 'en')
+    ? 'Ask about experience, patents, consulting...'
+    : 'Ask in any language \u2014 replies in ' + name;
+}
+
+// Override processMessage to pass language to worker
+window.processMessage = async function(text) {
+  appendMessage('user', text);
+  chatHistory.push({ role: 'user', content: text });
+  showTyping();
+
+  const input   = document.getElementById('ai-chat-input');
+  const sendBtn = document.getElementById('ai-chat-send');
+  input.disabled   = true;
+  sendBtn.disabled = true;
+
+  try {
+    const response = await fetch(WORKER_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model:        'claude-sonnet-4-20250514',
+        max_tokens:   1000,
+        messages:     chatHistory,
+        language:     chatLangCode,
+        languageName: chatLangName
+      })
+    });
+    const data  = await response.json();
+    const reply = data.content?.[0]?.text
+      || "I'm sorry, I couldn't process that. Please try again or email ravi@ravichengalvala.com directly.";
+    removeTyping();
+    appendMessage('assistant', reply);
+    chatHistory.push({ role: 'assistant', content: reply });
+  } catch (err) {
+    removeTyping();
+    appendMessage('assistant', "I'm having trouble connecting right now. Please email ravi@ravichengalvala.com directly.");
+  } finally {
+    input.disabled   = false;
+    sendBtn.disabled = false;
+    input.focus();
+  }
+};
+
+// Override toggleChat to serve language-aware greeting
+window.toggleChat = function() {
+  chatOpen = !chatOpen;
+  const win = document.getElementById('ai-chat-window');
+  win.classList.toggle('open', chatOpen);
+  if (chatOpen && !greeted) {
+    greeted = true;
+    appendMessage('assistant', GREETINGS[chatLangCode] || GREETINGS['en']);
+  }
+  if (chatOpen) {
+    setTimeout(() => document.getElementById('ai-chat-input').focus(), 100);
+  }
+};
 </script>
 
 </body>
