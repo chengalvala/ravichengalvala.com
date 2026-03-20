@@ -60,7 +60,7 @@
       "engagement": "Consulting via DocuTell Inc.",
       "highlights": [
         "Invented the Comerica Transaction Integration Pattern",
-        "IBM DataPower SG45 + MQ + Message Broker integration design",
+        "IBM DataPower XG45 + MQ + Message Broker integration design",
         "Designed assured delivery patterns for high-volume financial transaction processing",
         "Delivered SOA modernization aligned to BIAN banking industry standards"
       ]
