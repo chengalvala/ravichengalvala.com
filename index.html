@@ -1827,19 +1827,25 @@
   const SYSTEM_PROMPT = null; // System prompt is now managed dynamically via profile.json on GitHub — see worker.js
 
   let chatHistory = [];
-  let chatOpen = false;
-  let greeted = false;
+  var chatOpen = false;
+  var greeted = false;
 
+  // toggleChat is overridden by the translation engine below
+  // to serve language-aware greetings. This stub delegates to
+  // window.toggleChat so the onclick handler always calls the latest version.
   function toggleChat() {
-    chatOpen = !chatOpen;
-    const win = document.getElementById('ai-chat-window');
-    win.classList.toggle('open', chatOpen);
-    if (chatOpen && !greeted) {
-      greeted = true;
-      appendMessage('assistant', "Hi! I'm Ravi's AI assistant. I can tell you about his enterprise architecture experience, patents, consulting services, or anything else on his background. What would you like to know?");
-    }
-    if (chatOpen) {
-      setTimeout(() => document.getElementById('ai-chat-input').focus(), 100);
+    if (window._toggleChatImpl) {
+      window._toggleChatImpl();
+    } else {
+      // Fallback before translation engine loads
+      chatOpen = !chatOpen;
+      const win = document.getElementById('ai-chat-window');
+      win.classList.toggle('open', chatOpen);
+      if (chatOpen && !greeted) {
+        greeted = true;
+        appendMessage('assistant', "Hi! I'm Ravi's AI assistant. I can tell you about his enterprise architecture experience, patents, consulting services, or anything else on his background. What would you like to know?");
+      }
+      if (chatOpen) setTimeout(() => document.getElementById('ai-chat-input').focus(), 100);
     }
   }
 
@@ -2211,7 +2217,7 @@ window.processMessage = async function(text) {
 };
 
 // Override toggleChat to serve language-aware greeting
-window.toggleChat = function() {
+window._toggleChatImpl = function() {
   chatOpen = !chatOpen;
   const win = document.getElementById('ai-chat-window');
   win.classList.toggle('open', chatOpen);
