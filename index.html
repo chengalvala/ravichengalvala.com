@@ -1014,7 +1014,7 @@
     <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;"><path d="M12 1a4 4 0 0 1 4 4v6a4 4 0 0 1-8 0V5a4 4 0 0 1 4-4zm-6 9a6 6 0 0 0 12 0h2a8 8 0 0 1-7 7.93V21h2v2H9v-2h2v-3.07A8 8 0 0 1 4 10h2z"/></svg>
     <span data-i18n="nav.ava">Talk to Ava</span>
   </button>
-  <a href="/cdn-cgi/l/email-protection#700211061930021106191318151e17111c06111c115e131f1d" class="nav-cta" data-i18n="nav.cta">Get in Touch</a>
+  <a href="#contact" class="nav-cta" data-i18n="nav.cta">Get in Touch</a>
 </nav>
 
 <!-- Translation loading indicator -->
@@ -1294,54 +1294,92 @@
       Ask Ava — Ravi's AI voice assistant — anything about his career, patents, architecture philosophy, consulting services, or the kind of leadership role he's pursuing. A real conversation, in seconds.
     </p>
 
-    <!--
-      INTERACTION APPROACH: CSS transform containing-block trick.
-      Per CSS Transforms spec, any ancestor with transform ≠ none becomes the containing
-      block for position:fixed descendants — INCLUDING those inside shadow DOM.
-      The ElevenLabs orb (position:fixed internally) therefore renders relative to this
-      100px box instead of the viewport. User clicks the real orb directly — zero JS
-      intermediary, zero user-gesture-chain breakage, microphone permission works.
-    -->
-    <div style="display:flex; flex-direction:column; align-items:center; gap:0.6rem; margin-top:1.75rem;">
-      <p style="font-size:0.78rem; font-family:var(--sans); font-weight:500; letter-spacing:0.12em; text-transform:uppercase; color:var(--gold); margin:0;">
-        Click the orb to start talking with Ava
-      </p>
-
-      <!-- transform:translateZ(0) = new containing block for position:fixed shadow DOM children -->
-      <div id="ava-orb-host" style="
+    <!-- Ava interaction area — ElevenLabs widget floats naturally at bottom-right.
+         This section guides the user to it with a clear visual indicator. -->
+    <style>
+      .ava-cta-box {
+        display: inline-flex;
+        align-items: center;
+        gap: 1.5rem;
+        margin-top: 1.75rem;
+        padding: 1.25rem 2rem;
+        background: var(--navy-light);
+        border: 1px solid rgba(201,150,42,0.35);
+        border-radius: 8px;
+        box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+        cursor: default;
+      }
+      .ava-orb-badge {
         position: relative;
-        transform: translateZ(0);
-        width: 100px;
-        height: 100px;
-        cursor: pointer;
-      ">
-        <!-- Decorative gold ring around the orb — pointer-events:none so clicks pass to widget -->
-        <div style="
-          position: absolute;
-          inset: -4px;
-          border-radius: 50%;
-          border: 2px solid rgba(201,150,42,0.7);
-          box-shadow: 0 0 20px rgba(201,150,42,0.3);
-          pointer-events: none;
-          animation: ava-ring-pulse 2.5s ease-in-out infinite;
-        "></div>
-        <style>
-          @keyframes ava-ring-pulse {
-            0%, 100% { opacity: 0.6; transform: scale(1); }
-            50%       { opacity: 1;   transform: scale(1.06); }
-          }
-        </style>
+        width: 60px;
+        height: 60px;
+        flex-shrink: 0;
+      }
+      .ava-orb-badge-inner {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: radial-gradient(circle at 35% 35%, #E8B84B, #C9962A 60%, #8A6518);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 0 0 3px rgba(201,150,42,0.25), 0 4px 16px rgba(201,150,42,0.35);
+        animation: ava-badge-pulse 2.5s ease-in-out infinite;
+      }
+      @keyframes ava-badge-pulse {
+        0%, 100% { box-shadow: 0 0 0 3px rgba(201,150,42,0.25), 0 4px 16px rgba(201,150,42,0.35); }
+        50%       { box-shadow: 0 0 0 7px rgba(201,150,42,0.15), 0 4px 24px rgba(201,150,42,0.5); }
+      }
+      .ava-orb-badge-inner svg { width: 26px; height: 26px; fill: var(--navy); }
+      .ava-cta-text { text-align: left; }
+      .ava-cta-text strong {
+        display: block;
+        font-family: var(--sans);
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: var(--white);
+        margin-bottom: 0.3rem;
+      }
+      .ava-cta-text span {
+        font-family: var(--sans);
+        font-size: 0.82rem;
+        color: var(--white-dim);
+        line-height: 1.5;
+      }
+      .ava-corner-arrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-size: 0.78rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-left: 0.5rem;
+        animation: ava-arrow-bounce 1.8s ease-in-out infinite;
+      }
+      @keyframes ava-arrow-bounce {
+        0%, 100% { transform: translate(0, 0); }
+        50%       { transform: translate(3px, 3px); }
+      }
+    </style>
 
-        <!-- ElevenLabs widget: position:fixed inside its shadow DOM is now
-             relative to THIS 100px box, not the viewport -->
-        <elevenlabs-convai
-          agent-id="agent_8901km66z7j7fad9e45qyxem2v8y"
-          avatar-orb-color-1="#C9962A"
-          avatar-orb-color-2="#0E1525"
-        ></elevenlabs-convai>
+    <div class="ava-cta-box">
+      <div class="ava-orb-badge">
+        <div class="ava-orb-badge-inner">
+          <!-- Microphone icon -->
+          <svg viewBox="0 0 24 24"><path d="M12 1a4 4 0 0 1 4 4v6a4 4 0 0 1-8 0V5a4 4 0 0 1 4-4zm-6 9a6 6 0 0 0 12 0h2a8 8 0 0 1-7 7.93V21h2v2H9v-2h2v-3.07A8 8 0 0 1 4 10h2z"/></svg>
+        </div>
+      </div>
+      <div class="ava-cta-text">
+        <strong>Ava is ready to talk</strong>
+        <span>Click the gold voice orb in the bottom-right corner of your screen
+          <span class="ava-corner-arrow">↘ there it is</span>
+        </span>
       </div>
     </div>
-    <p style="margin-top: 1.25rem; font-size: 0.75rem; color: var(--white-faint); letter-spacing: 0.04em;">
+
+    <p style="margin-top: 1.1rem; font-size: 0.75rem; color: var(--white-faint); letter-spacing: 0.04em;">
       Voice and text both supported &middot; Accessibility friendly &middot; No form required
     </p>
 
@@ -1945,8 +1983,13 @@ function updateChatInputHint(code, name) {
 </script>
 
 
-<!-- ElevenLabs widget script — defines the elevenlabs-convai custom element.
-     The widget element itself lives in #ask-ava section (transform containing-block approach). -->
+<!-- ElevenLabs Ava voice widget — floats naturally at bottom-right of viewport.
+     Users click the gold orb directly. No JS intermediary needed or used. -->
+<elevenlabs-convai
+  agent-id="agent_8901km66z7j7fad9e45qyxem2v8y"
+  avatar-orb-color-1="#C9962A"
+  avatar-orb-color-2="#0E1525"
+></elevenlabs-convai>
 <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" defer type="text/javascript"></script>
 
 </body>
