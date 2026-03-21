@@ -1294,20 +1294,22 @@
       Ask Ava — Ravi's AI voice assistant — anything about his career, patents, architecture philosophy, consulting services, or the kind of leadership role he's pursuing. A real conversation, in seconds.
     </p>
 
-    <!-- Ava launch button — click to open voice conversation -->
-    <div style="display:flex; justify-content: center; margin-top: 1.5rem;">
-      <button
-        id="ava-start-btn"
-        onclick="openAva()"
-        onmouseover="this.style.background='var(--gold-light)';this.style.boxShadow='0 6px 28px rgba(201,150,42,0.55)'"
-        onmouseout="this.style.background='var(--gold)';this.style.boxShadow='0 4px 20px rgba(201,150,42,0.4)'"
-        style="display:inline-flex;align-items:center;gap:0.65rem;padding:0.85rem 2.5rem;background:var(--gold);color:var(--navy);border:none;font-family:var(--sans);font-weight:700;font-size:0.95rem;letter-spacing:0.06em;text-transform:uppercase;border-radius:3px;cursor:pointer;box-shadow:0 4px 20px rgba(201,150,42,0.4);transition:background 0.2s,box-shadow 0.2s;">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0"><path d="M12 1a4 4 0 0 1 4 4v6a4 4 0 0 1-8 0V5a4 4 0 0 1 4-4zm-6 9a6 6 0 0 0 12 0h2a8 8 0 0 1-7 7.93V21h2v2H9v-2h2v-3.07A8 8 0 0 1 4 10h2z"/></svg>
-        Start Conversation with Ava
-      </button>
-    </div>
-
-    <!-- Powered by note -->
+    <!-- ElevenLabs Ava widget placed INLINE — user clicks orb directly, no JS intermediary -->
+    <style>
+      #ava-inline-widget {
+        position: static !important;
+        display: flex !important;
+        justify-content: center;
+        width: 100%;
+        margin-top: 1.5rem;
+      }
+    </style>
+    <elevenlabs-convai
+      id="ava-inline-widget"
+      agent-id="agent_8901km66z7j7fad9e45qyxem2v8y"
+      avatar-orb-color-1="#C9962A"
+      avatar-orb-color-2="#0E1525"
+    ></elevenlabs-convai>
     <p style="margin-top: 1.25rem; font-size: 0.75rem; color: var(--white-faint); letter-spacing: 0.04em;">
       Voice and text both supported &middot; Accessibility friendly &middot; No form required
     </p>
@@ -1316,83 +1318,10 @@
 </section>
 
 <script>
-  // launchAva: called from nav "Talk to Ava" button
+  // launchAva: called from nav "Talk to Ava" button — just scrolls to the inline widget
   function launchAva() {
     const section = document.getElementById('ask-ava');
     if (section) section.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    setTimeout(openAva, 700);
-  }
-
-  // openAva: click handler for in-section button and launchAva()
-  // Uses async/await to handle the ElevenLabs script being loaded with "async" attribute —
-  // the custom element may not be upgraded yet when the user first clicks.
-  async function openAva() {
-    const btn = document.getElementById('ava-start-btn');
-
-    // Show loading state on button while we wait
-    if (btn) {
-      btn.disabled = true;
-      btn.style.opacity = '0.7';
-      btn.innerHTML = btn.innerHTML.replace('Start Conversation with Ava', 'Connecting\u2026');
-    }
-
-    try {
-      // Step 1: Wait for the custom element to be registered by the async script
-      if (!customElements.get('elevenlabs-convai')) {
-        await customElements.whenDefined('elevenlabs-convai');
-      }
-
-      // Step 2: Give the element a moment to finish rendering its shadow DOM
-      await new Promise(r => setTimeout(r, 150));
-
-      const widget = document.querySelector('elevenlabs-convai');
-      if (!widget) throw new Error('Widget element not in DOM');
-
-      // Step 3: Try known ways to open it — shadow DOM button click is most reliable
-      let opened = false;
-
-      // Try shadow root first
-      if (widget.shadowRoot) {
-        // Look for any button — the orb toggle button is the first one
-        const shadowBtns = widget.shadowRoot.querySelectorAll('button');
-        if (shadowBtns.length > 0) {
-          shadowBtns[0].click();
-          opened = true;
-        }
-      }
-
-      // Fallback: call .open() if the element exposes it (some versions do)
-      if (!opened && typeof widget.open === 'function') {
-        widget.open();
-        opened = true;
-      }
-
-      // Last resort: native click on the element itself
-      if (!opened) {
-        widget.click();
-      }
-
-    } catch (err) {
-      console.warn('Ava widget could not be opened:', err);
-      // If widget failed entirely, show a helpful note in the button
-      if (btn) {
-        btn.innerHTML = btn.innerHTML.replace('Connecting\u2026', '\u26a0\ufe0f Widget unavailable \u2014 see bottom-right orb');
-        btn.disabled = false;
-        btn.style.opacity = '1';
-        return; // skip the restore below
-      }
-    }
-
-    // Restore button text after a moment
-    if (btn) {
-      setTimeout(() => {
-        btn.disabled = false;
-        btn.style.opacity = '1';
-        btn.innerHTML = btn.innerHTML
-          .replace('Connecting\u2026', 'Start Conversation with Ava')
-          .replace('\u26a0\ufe0f Widget unavailable \u2014 see bottom-right orb', 'Start Conversation with Ava');
-      }, 1500);
-    }
   }
 </script>
 
@@ -1985,21 +1914,7 @@ function updateChatInputHint(code, name) {
 </script>
 
 
-<!-- ElevenLabs Ava Voice Widget — floats at bottom-right as a voice orb -->
-<!-- Positioned to avoid overlap with any existing chat bubble (right: 100px leaves room) -->
-<style>
-  elevenlabs-convai {
-    --el-convai-button-right: 100px;
-    --el-convai-button-bottom: 28px;
-  }
-</style>
-<elevenlabs-convai
-  agent-id="agent_8901km66z7j7fad9e45qyxem2v8y"
-  avatar-orb-color-1="#C9962A"
-  avatar-orb-color-2="#0E1525"
-></elevenlabs-convai>
-
-<!-- ElevenLabs widget script — loaded once, defines the elevenlabs-convai custom element -->
+<!-- ElevenLabs widget script — defines the elevenlabs-convai custom element used inline in #ask-ava section -->
 <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" defer type="text/javascript"></script>
 
 </body>
