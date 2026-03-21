@@ -1011,7 +1011,7 @@
     <div class="lang-menu" id="langMenu"></div>
   </div>
   <button class="nav-ava-btn" onclick="launchAva()" title="Talk to Ava — Ravi's AI Assistant" aria-label="Talk to Ava, Ravi's AI Assistant">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;"><path d="M12 1a4 4 0 0 1 4 4v6a4 4 0 0 1-8 0V5a4 4 0 0 1 4-4zm-6 9a6 6 0 0 0 12 0h2a8 8 0 0 1-7 7.93V21h2v2H9v-2h2v-3.07A8 8 0 0 1 4 10h2z"/></svg>
+    <img src="ava-avatar.png" alt="Ava" style="width:22px;height:22px;border-radius:50%;object-fit:cover;border:1.5px solid rgba(201,150,42,0.7);flex-shrink:0;" />
     <span data-i18n="nav.ava">Talk to Ava</span>
   </button>
   <a href="#contact" class="nav-cta" data-i18n="nav.cta">Get in Touch</a>
@@ -1415,12 +1415,37 @@
 </style>
 
 <script>
-  // highlightAva: scrolls the page to bottom-right and flashes the ElevenLabs orb
-  // so the user can see exactly where to click. No programmatic widget triggering.
+  // startAvaWidget: finds the ElevenLabs "Start a call" button in shadow DOM and clicks it.
+  // Called SYNCHRONOUSLY from onclick so the browser user-gesture chain is intact.
+  function startAvaWidget() {
+    var widget = document.querySelector('elevenlabs-convai');
+    if (!widget || !widget.shadowRoot) return false;
+    // The widget renders a button with text "Start a call" or similar
+    var btns = widget.shadowRoot.querySelectorAll('button');
+    for (var i = 0; i < btns.length; i++) {
+      // Click the first visible button (the main call-to-action)
+      if (btns[i].offsetParent !== null) {
+        btns[i].click();
+        return true;
+      }
+    }
+    return false;
+  }
+
+  // launchAva: called from nav "Talk to Ava" button — starts the conversation directly
+  function launchAva() {
+    // Try to start the widget immediately (synchronous — preserves user gesture for mic)
+    var started = startAvaWidget();
+    if (!started) {
+      // Widget not ready yet — scroll to Ava section as fallback
+      var section = document.getElementById('ask-ava');
+      if (section) section.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+
+  // highlightAva: called from the in-section card button — scrolls down and flashes the orb
   function highlightAva() {
-    // Scroll to bottom of page so the bottom-right orb is fully visible
     window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-    // After scroll completes, flash the widget to draw the eye
     setTimeout(function() {
       var widget = document.querySelector('elevenlabs-convai');
       if (widget) {
@@ -1428,12 +1453,6 @@
         setTimeout(function() { widget.classList.remove('ava-flashing'); }, 4500);
       }
     }, 600);
-  }
-
-  // launchAva: called from nav "Talk to Ava" button — scrolls to Ava section
-  function launchAva() {
-    var section = document.getElementById('ask-ava');
-    if (section) section.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 </script>
 
@@ -2026,15 +2045,10 @@ function updateChatInputHint(code, name) {
 </script>
 
 
-<!-- ElevenLabs widget script must load BEFORE the custom element tag.
-     async = downloads and executes immediately, does not block parsing.
-     The <elevenlabs-convai> element below is then upgraded as soon as it is parsed. -->
+<!-- ElevenLabs Conversational AI widget — official embed pattern from ElevenLabs docs.
+     Element is placed first; script registers the custom element and auto-upgrades it. -->
+<elevenlabs-convai agent-id="agent_8901km66z7j7fad9e45qyxem2v8y" avatar-image-url="https://ravichengalvala.com/ava-avatar.png"></elevenlabs-convai>
 <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
-<elevenlabs-convai
-  agent-id="agent_8901km66z7j7fad9e45qyxem2v8y"
-  avatar-orb-color-1="#C9962A"
-  avatar-orb-color-2="#0E1525"
-></elevenlabs-convai>
 
 </body>
 </html>
