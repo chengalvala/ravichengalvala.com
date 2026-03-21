@@ -1294,22 +1294,18 @@
       Ask Ava — Ravi's AI voice assistant — anything about his career, patents, architecture philosophy, consulting services, or the kind of leadership role he's pursuing. A real conversation, in seconds.
     </p>
 
-    <!-- ElevenLabs Ava widget placed INLINE — user clicks orb directly, no JS intermediary -->
-    <style>
-      #ava-inline-widget {
-        position: static !important;
-        display: flex !important;
-        justify-content: center;
-        width: 100%;
-        margin-top: 1.5rem;
-      }
-    </style>
-    <elevenlabs-convai
-      id="ava-inline-widget"
-      agent-id="agent_8901km66z7j7fad9e45qyxem2v8y"
-      avatar-orb-color-1="#C9962A"
-      avatar-orb-color-2="#0E1525"
-    ></elevenlabs-convai>
+    <!-- Gold CTA button — triggers the ElevenLabs orb synchronously (user gesture preserved) -->
+    <div style="display:flex; justify-content: center; margin-top: 1.5rem;">
+      <button
+        id="ava-start-btn"
+        onclick="openAva()"
+        onmouseover="this.style.background='var(--gold-light)';this.style.boxShadow='0 6px 28px rgba(201,150,42,0.55)'"
+        onmouseout="this.style.background='var(--gold)';this.style.boxShadow='0 4px 20px rgba(201,150,42,0.4)'"
+        style="display:inline-flex;align-items:center;gap:0.65rem;padding:0.85rem 2.5rem;background:var(--gold);color:var(--navy);border:none;font-family:var(--sans);font-weight:700;font-size:0.95rem;letter-spacing:0.06em;text-transform:uppercase;border-radius:3px;cursor:pointer;box-shadow:0 4px 20px rgba(201,150,42,0.4);transition:background 0.2s,box-shadow 0.2s;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0"><path d="M12 1a4 4 0 0 1 4 4v6a4 4 0 0 1-8 0V5a4 4 0 0 1 4-4zm-6 9a6 6 0 0 0 12 0h2a8 8 0 0 1-7 7.93V21h2v2H9v-2h2v-3.07A8 8 0 0 1 4 10h2z"/></svg>
+        Start Conversation with Ava
+      </button>
+    </div>
     <p style="margin-top: 1.25rem; font-size: 0.75rem; color: var(--white-faint); letter-spacing: 0.04em;">
       Voice and text both supported &middot; Accessibility friendly &middot; No form required
     </p>
@@ -1318,9 +1314,42 @@
 </section>
 
 <script>
-  // launchAva: called from nav "Talk to Ava" button — just scrolls to the inline widget
+  // Pre-cache the ElevenLabs orb button reference BEFORE the user clicks.
+  // This is the key: when openAva() runs, it calls _cachedOrbBtn.click() SYNCHRONOUSLY
+  // inside the same user-gesture event — the browser grants microphone access.
+  // Using await/setTimeout inside the click handler breaks the gesture chain.
+  var _cachedOrbBtn = null;
+
+  function _cacheOrbButton() {
+    var widget = document.querySelector('elevenlabs-convai');
+    if (!widget) { setTimeout(_cacheOrbButton, 300); return; }
+    if (!widget.shadowRoot) { setTimeout(_cacheOrbButton, 300); return; }
+    var btns = widget.shadowRoot.querySelectorAll('button');
+    if (btns.length === 0) { setTimeout(_cacheOrbButton, 300); return; }
+    _cachedOrbBtn = btns[0];
+  }
+
+  // Start polling as soon as DOM is ready — widget loads via defer so it will be ready shortly
+  document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(_cacheOrbButton, 500);
+  });
+
+  // openAva: called synchronously from button onclick — NO await, preserves user gesture
+  function openAva() {
+    if (_cachedOrbBtn) {
+      _cachedOrbBtn.click();
+      return;
+    }
+    // Cache miss (e.g. very fast click before widget loaded): try direct click on element
+    var widget = document.querySelector('elevenlabs-convai');
+    if (widget) { widget.click(); return; }
+    // Absolute last resort: scroll to bottom-right where orb should appear
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+  }
+
+  // launchAva: called from nav "Talk to Ava" button
   function launchAva() {
-    const section = document.getElementById('ask-ava');
+    var section = document.getElementById('ask-ava');
     if (section) section.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 </script>
@@ -1914,7 +1943,14 @@ function updateChatInputHint(code, name) {
 </script>
 
 
-<!-- ElevenLabs widget script — defines the elevenlabs-convai custom element used inline in #ask-ava section -->
+<!-- ElevenLabs Ava widget — natural fixed position at bottom-right, triggered by gold button above -->
+<elevenlabs-convai
+  agent-id="agent_8901km66z7j7fad9e45qyxem2v8y"
+  avatar-orb-color-1="#C9962A"
+  avatar-orb-color-2="#0E1525"
+></elevenlabs-convai>
+
+<!-- ElevenLabs widget script — load BEFORE </body> so custom element is ready quickly -->
 <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" defer type="text/javascript"></script>
 
 </body>
