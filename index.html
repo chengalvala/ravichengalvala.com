@@ -1294,17 +1294,52 @@
       Ask Ava — Ravi's AI voice assistant — anything about his career, patents, architecture philosophy, consulting services, or the kind of leadership role he's pursuing. A real conversation, in seconds.
     </p>
 
-    <!-- Gold CTA button — triggers the ElevenLabs orb synchronously (user gesture preserved) -->
-    <div style="display:flex; justify-content: center; margin-top: 1.5rem;">
-      <button
-        id="ava-start-btn"
-        onclick="openAva()"
-        onmouseover="this.style.background='var(--gold-light)';this.style.boxShadow='0 6px 28px rgba(201,150,42,0.55)'"
-        onmouseout="this.style.background='var(--gold)';this.style.boxShadow='0 4px 20px rgba(201,150,42,0.4)'"
-        style="display:inline-flex;align-items:center;gap:0.65rem;padding:0.85rem 2.5rem;background:var(--gold);color:var(--navy);border:none;font-family:var(--sans);font-weight:700;font-size:0.95rem;letter-spacing:0.06em;text-transform:uppercase;border-radius:3px;cursor:pointer;box-shadow:0 4px 20px rgba(201,150,42,0.4);transition:background 0.2s,box-shadow 0.2s;">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0"><path d="M12 1a4 4 0 0 1 4 4v6a4 4 0 0 1-8 0V5a4 4 0 0 1 4-4zm-6 9a6 6 0 0 0 12 0h2a8 8 0 0 1-7 7.93V21h2v2H9v-2h2v-3.07A8 8 0 0 1 4 10h2z"/></svg>
-        Start Conversation with Ava
-      </button>
+    <!--
+      INTERACTION APPROACH: CSS transform containing-block trick.
+      Per CSS Transforms spec, any ancestor with transform ≠ none becomes the containing
+      block for position:fixed descendants — INCLUDING those inside shadow DOM.
+      The ElevenLabs orb (position:fixed internally) therefore renders relative to this
+      100px box instead of the viewport. User clicks the real orb directly — zero JS
+      intermediary, zero user-gesture-chain breakage, microphone permission works.
+    -->
+    <div style="display:flex; flex-direction:column; align-items:center; gap:0.6rem; margin-top:1.75rem;">
+      <p style="font-size:0.78rem; font-family:var(--sans); font-weight:500; letter-spacing:0.12em; text-transform:uppercase; color:var(--gold); margin:0;">
+        Click the orb to start talking with Ava
+      </p>
+
+      <!-- transform:translateZ(0) = new containing block for position:fixed shadow DOM children -->
+      <div id="ava-orb-host" style="
+        position: relative;
+        transform: translateZ(0);
+        width: 100px;
+        height: 100px;
+        cursor: pointer;
+      ">
+        <!-- Decorative gold ring around the orb — pointer-events:none so clicks pass to widget -->
+        <div style="
+          position: absolute;
+          inset: -4px;
+          border-radius: 50%;
+          border: 2px solid rgba(201,150,42,0.7);
+          box-shadow: 0 0 20px rgba(201,150,42,0.3);
+          pointer-events: none;
+          animation: ava-ring-pulse 2.5s ease-in-out infinite;
+        "></div>
+        <style>
+          @keyframes ava-ring-pulse {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            50%       { opacity: 1;   transform: scale(1.06); }
+          }
+        </style>
+
+        <!-- ElevenLabs widget: position:fixed inside its shadow DOM is now
+             relative to THIS 100px box, not the viewport -->
+        <elevenlabs-convai
+          agent-id="agent_8901km66z7j7fad9e45qyxem2v8y"
+          avatar-orb-color-1="#C9962A"
+          avatar-orb-color-2="#0E1525"
+        ></elevenlabs-convai>
+      </div>
     </div>
     <p style="margin-top: 1.25rem; font-size: 0.75rem; color: var(--white-faint); letter-spacing: 0.04em;">
       Voice and text both supported &middot; Accessibility friendly &middot; No form required
@@ -1314,40 +1349,7 @@
 </section>
 
 <script>
-  // Pre-cache the ElevenLabs orb button reference BEFORE the user clicks.
-  // This is the key: when openAva() runs, it calls _cachedOrbBtn.click() SYNCHRONOUSLY
-  // inside the same user-gesture event — the browser grants microphone access.
-  // Using await/setTimeout inside the click handler breaks the gesture chain.
-  var _cachedOrbBtn = null;
-
-  function _cacheOrbButton() {
-    var widget = document.querySelector('elevenlabs-convai');
-    if (!widget) { setTimeout(_cacheOrbButton, 300); return; }
-    if (!widget.shadowRoot) { setTimeout(_cacheOrbButton, 300); return; }
-    var btns = widget.shadowRoot.querySelectorAll('button');
-    if (btns.length === 0) { setTimeout(_cacheOrbButton, 300); return; }
-    _cachedOrbBtn = btns[0];
-  }
-
-  // Start polling as soon as DOM is ready — widget loads via defer so it will be ready shortly
-  document.addEventListener('DOMContentLoaded', function() {
-    setTimeout(_cacheOrbButton, 500);
-  });
-
-  // openAva: called synchronously from button onclick — NO await, preserves user gesture
-  function openAva() {
-    if (_cachedOrbBtn) {
-      _cachedOrbBtn.click();
-      return;
-    }
-    // Cache miss (e.g. very fast click before widget loaded): try direct click on element
-    var widget = document.querySelector('elevenlabs-convai');
-    if (widget) { widget.click(); return; }
-    // Absolute last resort: scroll to bottom-right where orb should appear
-    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-  }
-
-  // launchAva: called from nav "Talk to Ava" button
+  // launchAva: called from nav "Talk to Ava" button — scrolls to the Ava section
   function launchAva() {
     var section = document.getElementById('ask-ava');
     if (section) section.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -1943,14 +1945,8 @@ function updateChatInputHint(code, name) {
 </script>
 
 
-<!-- ElevenLabs Ava widget — natural fixed position at bottom-right, triggered by gold button above -->
-<elevenlabs-convai
-  agent-id="agent_8901km66z7j7fad9e45qyxem2v8y"
-  avatar-orb-color-1="#C9962A"
-  avatar-orb-color-2="#0E1525"
-></elevenlabs-convai>
-
-<!-- ElevenLabs widget script — load BEFORE </body> so custom element is ready quickly -->
+<!-- ElevenLabs widget script — defines the elevenlabs-convai custom element.
+     The widget element itself lives in #ask-ava section (transform containing-block approach). -->
 <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" defer type="text/javascript"></script>
 
 </body>
