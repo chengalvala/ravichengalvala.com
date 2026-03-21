@@ -1294,16 +1294,17 @@
       Ask Ava — Ravi's AI voice assistant — anything about his career, patents, architecture philosophy, consulting services, or the kind of leadership role he's pursuing. A real conversation, in seconds.
     </p>
 
-    <!-- Ava widget — always visible, one click starts conversation -->
+    <!-- Ava launch button — click to open voice conversation -->
     <div style="display:flex; justify-content: center; margin-top: 1.5rem;">
-      <elevenlabs-convai
-        agent-id="agent_8901km66z7j7fad9e45qyxem2v8y"
-        variant="expanded"
-        action-text="Talk to Ava — Ravi's AI Assistant"
-        start-call-text="🎤 Start Conversation"
-        avatar-orb-color-1="#C9962A"
-        avatar-orb-color-2="#0E1525"
-      ></elevenlabs-convai>
+      <button
+        id="ava-start-btn"
+        onclick="openAva()"
+        onmouseover="this.style.background='var(--gold-light)';this.style.boxShadow='0 6px 28px rgba(201,150,42,0.55)'"
+        onmouseout="this.style.background='var(--gold)';this.style.boxShadow='0 4px 20px rgba(201,150,42,0.4)'"
+        style="display:inline-flex;align-items:center;gap:0.65rem;padding:0.85rem 2.5rem;background:var(--gold);color:var(--navy);border:none;font-family:var(--sans);font-weight:700;font-size:0.95rem;letter-spacing:0.06em;text-transform:uppercase;border-radius:3px;cursor:pointer;box-shadow:0 4px 20px rgba(201,150,42,0.4);transition:background 0.2s,box-shadow 0.2s;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0"><path d="M12 1a4 4 0 0 1 4 4v6a4 4 0 0 1-8 0V5a4 4 0 0 1 4-4zm-6 9a6 6 0 0 0 12 0h2a8 8 0 0 1-7 7.93V21h2v2H9v-2h2v-3.07A8 8 0 0 1 4 10h2z"/></svg>
+        Start Conversation with Ava
+      </button>
     </div>
 
     <!-- Powered by note -->
@@ -1315,9 +1316,33 @@
 </section>
 
 <script>
+  // launchAva: called from nav "Talk to Ava" button — scrolls to section then opens widget
   function launchAva() {
     const section = document.getElementById('ask-ava');
     if (section) section.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    // Delay slightly to let scroll complete, then open the widget
+    setTimeout(openAva, 700);
+  }
+
+  // openAva: called directly from in-section button or from launchAva()
+  function openAva() {
+    const widget = document.querySelector('elevenlabs-convai');
+    if (!widget) {
+      console.warn('Ava: ElevenLabs widget element not found.');
+      return;
+    }
+    // Strategy 1: Try the element's shadowRoot to click the internal button
+    try {
+      const shadow = widget.shadowRoot;
+      if (shadow) {
+        const btn = shadow.querySelector('button');
+        if (btn) { btn.click(); return; }
+      }
+    } catch (e) {
+      console.warn('Ava: shadowRoot access failed', e);
+    }
+    // Strategy 2: Dispatch a click event directly on the custom element
+    widget.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
   }
 </script>
 
@@ -1898,6 +1923,8 @@ function updateActiveOption(code) {
 }
 
 // ── CHAT INTEGRATION ───────────────────────────────────────────
+// Note: The text chat widget has been replaced by Ava (ElevenLabs voice widget).
+// updateChatInputHint is kept as a no-op safe guard in case the element exists.
 function updateChatInputHint(code, name) {
   const input = document.getElementById('ai-chat-input');
   if (!input) return;
@@ -1905,63 +1932,24 @@ function updateChatInputHint(code, name) {
     ? 'Ask about experience, patents, consulting...'
     : 'Ask in any language \u2014 replies in ' + name;
 }
-
-// Override processMessage to pass language to worker
-window.processMessage = async function(text) {
-  appendMessage('user', text);
-  chatHistory.push({ role: 'user', content: text });
-  showTyping();
-
-  const input   = document.getElementById('ai-chat-input');
-  const sendBtn = document.getElementById('ai-chat-send');
-  input.disabled   = true;
-  sendBtn.disabled = true;
-
-  try {
-    const response = await fetch(WORKER_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model:        'claude-sonnet-4-20250514',
-        max_tokens:   1000,
-        messages:     chatHistory,
-        language:     chatLangCode,
-        languageName: chatLangName
-      })
-    });
-    const data  = await response.json();
-    const reply = data.content?.[0]?.text
-      || "I'm sorry, I couldn't process that. Please try again or email ravi@ravichengalvala.com directly.";
-    removeTyping();
-    appendMessage('assistant', reply);
-    chatHistory.push({ role: 'assistant', content: reply });
-  } catch (err) {
-    removeTyping();
-    appendMessage('assistant', "I'm having trouble connecting right now. Please email ravi@ravichengalvala.com directly.");
-  } finally {
-    input.disabled   = false;
-    sendBtn.disabled = false;
-    input.focus();
-  }
-};
-
-// Override toggleChat to serve language-aware greeting
-window._toggleChatImpl = function() {
-  chatOpen = !chatOpen;
-  const win = document.getElementById('ai-chat-window');
-  win.classList.toggle('open', chatOpen);
-  if (chatOpen && !greeted) {
-    greeted = true;
-    appendMessage('assistant', GREETINGS[chatLangCode] || GREETINGS['en']);
-  }
-  if (chatOpen) {
-    setTimeout(() => document.getElementById('ai-chat-input').focus(), 100);
-  }
-};
 </script>
 
 
-<!-- ElevenLabs widget script — loaded once, powers the inline widget in Ask Ava section -->
+<!-- ElevenLabs Ava Voice Widget — floats at bottom-right as a voice orb -->
+<!-- Positioned to avoid overlap with any existing chat bubble (right: 100px leaves room) -->
+<style>
+  elevenlabs-convai {
+    --el-convai-button-right: 100px;
+    --el-convai-button-bottom: 28px;
+  }
+</style>
+<elevenlabs-convai
+  agent-id="agent_8901km66z7j7fad9e45qyxem2v8y"
+  avatar-orb-color-1="#C9962A"
+  avatar-orb-color-2="#0E1525"
+></elevenlabs-convai>
+
+<!-- ElevenLabs widget script — loaded once, defines the elevenlabs-convai custom element -->
 <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
 
 </body>
