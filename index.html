@@ -1332,11 +1332,20 @@
       Start a Conversation with Ava
     </button>
 
-    <!-- Inline Ava widget container — widget injected dynamically on click -->
-    <div id="ava-inline-widget" style="display:none; margin-top: 2rem; justify-content: center; min-height: 500px;"></div>
+    <!-- Single ElevenLabs widget — always present, revealed on button click -->
+    <div id="ava-inline-widget" style="display:none; margin-top: 2rem; justify-content: center;">
+      <elevenlabs-convai
+        agent-id="agent_8901km66z7j7fad9e45qyxem2v8y"
+        variant="expanded"
+        action-text="Ask Ava anything about Ravi"
+        start-call-text="Start voice conversation"
+        avatar-orb-color-1="#C9962A"
+        avatar-orb-color-2="#0E1525"
+      ></elevenlabs-convai>
+    </div>
 
     <!-- Powered by note -->
-    <p style="margin-top: 1.25rem; font-size: 0.75rem; color: var(--white-faint); letter-spacing: 0.04em;">
+    <p id="ava-powered-note" style="margin-top: 1.25rem; font-size: 0.75rem; color: var(--white-faint); letter-spacing: 0.04em;">
       Voice and text both supported &middot; Accessibility friendly &middot; No form required
     </p>
 
@@ -1349,33 +1358,15 @@
   function openAvaInline() {
     if (avaOpened) return;
     avaOpened = true;
-
-    const btn = document.getElementById('ava-cta-btn');
-    const container = document.getElementById('ava-inline-widget');
-
-    // Hide button
-    btn.style.display = 'none';
-
-    // Dynamically inject the widget so it initialises fresh
-    container.innerHTML = `
-      <elevenlabs-convai
-        agent-id="agent_8901km66z7j7fad9e45qyxem2v8y"
-        variant="expanded"
-        action-text="Ask Ava anything about Ravi"
-        start-call-text="Start voice conversation"
-        avatar-orb-color-1="#C9962A"
-        avatar-orb-color-2="#0E1525"
-      ></elevenlabs-convai>`;
-
-    container.style.display = 'flex';
-    container.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    document.getElementById('ava-cta-btn').style.display = 'none';
+    const w = document.getElementById('ava-inline-widget');
+    w.style.display = 'flex';
+    w.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 
   function launchAva() {
     const section = document.getElementById('ask-ava');
-    if (section) {
-      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+    if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
     setTimeout(openAvaInline, 600);
   }
 </script>
@@ -2020,16 +2011,7 @@ window._toggleChatImpl = function() {
 </script>
 
 
-<!-- ============================================================
-     AVA — ElevenLabs AI Voice Assistant
-     ravichengalvala.com — Version 2
-     ============================================================ -->
-
-<!-- ============================================================
-     AVA — ElevenLabs Voice Agent (floating bubble)
-     Always visible bottom right as persistent access point
-     ============================================================ -->
-<elevenlabs-convai agent-id="agent_8901km66z7j7fad9e45qyxem2v8y"></elevenlabs-convai>
+<!-- ElevenLabs widget script — loaded once, powers the inline widget in Ask Ava section -->
 <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
 
 </body>
