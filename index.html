@@ -2026,14 +2026,15 @@ function updateChatInputHint(code, name) {
 </script>
 
 
-<!-- ElevenLabs Ava voice widget — floats naturally at bottom-right of viewport.
-     Users click the gold orb directly. No JS intermediary needed or used. -->
+<!-- ElevenLabs widget script must load BEFORE the custom element tag.
+     async = downloads and executes immediately, does not block parsing.
+     The <elevenlabs-convai> element below is then upgraded as soon as it is parsed. -->
+<script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
 <elevenlabs-convai
   agent-id="agent_8901km66z7j7fad9e45qyxem2v8y"
   avatar-orb-color-1="#C9962A"
   avatar-orb-color-2="#0E1525"
 ></elevenlabs-convai>
-<script src="https://unpkg.com/@elevenlabs/convai-widget-embed" defer type="text/javascript"></script>
 
 </body>
 </html>
