@@ -1316,33 +1316,83 @@
 </section>
 
 <script>
-  // launchAva: called from nav "Talk to Ava" button — scrolls to section then opens widget
+  // launchAva: called from nav "Talk to Ava" button
   function launchAva() {
     const section = document.getElementById('ask-ava');
     if (section) section.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    // Delay slightly to let scroll complete, then open the widget
     setTimeout(openAva, 700);
   }
 
-  // openAva: called directly from in-section button or from launchAva()
-  function openAva() {
-    const widget = document.querySelector('elevenlabs-convai');
-    if (!widget) {
-      console.warn('Ava: ElevenLabs widget element not found.');
-      return;
+  // openAva: click handler for in-section button and launchAva()
+  // Uses async/await to handle the ElevenLabs script being loaded with "async" attribute —
+  // the custom element may not be upgraded yet when the user first clicks.
+  async function openAva() {
+    const btn = document.getElementById('ava-start-btn');
+
+    // Show loading state on button while we wait
+    if (btn) {
+      btn.disabled = true;
+      btn.style.opacity = '0.7';
+      btn.innerHTML = btn.innerHTML.replace('Start Conversation with Ava', 'Connecting\u2026');
     }
-    // Strategy 1: Try the element's shadowRoot to click the internal button
+
     try {
-      const shadow = widget.shadowRoot;
-      if (shadow) {
-        const btn = shadow.querySelector('button');
-        if (btn) { btn.click(); return; }
+      // Step 1: Wait for the custom element to be registered by the async script
+      if (!customElements.get('elevenlabs-convai')) {
+        await customElements.whenDefined('elevenlabs-convai');
       }
-    } catch (e) {
-      console.warn('Ava: shadowRoot access failed', e);
+
+      // Step 2: Give the element a moment to finish rendering its shadow DOM
+      await new Promise(r => setTimeout(r, 150));
+
+      const widget = document.querySelector('elevenlabs-convai');
+      if (!widget) throw new Error('Widget element not in DOM');
+
+      // Step 3: Try known ways to open it — shadow DOM button click is most reliable
+      let opened = false;
+
+      // Try shadow root first
+      if (widget.shadowRoot) {
+        // Look for any button — the orb toggle button is the first one
+        const shadowBtns = widget.shadowRoot.querySelectorAll('button');
+        if (shadowBtns.length > 0) {
+          shadowBtns[0].click();
+          opened = true;
+        }
+      }
+
+      // Fallback: call .open() if the element exposes it (some versions do)
+      if (!opened && typeof widget.open === 'function') {
+        widget.open();
+        opened = true;
+      }
+
+      // Last resort: native click on the element itself
+      if (!opened) {
+        widget.click();
+      }
+
+    } catch (err) {
+      console.warn('Ava widget could not be opened:', err);
+      // If widget failed entirely, show a helpful note in the button
+      if (btn) {
+        btn.innerHTML = btn.innerHTML.replace('Connecting\u2026', '\u26a0\ufe0f Widget unavailable \u2014 see bottom-right orb');
+        btn.disabled = false;
+        btn.style.opacity = '1';
+        return; // skip the restore below
+      }
     }
-    // Strategy 2: Dispatch a click event directly on the custom element
-    widget.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
+
+    // Restore button text after a moment
+    if (btn) {
+      setTimeout(() => {
+        btn.disabled = false;
+        btn.style.opacity = '1';
+        btn.innerHTML = btn.innerHTML
+          .replace('Connecting\u2026', 'Start Conversation with Ava')
+          .replace('\u26a0\ufe0f Widget unavailable \u2014 see bottom-right orb', 'Start Conversation with Ava');
+      }, 1500);
+    }
   }
 </script>
 
@@ -1950,7 +2000,7 @@ function updateChatInputHint(code, name) {
 ></elevenlabs-convai>
 
 <!-- ElevenLabs widget script — loaded once, defines the elevenlabs-convai custom element -->
-<script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
+<script src="https://unpkg.com/@elevenlabs/convai-widget-embed" defer type="text/javascript"></script>
 
 </body>
 </html>
