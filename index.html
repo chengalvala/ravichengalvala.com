@@ -2034,20 +2034,32 @@ function updateActiveOption(code) {
 
 // ── CHAT INTEGRATION ───────────────────────────────────────────
 // Note: The text chat widget has been replaced by Ava (ElevenLabs voice widget).
-// updateChatInputHint is kept as a no-op safe guard in case the element exists.
+// updateChatInputHint: syncs Ava widget language with the site language selector.
+// Called on every language change — makes Ava greet and speak in the visitor's language.
 function updateChatInputHint(code, name) {
+  // Sync text chat input hint if it exists
   const input = document.getElementById('ai-chat-input');
-  if (!input) return;
-  input.placeholder = (code === 'en')
-    ? 'Ask about experience, patents, consulting...'
-    : 'Ask in any language \u2014 replies in ' + name;
+  if (input) {
+    input.placeholder = (code === 'en')
+      ? 'Ask about experience, patents, consulting...'
+      : 'Ask in any language — replies in ' + name;
+  }
+  // Sync ElevenLabs Ava widget language via override-language attribute
+  const widget = document.querySelector('elevenlabs-convai');
+  if (widget) {
+    if (code === 'en') {
+      widget.removeAttribute('override-language');
+    } else {
+      widget.setAttribute('override-language', code);
+    }
+  }
 }
 </script>
 
 
 <!-- ElevenLabs Conversational AI widget — official embed pattern from ElevenLabs docs.
      Element is placed first; script registers the custom element and auto-upgrades it. -->
-<elevenlabs-convai agent-id="agent_8901km66z7j7fad9e45qyxem2v8y" avatar-image-url="https://ravichengalvala.com/ava-avatar.png"></elevenlabs-convai>
+<elevenlabs-convai agent-id="agent_8901km66z7j7fad9e45qyxem2v8y" avatar-image-url="https://ravichengalvala.com/ava-avatar.png" dismissible="true"></elevenlabs-convai>
 <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
 
 </body>
