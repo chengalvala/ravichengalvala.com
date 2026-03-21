@@ -5,6 +5,7 @@
   "nav.insights": "Insights",
   "nav.consulting": "Consulting",
   "nav.contact": "Contact",
+  "nav.ava": "Talk to Ava",
   "nav.cta": "Get in Touch",
   "hero.eyebrow": "Technology Executive & Innovator",
   "hero.desc": "Enterprise Architect and Technology Leader with 20+ years driving digital transformation in automotive, manufacturing, and financial services. TOGAF 9 and PMP certified. MIT Sloan and Stanford Engineering executive education.",
@@ -154,10 +155,5 @@
   "form.message": "Message",
   "form.submit": "Send Message",
   "form.thanks": "Thank you — I will be in touch shortly.",
-  "footer.copy": "© 2026 Ravi Chengalvala. All rights reserved.  |  Views expressed are my own and do not represent any employer, past or present.",
-  "chat.status": "Ask me anything about Ravi's work",
-  "chat.s2": "Ford experience",
-  "chat.s3": "Consulting services",
-  "chat.s4": "EA frameworks",
-  "chat.powered": "Powered by Claude AI"
+  "footer.copy": "© 2026 Ravi Chengalvala. All rights reserved.  |  Views expressed are my own and do not represent any employer, past or present."
 }
