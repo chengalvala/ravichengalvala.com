@@ -1345,14 +1345,43 @@
   function triggerAvaWidget() {
     const widget = document.querySelector('elevenlabs-convai');
     if (!widget) return;
-    // Try shadow DOM first
-    const shadow = widget.shadowRoot;
-    if (shadow) {
-      // Look for any clickable button inside shadow
-      const btns = shadow.querySelectorAll('button');
-      if (btns.length > 0) { btns[0].click(); return; }
+
+    // Method 1: Try widget's own open() method if available
+    if (typeof widget.open === 'function') { widget.open(); return; }
+
+    // Method 2: Try setting open attribute
+    if (widget.hasAttribute('open')) {
+      widget.removeAttribute('open');
+    } else {
+      widget.setAttribute('open', '');
+      return;
     }
-    // Fallback: dispatch click on widget element
+
+    // Method 3: Deep shadow DOM search for any button
+    function findAndClick(root, depth) {
+      if (depth > 5) return false;
+      if (!root) return false;
+      const btns = root.querySelectorAll('button');
+      for (const b of btns) {
+        const style = window.getComputedStyle(b);
+        if (style.display !== 'none' && style.visibility !== 'hidden') {
+          b.click();
+          return true;
+        }
+      }
+      // Search nested shadow roots
+      const all = root.querySelectorAll('*');
+      for (const el of all) {
+        if (el.shadowRoot && findAndClick(el.shadowRoot, depth + 1)) return true;
+      }
+      return false;
+    }
+
+    if (widget.shadowRoot) {
+      if (findAndClick(widget.shadowRoot, 0)) return;
+    }
+
+    // Method 4: Dispatch click directly on widget
     widget.click();
     widget.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
   }
@@ -1361,16 +1390,15 @@
     const isNavBtn = btn.classList.contains('nav-ava-btn');
 
     if (!isNavBtn) {
-      // Section CTA button — show visual feedback
       btn.textContent = 'Connecting to Ava...';
       btn.style.opacity = '0.75';
       btn.style.cursor = 'wait';
     }
 
-    triggerAvaWidget();
+    // Small delay to ensure widget script has loaded
+    setTimeout(triggerAvaWidget, 100);
 
     if (!isNavBtn) {
-      // Reset section button after delay
       setTimeout(() => {
         btn.innerHTML = `
           <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--navy)" xmlns="http://www.w3.org/2000/svg">
