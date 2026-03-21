@@ -1302,10 +1302,10 @@
       <span style="font-size: 0.78rem; color: var(--white-faint); background: rgba(255,255,255,0.04); border: 1px solid var(--navy-border); padding: 0.4rem 1rem; border-radius: 20px; letter-spacing: 0.03em;">"What consulting does he offer?"</span>
     </div>
 
-    <!-- CTA Button -->
+    <!-- CTA Button — shows widget on click -->
     <button
-      id="ava-section-btn"
-      onclick="launchAva(this)"
+      id="ava-cta-btn"
+      onclick="openAvaInline()"
       style="
         display: inline-flex;
         align-items: center;
@@ -1326,12 +1326,23 @@
       onmouseover="this.style.background='var(--gold-light)'"
       onmouseout="this.style.background='var(--gold)'"
     >
-      <!-- Mic icon -->
       <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--navy)" xmlns="http://www.w3.org/2000/svg">
         <path d="M12 1a4 4 0 0 1 4 4v6a4 4 0 0 1-8 0V5a4 4 0 0 1 4-4zm-6 9a6 6 0 0 0 12 0h2a8 8 0 0 1-7 7.93V21h2v2H9v-2h2v-3.07A8 8 0 0 1 4 10h2z"/>
       </svg>
       Start a Conversation with Ava
     </button>
+
+    <!-- Inline Ava widget — shown when button clicked -->
+    <div id="ava-inline-widget" style="display:none; margin-top: 2rem; justify-content: center;">
+      <elevenlabs-convai
+        agent-id="agent_8901km66z7j7fad9e45qyxem2v8y"
+        variant="expanded"
+        action-text="Ask Ava anything about Ravi"
+        start-call-text="Start voice conversation"
+        avatar-orb-color-1="#C9962A"
+        avatar-orb-color-2="#0E1525"
+      ></elevenlabs-convai>
+    </div>
 
     <!-- Powered by note -->
     <p style="margin-top: 1.25rem; font-size: 0.75rem; color: var(--white-faint); letter-spacing: 0.04em;">
@@ -1342,72 +1353,20 @@
 </section>
 
 <script>
-  function triggerAvaWidget() {
-    const widget = document.querySelector('elevenlabs-convai');
-    if (!widget) return;
-
-    // Method 1: Try widget's own open() method if available
-    if (typeof widget.open === 'function') { widget.open(); return; }
-
-    // Method 2: Try setting open attribute
-    if (widget.hasAttribute('open')) {
-      widget.removeAttribute('open');
-    } else {
-      widget.setAttribute('open', '');
-      return;
-    }
-
-    // Method 3: Deep shadow DOM search for any button
-    function findAndClick(root, depth) {
-      if (depth > 5) return false;
-      if (!root) return false;
-      const btns = root.querySelectorAll('button');
-      for (const b of btns) {
-        const style = window.getComputedStyle(b);
-        if (style.display !== 'none' && style.visibility !== 'hidden') {
-          b.click();
-          return true;
-        }
-      }
-      // Search nested shadow roots
-      const all = root.querySelectorAll('*');
-      for (const el of all) {
-        if (el.shadowRoot && findAndClick(el.shadowRoot, depth + 1)) return true;
-      }
-      return false;
-    }
-
-    if (widget.shadowRoot) {
-      if (findAndClick(widget.shadowRoot, 0)) return;
-    }
-
-    // Method 4: Dispatch click directly on widget
-    widget.click();
-    widget.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
+  function openAvaInline() {
+    const btn = document.getElementById('ava-cta-btn');
+    const widget = document.getElementById('ava-inline-widget');
+    btn.style.display = 'none';
+    widget.style.display = 'flex';
+    widget.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 
   function launchAva(btn) {
-    const isNavBtn = btn.classList.contains('nav-ava-btn');
-
-    if (!isNavBtn) {
-      btn.textContent = 'Connecting to Ava...';
-      btn.style.opacity = '0.75';
-      btn.style.cursor = 'wait';
-    }
-
-    // Small delay to ensure widget script has loaded
-    setTimeout(triggerAvaWidget, 100);
-
-    if (!isNavBtn) {
-      setTimeout(() => {
-        btn.innerHTML = `
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--navy)" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 1a4 4 0 0 1 4 4v6a4 4 0 0 1-8 0V5a4 4 0 0 1 4-4zm-6 9a6 6 0 0 0 12 0h2a8 8 0 0 1-7 7.93V21h2v2H9v-2h2v-3.07A8 8 0 0 1 4 10h2z"/>
-          </svg>
-          Start a Conversation with Ava`;
-        btn.style.opacity = '1';
-        btn.style.cursor = 'pointer';
-      }, 2000);
+    // Nav button — scroll to Ask Ava section and open it
+    const section = document.getElementById('ask-ava');
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      setTimeout(openAvaInline, 600);
     }
   }
 </script>
@@ -2058,9 +2017,8 @@ window._toggleChatImpl = function() {
      ============================================================ -->
 
 <!-- ============================================================
-     AVA — ElevenLabs Voice Agent
-     Default bubble shown in bottom right — connects to Ava
-     Ask Ava section (inline) is the primary entry point
+     AVA — ElevenLabs Voice Agent (floating bubble)
+     Always visible bottom right as persistent access point
      ============================================================ -->
 <elevenlabs-convai agent-id="agent_8901km66z7j7fad9e45qyxem2v8y"></elevenlabs-convai>
 <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
