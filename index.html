@@ -1010,7 +1010,7 @@
     </button>
     <div class="lang-menu" id="langMenu"></div>
   </div>
-  <button class="nav-ava-btn" onclick="launchAva(this)" title="Talk to Ava — Ravi's AI Assistant" aria-label="Talk to Ava, Ravi's AI Assistant">
+  <button class="nav-ava-btn" onclick="launchAva()" title="Talk to Ava — Ravi's AI Assistant" aria-label="Talk to Ava, Ravi's AI Assistant">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;"><path d="M12 1a4 4 0 0 1 4 4v6a4 4 0 0 1-8 0V5a4 4 0 0 1 4-4zm-6 9a6 6 0 0 0 12 0h2a8 8 0 0 1-7 7.93V21h2v2H9v-2h2v-3.07A8 8 0 0 1 4 10h2z"/></svg>
     <span data-i18n="nav.ava">Talk to Ava</span>
   </button>
@@ -1332,17 +1332,8 @@
       Start a Conversation with Ava
     </button>
 
-    <!-- Inline Ava widget — shown when button clicked -->
-    <div id="ava-inline-widget" style="display:none; margin-top: 2rem; justify-content: center;">
-      <elevenlabs-convai
-        agent-id="agent_8901km66z7j7fad9e45qyxem2v8y"
-        variant="expanded"
-        action-text="Ask Ava anything about Ravi"
-        start-call-text="Start voice conversation"
-        avatar-orb-color-1="#C9962A"
-        avatar-orb-color-2="#0E1525"
-      ></elevenlabs-convai>
-    </div>
+    <!-- Inline Ava widget container — widget injected dynamically on click -->
+    <div id="ava-inline-widget" style="display:none; margin-top: 2rem; justify-content: center; min-height: 500px;"></div>
 
     <!-- Powered by note -->
     <p style="margin-top: 1.25rem; font-size: 0.75rem; color: var(--white-faint); letter-spacing: 0.04em;">
@@ -1353,21 +1344,39 @@
 </section>
 
 <script>
+  var avaOpened = false;
+
   function openAvaInline() {
+    if (avaOpened) return;
+    avaOpened = true;
+
     const btn = document.getElementById('ava-cta-btn');
-    const widget = document.getElementById('ava-inline-widget');
+    const container = document.getElementById('ava-inline-widget');
+
+    // Hide button
     btn.style.display = 'none';
-    widget.style.display = 'flex';
-    widget.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    // Dynamically inject the widget so it initialises fresh
+    container.innerHTML = `
+      <elevenlabs-convai
+        agent-id="agent_8901km66z7j7fad9e45qyxem2v8y"
+        variant="expanded"
+        action-text="Ask Ava anything about Ravi"
+        start-call-text="Start voice conversation"
+        avatar-orb-color-1="#C9962A"
+        avatar-orb-color-2="#0E1525"
+      ></elevenlabs-convai>`;
+
+    container.style.display = 'flex';
+    container.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 
-  function launchAva(btn) {
-    // Nav button — scroll to Ask Ava section and open it
+  function launchAva() {
     const section = document.getElementById('ask-ava');
     if (section) {
       section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      setTimeout(openAvaInline, 600);
     }
+    setTimeout(openAvaInline, 600);
   }
 </script>
 
