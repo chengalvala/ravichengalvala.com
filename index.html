@@ -1342,40 +1342,45 @@
 </section>
 
 <script>
-  function launchAva(btn) {
-    // Visual feedback on button
-    btn.textContent = 'Connecting to Ava...';
-    btn.style.opacity = '0.75';
-    btn.style.cursor = 'wait';
-
-    // Trigger the ElevenLabs widget
+  function triggerAvaWidget() {
     const widget = document.querySelector('elevenlabs-convai');
-    if (widget) {
-      const shadow = widget.shadowRoot;
-      if (shadow) {
-        const innerBtn = shadow.querySelector('button');
-        if (innerBtn) {
-          innerBtn.click();
-        }
-      } else {
-        widget.dispatchEvent(new MouseEvent('click', { bubbles: true }));
-      }
+    if (!widget) return;
+    // Try shadow DOM first
+    const shadow = widget.shadowRoot;
+    if (shadow) {
+      // Look for any clickable button inside shadow
+      const btns = shadow.querySelectorAll('button');
+      if (btns.length > 0) { btns[0].click(); return; }
+    }
+    // Fallback: dispatch click on widget element
+    widget.click();
+    widget.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
+  }
+
+  function launchAva(btn) {
+    const isNavBtn = btn.classList.contains('nav-ava-btn');
+
+    if (!isNavBtn) {
+      // Section CTA button — show visual feedback
+      btn.textContent = 'Connecting to Ava...';
+      btn.style.opacity = '0.75';
+      btn.style.cursor = 'wait';
     }
 
-    // Also trigger the floating button active state
-    const floatBtn = document.getElementById('ava-trigger');
-    if (floatBtn) floatBtn.classList.add('active');
+    triggerAvaWidget();
 
-    // Reset button text after short delay
-    setTimeout(() => {
-      btn.innerHTML = `
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--navy)" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 1a4 4 0 0 1 4 4v6a4 4 0 0 1-8 0V5a4 4 0 0 1 4-4zm-6 9a6 6 0 0 0 12 0h2a8 8 0 0 1-7 7.93V21h2v2H9v-2h2v-3.07A8 8 0 0 1 4 10h2z"/>
-        </svg>
-        Start a Conversation with Ava`;
-      btn.style.opacity = '1';
-      btn.style.cursor = 'pointer';
-    }, 2000);
+    if (!isNavBtn) {
+      // Reset section button after delay
+      setTimeout(() => {
+        btn.innerHTML = `
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--navy)" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 1a4 4 0 0 1 4 4v6a4 4 0 0 1-8 0V5a4 4 0 0 1 4-4zm-6 9a6 6 0 0 0 12 0h2a8 8 0 0 1-7 7.93V21h2v2H9v-2h2v-3.07A8 8 0 0 1 4 10h2z"/>
+          </svg>
+          Start a Conversation with Ava`;
+        btn.style.opacity = '1';
+        btn.style.cursor = 'pointer';
+      }, 2000);
+    }
   }
 </script>
 
