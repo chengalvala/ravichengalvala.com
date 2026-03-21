@@ -1364,20 +1364,21 @@
       }
     </style>
 
-    <div class="ava-cta-box">
+    <!-- Entire card is a button — clicking it scrolls the ElevenLabs orb into view
+         and flashes it so the user knows exactly where to click -->
+    <button class="ava-cta-box" onclick="highlightAva()" title="Click to locate Ava's voice orb">
       <div class="ava-orb-badge">
         <div class="ava-orb-badge-inner">
-          <!-- Microphone icon -->
           <svg viewBox="0 0 24 24"><path d="M12 1a4 4 0 0 1 4 4v6a4 4 0 0 1-8 0V5a4 4 0 0 1 4-4zm-6 9a6 6 0 0 0 12 0h2a8 8 0 0 1-7 7.93V21h2v2H9v-2h2v-3.07A8 8 0 0 1 4 10h2z"/></svg>
         </div>
       </div>
       <div class="ava-cta-text">
-        <strong>Ava is ready to talk</strong>
-        <span>Click the gold voice orb in the bottom-right corner of your screen
-          <span class="ava-corner-arrow">↘ there it is</span>
+        <strong>Start talking with Ava →</strong>
+        <span>Click here — Ava's orb will flash in the bottom-right corner
+          <span class="ava-corner-arrow">↘ click it to begin</span>
         </span>
       </div>
-    </div>
+    </button>
 
     <p style="margin-top: 1.1rem; font-size: 0.75rem; color: var(--white-faint); letter-spacing: 0.04em;">
       Voice and text both supported &middot; Accessibility friendly &middot; No form required
@@ -1386,8 +1387,50 @@
   </div>
 </section>
 
+<style>
+  /* Make the card a proper button */
+  button.ava-cta-box {
+    cursor: pointer;
+    border: 1px solid rgba(201,150,42,0.35);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    width: auto;
+    text-align: left;
+    font-family: var(--sans);
+  }
+  button.ava-cta-box:hover {
+    border-color: var(--gold);
+    box-shadow: 0 6px 32px rgba(201,150,42,0.25);
+  }
+  /* Flash animation applied to the ElevenLabs widget host element */
+  @keyframes ava-flash {
+    0%   { filter: drop-shadow(0 0 0px #C9962A); }
+    25%  { filter: drop-shadow(0 0 18px #E8B84B); }
+    50%  { filter: drop-shadow(0 0 6px #C9962A); }
+    75%  { filter: drop-shadow(0 0 22px #E8B84B); }
+    100% { filter: drop-shadow(0 0 0px #C9962A); }
+  }
+  elevenlabs-convai.ava-flashing {
+    animation: ava-flash 1.4s ease-in-out 3;
+  }
+</style>
+
 <script>
-  // launchAva: called from nav "Talk to Ava" button — scrolls to the Ava section
+  // highlightAva: scrolls the page to bottom-right and flashes the ElevenLabs orb
+  // so the user can see exactly where to click. No programmatic widget triggering.
+  function highlightAva() {
+    // Scroll to bottom of page so the bottom-right orb is fully visible
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    // After scroll completes, flash the widget to draw the eye
+    setTimeout(function() {
+      var widget = document.querySelector('elevenlabs-convai');
+      if (widget) {
+        widget.classList.add('ava-flashing');
+        setTimeout(function() { widget.classList.remove('ava-flashing'); }, 4500);
+      }
+    }, 600);
+  }
+
+  // launchAva: called from nav "Talk to Ava" button — scrolls to Ava section
   function launchAva() {
     var section = document.getElementById('ask-ava');
     if (section) section.scrollIntoView({ behavior: 'smooth', block: 'center' });
