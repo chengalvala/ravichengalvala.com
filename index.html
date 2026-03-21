@@ -1294,58 +1294,20 @@
       Ask Ava — Ravi's AI voice assistant — anything about his career, patents, architecture philosophy, consulting services, or the kind of leadership role he's pursuing. A real conversation, in seconds.
     </p>
 
-    <!-- Suggested questions -->
-    <div style="display: flex; flex-wrap: wrap; gap: 0.65rem; justify-content: center; margin-bottom: 2.5rem;">
-      <span style="font-size: 0.78rem; color: var(--white-faint); background: rgba(255,255,255,0.04); border: 1px solid var(--navy-border); padding: 0.4rem 1rem; border-radius: 20px; letter-spacing: 0.03em;">"What did Ravi do at Ford?"</span>
-      <span style="font-size: 0.78rem; color: var(--white-faint); background: rgba(255,255,255,0.04); border: 1px solid var(--navy-border); padding: 0.4rem 1rem; border-radius: 20px; letter-spacing: 0.03em;">"Tell me about his patents"</span>
-      <span style="font-size: 0.78rem; color: var(--white-faint); background: rgba(255,255,255,0.04); border: 1px solid var(--navy-border); padding: 0.4rem 1rem; border-radius: 20px; letter-spacing: 0.03em;">"What role is he looking for?"</span>
-      <span style="font-size: 0.78rem; color: var(--white-faint); background: rgba(255,255,255,0.04); border: 1px solid var(--navy-border); padding: 0.4rem 1rem; border-radius: 20px; letter-spacing: 0.03em;">"What consulting does he offer?"</span>
-    </div>
-
-    <!-- CTA Button — shows widget on click -->
-    <button
-      id="ava-cta-btn"
-      onclick="openAvaInline()"
-      style="
-        display: inline-flex;
-        align-items: center;
-        gap: 0.65rem;
-        padding: 0.85rem 2.25rem;
-        background: var(--gold);
-        color: var(--navy);
-        border: none;
-        border-radius: 2px;
-        font-family: var(--sans);
-        font-size: 0.85rem;
-        font-weight: 600;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        cursor: pointer;
-        transition: background 0.2s, transform 0.15s;
-      "
-      onmouseover="this.style.background='var(--gold-light)'"
-      onmouseout="this.style.background='var(--gold)'"
-    >
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--navy)" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 1a4 4 0 0 1 4 4v6a4 4 0 0 1-8 0V5a4 4 0 0 1 4-4zm-6 9a6 6 0 0 0 12 0h2a8 8 0 0 1-7 7.93V21h2v2H9v-2h2v-3.07A8 8 0 0 1 4 10h2z"/>
-      </svg>
-      Start a Conversation with Ava
-    </button>
-
-    <!-- Single ElevenLabs widget — always present, revealed on button click -->
-    <div id="ava-inline-widget" style="display:none; margin-top: 2rem; justify-content: center;">
+    <!-- Ava widget — always visible, one click starts conversation -->
+    <div style="display:flex; justify-content: center; margin-top: 1.5rem;">
       <elevenlabs-convai
         agent-id="agent_8901km66z7j7fad9e45qyxem2v8y"
         variant="expanded"
-        action-text="Ask Ava anything about Ravi"
-        start-call-text="Start voice conversation"
+        action-text="Talk to Ava — Ravi's AI Assistant"
+        start-call-text="🎤 Start Conversation"
         avatar-orb-color-1="#C9962A"
         avatar-orb-color-2="#0E1525"
       ></elevenlabs-convai>
     </div>
 
     <!-- Powered by note -->
-    <p id="ava-powered-note" style="margin-top: 1.25rem; font-size: 0.75rem; color: var(--white-faint); letter-spacing: 0.04em;">
+    <p style="margin-top: 1.25rem; font-size: 0.75rem; color: var(--white-faint); letter-spacing: 0.04em;">
       Voice and text both supported &middot; Accessibility friendly &middot; No form required
     </p>
 
@@ -1353,21 +1315,9 @@
 </section>
 
 <script>
-  var avaOpened = false;
-
-  function openAvaInline() {
-    if (avaOpened) return;
-    avaOpened = true;
-    document.getElementById('ava-cta-btn').style.display = 'none';
-    const w = document.getElementById('ava-inline-widget');
-    w.style.display = 'flex';
-    w.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }
-
   function launchAva() {
     const section = document.getElementById('ask-ava');
-    if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    setTimeout(openAvaInline, 600);
+    if (section) section.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 </script>
 
