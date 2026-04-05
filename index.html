@@ -1014,6 +1014,19 @@
     <img src="ava-avatar.png" alt="Ava" style="width:22px;height:22px;border-radius:50%;object-fit:cover;border:1.5px solid rgba(201,150,42,0.7);flex-shrink:0;" />
     <span data-i18n="nav.ava">Talk to Ava</span>
   </button>
+  <button id="recruiter-nav-btn" onclick="rpOpen()" style="
+    display:inline-flex;align-items:center;gap:0.45rem;
+    font-size:0.8rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;
+    padding:0.55rem 1.2rem;border:1px solid rgba(100,180,255,0.4);
+    color:#7EC8F5;background:rgba(100,180,255,0.07);border-radius:2px;
+    cursor:pointer;transition:background 0.2s,border-color 0.2s;font-family:var(--sans);
+  " onmouseover="this.style.background='rgba(100,180,255,0.15)';this.style.borderColor='rgba(100,180,255,0.7)'"
+     onmouseout="this.style.background='rgba(100,180,255,0.07)';this.style.borderColor='rgba(100,180,255,0.4)'">
+    <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:#7EC8F5;stroke-width:2;">
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+    </svg>
+    Recruiter Access
+  </button>
   <a href="#contact" class="nav-cta" data-i18n="nav.cta">Get in Touch</a>
 </nav>
 
@@ -1055,6 +1068,16 @@
       <div class="hero-actions">
         <a href="#consulting" class="btn-primary" data-i18n="hero.btn.primary">Consulting Services</a>
         <a href="#contact" class="btn-outline" data-i18n="hero.btn.outline">Connect with Me</a>
+        <button onclick="rpOpen()" style="
+          padding:0.75rem 1.6rem;background:transparent;
+          border:1px solid rgba(100,180,255,0.5);color:#7EC8F5;
+          font-weight:500;font-size:0.85rem;letter-spacing:0.06em;
+          text-transform:uppercase;border-radius:2px;cursor:pointer;
+          transition:background 0.2s,border-color 0.2s;font-family:var(--sans);
+        " onmouseover="this.style.background='rgba(100,180,255,0.12)'"
+           onmouseout="this.style.background='transparent'">
+          🏢 Recruiter / Hiring Manager
+        </button>
       </div>
     </div>
     <div class="hero-stats">
@@ -1256,6 +1279,401 @@
     </div>
   </div>
 </section>
+
+<!-- JOB SEARCH SECTION — PIN-GATED + WORKER-TOKEN PROTECTED -->
+<!--
+  SECURITY:
+  1. Set your PIN below:  JS_PIN = '______'  (pick any digits/chars you like)
+  2. Set JS_SEARCH_TOKEN to a long random string you invent.
+  3. In your Cloudflare Worker, add a Secret named JOB_SEARCH_TOKEN with the SAME value.
+  4. The Worker will reject any request whose token doesn't match — even if someone
+     bypasses the PIN and calls the worker directly.
+  5. The recipient email (ravi@ravichengalvala.com) is HARDCODED in the worker — 
+     it is never passed from the frontend, so it cannot be tampered with.
+-->
+
+<!-- Hidden section — not in nav, only reachable via direct scroll or hash -->
+<section id="job-search" style="background:var(--navy);border-top:1px solid var(--navy-border);display:none;" aria-hidden="true">
+  <div class="section-inner" style="max-width:1000px;">
+
+    <!-- ── PIN GATE ──────────────────────────────────────── -->
+    <div id="js-pin-gate" style="text-align:center;padding:4rem 0;">
+
+      <div style="margin:0 auto 2rem;width:72px;height:72px;border-radius:50%;background:rgba(201,150,42,0.1);border:1.5px solid var(--gold-dim);display:flex;align-items:center;justify-content:center;">
+        <svg viewBox="0 0 24 24" style="width:32px;height:32px;fill:none;stroke:var(--gold);stroke-width:1.8;">
+          <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+        </svg>
+      </div>
+
+      <h2 style="font-family:var(--serif);font-size:clamp(1.6rem,3vw,2.2rem);margin-bottom:0.6rem;">
+        Private <em style="color:var(--gold-light)">Job Scout</em>
+      </h2>
+      <p style="font-size:0.9rem;color:var(--white-dim);margin-bottom:2rem;max-width:360px;margin-left:auto;margin-right:auto;">
+        Enter your access PIN to search and email opportunities.
+      </p>
+
+      <div style="display:inline-flex;flex-direction:column;align-items:center;gap:0.75rem;">
+        <div style="display:flex;gap:0.5rem;align-items:center;">
+          <input
+            id="js-pin-input"
+            type="password"
+            inputmode="numeric"
+            maxlength="12"
+            placeholder="Enter PIN"
+            autocomplete="off"
+            onkeydown="if(event.key==='Enter')jsCheckPin()"
+            style="
+              width:180px;padding:0.7rem 1rem;text-align:center;letter-spacing:0.2em;
+              background:var(--navy-mid);border:1px solid var(--navy-border);
+              border-radius:4px;color:var(--white);font-family:var(--sans);
+              font-size:1rem;outline:none;transition:border-color 0.2s;
+            "
+            onfocus="this.style.borderColor='var(--gold-dim)'"
+            onblur="this.style.borderColor='var(--navy-border)'"
+          />
+          <button
+            onclick="jsCheckPin()"
+            style="
+              padding:0.7rem 1.2rem;background:var(--gold);color:var(--navy);
+              border:none;border-radius:4px;font-family:var(--sans);
+              font-size:0.82rem;font-weight:600;letter-spacing:0.06em;
+              text-transform:uppercase;cursor:pointer;
+            "
+          >Unlock</button>
+        </div>
+        <span id="js-pin-error" style="font-size:0.8rem;color:#e05c5c;display:none;">Incorrect PIN. Try again.</span>
+      </div>
+    </div>
+
+    <!-- ── SEARCH UI (shown after PIN) ───────────────────── -->
+    <div id="js-search-ui" style="display:none;">
+
+      <div class="section-label">
+        <span class="line"></span>
+        <span style="font-size:0.72rem;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);">AI Job Scout</span>
+      </div>
+
+      <h2 style="margin-bottom:0.75rem;">Live <em>opportunity search</em>,<br/>delivered to your inbox.</h2>
+      <p style="font-size:1rem;color:var(--white-dim);line-height:1.8;max-width:640px;margin-bottom:2.5rem;">
+        Select roles, set location, then click Search — Ava fetches live listings and emails a
+        deduplicated summary to ravi@ravichengalvala.com.
+      </p>
+
+      <!-- Role chips -->
+      <div id="js-role-chips" style="display:flex;flex-wrap:wrap;gap:0.6rem;margin-bottom:2rem;"></div>
+
+      <!-- Controls row -->
+      <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:2.5rem;">
+        <input
+          id="js-location"
+          type="text"
+          placeholder="Location (e.g. Michigan, Remote, USA)"
+          value="Michigan, USA"
+          style="
+            flex:1;min-width:220px;max-width:340px;
+            background:var(--navy-mid);border:1px solid var(--navy-border);
+            border-radius:4px;padding:0.7rem 1rem;
+            color:var(--white);font-family:var(--sans);font-size:0.9rem;
+            outline:none;transition:border-color 0.2s;
+          "
+          onfocus="this.style.borderColor='var(--gold-dim)'"
+          onblur="this.style.borderColor='var(--navy-border)'"
+        />
+        <button
+          id="js-search-btn"
+          onclick="jobSearchAndEmail()"
+          style="
+            padding:0.72rem 1.8rem;background:var(--gold);color:var(--navy);
+            border:none;border-radius:4px;font-family:var(--sans);
+            font-size:0.85rem;font-weight:600;letter-spacing:0.06em;
+            text-transform:uppercase;cursor:pointer;
+            transition:background 0.2s,opacity 0.2s;white-space:nowrap;
+          "
+          onmouseover="this.style.background='var(--gold-light)'"
+          onmouseout="this.style.background='var(--gold)'"
+        >🔍 Search &amp; Email Results</button>
+
+        <button
+          onclick="jsLockScout()"
+          title="Lock — return to PIN screen"
+          style="
+            padding:0.72rem 1rem;background:transparent;
+            border:1px solid var(--navy-border);border-radius:4px;
+            color:var(--white-faint);font-family:var(--sans);
+            font-size:0.82rem;cursor:pointer;transition:border-color 0.2s,color 0.2s;
+          "
+          onmouseover="this.style.borderColor='var(--gold-dim)';this.style.color='var(--gold-light)'"
+          onmouseout="this.style.borderColor='var(--navy-border)';this.style.color='var(--white-faint)'"
+        >🔒 Lock</button>
+
+        <button
+          id="js-clear-btn"
+          onclick="jobSearchClear()"
+          style="
+            padding:0.72rem 1.2rem;background:transparent;
+            border:1px solid var(--navy-border);border-radius:4px;
+            color:var(--white-dim);font-family:var(--sans);
+            font-size:0.82rem;font-weight:500;cursor:pointer;
+            transition:border-color 0.2s,color 0.2s;display:none;
+          "
+          onmouseover="this.style.borderColor='var(--gold-dim)';this.style.color='var(--gold-light)'"
+          onmouseout="this.style.borderColor='var(--navy-border)';this.style.color='var(--white-dim)'"
+        >Clear</button>
+      </div>
+
+      <!-- Status bar -->
+      <div id="js-status" style="display:none;align-items:center;gap:0.75rem;margin-bottom:1.5rem;font-size:0.88rem;color:var(--white-dim);">
+        <span id="js-status-spinner" style="display:inline-block;width:16px;height:16px;border:2px solid var(--gold-dim);border-top-color:var(--gold);border-radius:50%;animation:js-spin 0.7s linear infinite;flex-shrink:0;"></span>
+        <span id="js-status-text">Searching…</span>
+      </div>
+      <style>@keyframes js-spin{to{transform:rotate(360deg);}}</style>
+
+      <!-- Email banner -->
+      <div id="js-email-banner" style="display:none;padding:1rem 1.25rem;background:rgba(201,150,42,0.1);border:1px solid var(--gold-dim);border-radius:4px;margin-bottom:1.5rem;font-size:0.88rem;color:var(--gold-light);"></div>
+
+      <!-- Results grid -->
+      <div id="js-results" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem;"></div>
+
+      <!-- Count -->
+      <p id="js-count" style="display:none;margin-top:1.25rem;font-size:0.8rem;color:var(--white-faint);letter-spacing:0.04em;"></p>
+
+    </div><!-- /#js-search-ui -->
+  </div>
+</section>
+
+<style>
+  .js-role-chip {
+    display:inline-flex;align-items:center;gap:0.45rem;
+    padding:0.42rem 0.9rem;border-radius:100px;
+    font-size:0.78rem;font-weight:500;letter-spacing:0.04em;
+    cursor:pointer;transition:background 0.18s,border-color 0.18s,color 0.18s;
+    border:1px solid var(--navy-border);color:var(--white-dim);background:var(--navy-mid);user-select:none;
+  }
+  .js-role-chip.active {
+    background:rgba(201,150,42,0.15);border-color:var(--gold-dim);color:var(--gold-light);
+  }
+  .js-job-card {
+    background:var(--navy-mid);border:1px solid var(--navy-border);border-radius:6px;
+    padding:1.4rem 1.5rem;display:flex;flex-direction:column;gap:0.5rem;
+    transition:border-color 0.2s,transform 0.15s;position:relative;overflow:hidden;
+  }
+  .js-job-card:hover { border-color:var(--gold-dim);transform:translateY(-2px); }
+  .js-job-card::before {
+    content:'';position:absolute;top:0;left:0;width:3px;height:100%;
+    background:var(--gold);opacity:0;transition:opacity 0.2s;
+  }
+  .js-job-card:hover::before { opacity:1; }
+  .js-job-title  { font-family:var(--serif);font-size:1.1rem;font-weight:600;color:var(--white);line-height:1.3; }
+  .js-job-company{ font-size:0.82rem;font-weight:500;letter-spacing:0.04em;color:var(--gold);text-transform:uppercase; }
+  .js-job-meta   { font-size:0.8rem;color:var(--white-faint); }
+  .js-job-recruiter {
+    font-size:0.78rem;color:var(--white-dim);
+    background:rgba(201,150,42,0.07);border-radius:3px;
+    padding:0.3rem 0.5rem;border-left:2px solid var(--gold-dim);
+  }
+  .js-job-link {
+    display:inline-flex;align-items:center;gap:0.3rem;
+    font-size:0.78rem;font-weight:600;letter-spacing:0.06em;
+    text-transform:uppercase;color:var(--gold);text-decoration:none;
+    margin-top:auto;padding-top:0.5rem;transition:gap 0.15s;
+  }
+  .js-job-link:hover { gap:0.55rem; }
+  .js-job-link::after { content:'→'; }
+</style>
+
+<script>
+// ══════════════════════════════════════════════════════════════════
+//  PRIVATE JOB SCOUT — CONFIGURATION
+//  Change JS_PIN and JS_SEARCH_TOKEN to values only you know.
+//  Set JS_SEARCH_TOKEN as a Cloudflare Worker Secret named JOB_SEARCH_TOKEN.
+// ══════════════════════════════════════════════════════════════════
+const JS_PIN          = 'CHANGE_ME_PIN';          // e.g. '271828' or 'ravi2024!'
+const JS_SEARCH_TOKEN = 'CHANGE_ME_TOKEN';        // long random string — match in Worker secret
+
+const JS_ROLES = [
+  { label:'VP of Technology',           query:'VP of Technology',                active:true  },
+  { label:'CTO',                        query:'Chief Technology Officer',         active:true  },
+  { label:'Director Enterprise Arch',   query:'Director Enterprise Architecture', active:true  },
+  { label:'Enterprise Architect',       query:'Enterprise Architect',            active:true  },
+  { label:'Sr. Solution Architect',     query:'Senior Solution Architect',       active:true  },
+  { label:'Chief Architect',            query:'Chief Architect AI',              active:false },
+  { label:'VP Engineering',             query:'VP Engineering Connected Vehicles',active:false },
+  { label:'Digital Transformation Lead',query:'Head Digital Transformation',     active:false },
+  { label:'AI Platform Leader',         query:'VP AI Platform',                  active:false },
+];
+
+// ── SESSION AUTH ──────────────────────────────────────────────────
+function jsIsAuth() {
+  return sessionStorage.getItem('js_auth') === '1';
+}
+
+function jsCheckPin() {
+  var input = document.getElementById('js-pin-input').value;
+  if (input === JS_PIN) {
+    sessionStorage.setItem('js_auth', '1');
+    document.getElementById('js-pin-gate').style.display   = 'none';
+    document.getElementById('js-search-ui').style.display  = 'block';
+    document.getElementById('js-pin-error').style.display  = 'none';
+    document.getElementById('js-pin-input').value          = '';
+  } else {
+    document.getElementById('js-pin-error').style.display  = 'inline';
+    document.getElementById('js-pin-input').value          = '';
+    document.getElementById('js-pin-input').focus();
+  }
+}
+
+function jsLockScout() {
+  sessionStorage.removeItem('js_auth');
+  document.getElementById('js-search-ui').style.display = 'none';
+  document.getElementById('js-pin-gate').style.display  = '';
+  jobSearchClear();
+}
+
+// ── SHOW SECTION (only when #job-search hash is present) ──────────
+function jsInitSection() {
+  var section = document.getElementById('job-search');
+  if (!section) return;
+  var show = (window.location.hash === '#job-search');
+  if (show) {
+    section.style.display = '';
+    section.removeAttribute('aria-hidden');
+    // If already authed in this session, skip PIN
+    if (jsIsAuth()) {
+      document.getElementById('js-pin-gate').style.display  = 'none';
+      document.getElementById('js-search-ui').style.display = 'block';
+    }
+    section.scrollIntoView({ behavior:'smooth', block:'start' });
+  }
+}
+window.addEventListener('hashchange', jsInitSection);
+document.addEventListener('DOMContentLoaded', jsInitSection);
+
+// ── RENDER ROLE CHIPS ─────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', function() {
+  var container = document.getElementById('js-role-chips');
+  JS_ROLES.forEach(function(r) {
+    var chip = document.createElement('span');
+    chip.className = 'js-role-chip' + (r.active ? ' active' : '');
+    chip.textContent = r.label;
+    chip.onclick = function() { r.active = !r.active; chip.classList.toggle('active', r.active); };
+    container.appendChild(chip);
+  });
+});
+
+// ── SEARCH + EMAIL ────────────────────────────────────────────────
+async function jobSearchAndEmail() {
+  if (!jsIsAuth()) { jsLockScout(); return; }
+
+  var selected = JS_ROLES.filter(function(r){ return r.active; });
+  if (!selected.length) { alert('Select at least one role.'); return; }
+
+  var location  = document.getElementById('js-location').value.trim() || 'USA';
+  var btn       = document.getElementById('js-search-btn');
+  var status    = document.getElementById('js-status');
+  var statusTxt = document.getElementById('js-status-text');
+  var results   = document.getElementById('js-results');
+  var count     = document.getElementById('js-count');
+  var banner    = document.getElementById('js-email-banner');
+  var clearBtn  = document.getElementById('js-clear-btn');
+  var spinner   = document.getElementById('js-status-spinner');
+
+  btn.disabled = true;  btn.style.opacity = '0.6';
+  spinner.style.display = 'inline-block';
+  status.style.display = 'flex';
+  statusTxt.textContent = 'Searching live job boards…';
+  results.innerHTML = '';
+  count.style.display  = 'none';
+  banner.style.display = 'none';
+  clearBtn.style.display = 'none';
+
+  try {
+    var resp = await fetch(WORKER_URL, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({
+        mode:        'jobSearch',
+        searchToken: JS_SEARCH_TOKEN,             // Worker validates this
+        roles:       selected.map(function(r){ return r.query; }),
+        location:    location,
+        resumeUrl:   'https://raw.githubusercontent.com/raviCV/ravi-chengalvala/main/ravi-chengalvala-resume.pdf'
+        // NOTE: recipient email is hardcoded in the Worker — NOT passed from here
+      })
+    });
+
+    if (resp.status === 401) throw new Error('Invalid token — update JS_SEARCH_TOKEN and the Worker secret.');
+    if (!resp.ok)            throw new Error('Worker returned ' + resp.status);
+    var data = await resp.json();
+    var jobs = data.jobs || [];
+
+    // Client-side dedup (second layer)
+    var seen = new Set();
+    var unique = jobs.filter(function(j) {
+      var key = (j.url||'') + '||' + (j.title||'').toLowerCase() + '||' + (j.company||'').toLowerCase();
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+
+    if (!unique.length) {
+      statusTxt.textContent = 'No results found. Try different roles or location.';
+      spinner.style.display = 'none';
+      return;
+    }
+
+    // Render cards
+    unique.forEach(function(job) {
+      var card = document.createElement('div');
+      card.className = 'js-job-card';
+      var html = '<div class="js-job-title">' + escHtml(job.title||'Position') + '</div>';
+      html += '<div class="js-job-company">' + escHtml(job.company||'') + '</div>';
+      var meta = [];
+      if (job.location) meta.push('📍 ' + escHtml(job.location));
+      if (job.type)     meta.push(escHtml(job.type));
+      if (job.posted)   meta.push(escHtml(job.posted));
+      if (meta.length)  html += '<div class="js-job-meta">' + meta.join(' &nbsp;·&nbsp; ') + '</div>';
+      if (job.salary)   html += '<div class="js-job-meta">💰 ' + escHtml(job.salary) + '</div>';
+      if (job.recruiter && job.recruiter.name) {
+        var rec = '👤 ' + escHtml(job.recruiter.name);
+        if (job.recruiter.email)   rec += ' — <a href="mailto:' + escHtml(job.recruiter.email) + '" style="color:var(--gold-light);text-decoration:none;">' + escHtml(job.recruiter.email) + '</a>';
+        if (job.recruiter.linkedin) rec += ' &nbsp;<a href="' + escHtml(job.recruiter.linkedin) + '" target="_blank" rel="noopener" style="color:var(--gold-light);text-decoration:none;">LinkedIn ↗</a>';
+        html += '<div class="js-job-recruiter">' + rec + '</div>';
+      }
+      if (job.url) html += '<a class="js-job-link" href="' + escHtml(job.url) + '" target="_blank" rel="noopener">View Job</a>';
+      card.innerHTML = html;
+      results.appendChild(card);
+    });
+
+    count.textContent = unique.length + ' unique opportunit' + (unique.length===1?'y':'ies') + ' across ' + selected.length + ' role' + (selected.length===1?'':'s') + '.';
+    count.style.display  = 'block';
+    clearBtn.style.display = 'inline-block';
+    if (data.emailSent) {
+      banner.textContent = '✉ Results emailed to ravi@ravichengalvala.com — check your inbox!';
+      banner.style.display = 'block';
+    }
+    status.style.display = 'none';
+
+  } catch(err) {
+    statusTxt.textContent = '⚠ ' + (err.message||'Search failed') + '. Please try again.';
+    spinner.style.display = 'none';
+    console.error('Job search error:', err);
+  } finally {
+    btn.disabled = false;  btn.style.opacity = '1';
+  }
+}
+
+function jobSearchClear() {
+  document.getElementById('js-results').innerHTML = '';
+  document.getElementById('js-count').style.display   = 'none';
+  document.getElementById('js-email-banner').style.display = 'none';
+  document.getElementById('js-status').style.display  = 'none';
+  document.getElementById('js-status-spinner').style.display = 'inline-block';
+  document.getElementById('js-clear-btn').style.display = 'none';
+}
+
+function escHtml(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+</script>
 
 <!-- AVA AI VOICE SECTION -->
 <section id="ask-ava" style="background: var(--navy-mid); border-top: 1px solid var(--navy-border); border-bottom: 1px solid var(--navy-border);">
