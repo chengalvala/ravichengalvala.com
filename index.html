@@ -1280,17 +1280,7 @@
   </div>
 </section>
 
-<!-- JOB SEARCH SECTION — PIN-GATED + WORKER-TOKEN PROTECTED -->
-<!--
-  SECURITY:
-  1. Set your PIN below:  JS_PIN = '______'  (pick any digits/chars you like)
-  2. Set JS_SEARCH_TOKEN to a long random string you invent.
-  3. In your Cloudflare Worker, add a Secret named JOB_SEARCH_TOKEN with the SAME value.
-  4. The Worker will reject any request whose token doesn't match — even if someone
-     bypasses the PIN and calls the worker directly.
-  5. The recipient email (ravi@ravichengalvala.com) is HARDCODED in the worker — 
-     it is never passed from the frontend, so it cannot be tampered with.
--->
+<!-- JOB SEARCH SECTION — PIN-GATED — secrets live in Cloudflare Worker only -->
 
 <!-- Hidden section — not in nav, only reachable via direct scroll or hash -->
 <section id="job-search" style="background:var(--navy);border-top:1px solid var(--navy-border);">
@@ -1483,13 +1473,10 @@
 
 <script>
 // ══════════════════════════════════════════════════════════════════
-//  PRIVATE JOB SCOUT — CONFIGURATION
-//  Change JS_PIN and JS_SEARCH_TOKEN to values only you know.
-//  Set JS_SEARCH_TOKEN as a Cloudflare Worker Secret named JOB_SEARCH_TOKEN.
+//  RAVI JOB SCOUT — NO SECRETS IN HTML
+//  PINs and tokens live entirely in Cloudflare Worker secrets.
+//  Set in Cloudflare: RAVI_PIN, SURAJ_PIN, JOB_SEARCH_TOKEN
 // ══════════════════════════════════════════════════════════════════
-const JS_PIN          = 'CHANGE_ME_PIN';          // e.g. '271828' or 'ravi2024!'
-const JS_SEARCH_TOKEN = 'CHANGE_ME_TOKEN';        // long random string — match in Worker secret
-
 const JS_ROLES = [
   { label:'VP of Technology',           query:'VP of Technology',                active:true  },
   { label:'CTO',                        query:'Chief Technology Officer',         active:true  },
@@ -1504,26 +1491,46 @@ const JS_ROLES = [
 
 // ── SESSION AUTH ──────────────────────────────────────────────────
 function jsIsAuth() {
-  return sessionStorage.getItem('js_auth') === '1';
+  return !!sessionStorage.getItem('js_session_token');
 }
 
-function jsCheckPin() {
-  var input = document.getElementById('js-pin-input').value;
-  if (input === JS_PIN) {
-    sessionStorage.setItem('js_auth', '1');
-    document.getElementById('js-pin-gate').style.display   = 'none';
-    document.getElementById('js-search-ui').style.display  = 'block';
-    document.getElementById('js-pin-error').style.display  = 'none';
-    document.getElementById('js-pin-input').value          = '';
-  } else {
-    document.getElementById('js-pin-error').style.display  = 'inline';
-    document.getElementById('js-pin-input').value          = '';
-    document.getElementById('js-pin-input').focus();
+function jsGetToken() {
+  return sessionStorage.getItem('js_session_token') || '';
+}
+
+async function jsCheckPin() {
+  var input = document.getElementById('js-pin-input').value.trim();
+  if (!input) return;
+  var btn = document.querySelector('#js-pin-gate button');
+  btn.textContent = '...'; btn.disabled = true;
+  try {
+    var resp = await fetch(WORKER_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ mode: 'validatePin', user: 'ravi', pin: input })
+    });
+    var data = await resp.json();
+    if (data.sessionToken) {
+      sessionStorage.setItem('js_session_token', data.sessionToken);
+      document.getElementById('js-pin-gate').style.display  = 'none';
+      document.getElementById('js-search-ui').style.display = 'block';
+      document.getElementById('js-pin-error').style.display = 'none';
+      document.getElementById('js-pin-input').value = '';
+    } else {
+      document.getElementById('js-pin-error').style.display = 'inline';
+      document.getElementById('js-pin-input').value = '';
+      document.getElementById('js-pin-input').focus();
+    }
+  } catch(e) {
+    document.getElementById('js-pin-error').textContent = 'Connection error. Try again.';
+    document.getElementById('js-pin-error').style.display = 'inline';
+  } finally {
+    btn.textContent = 'Unlock'; btn.disabled = false;
   }
 }
 
 function jsLockScout() {
-  sessionStorage.removeItem('js_auth');
+  sessionStorage.removeItem('js_session_token');
   document.getElementById('js-search-ui').style.display = 'none';
   document.getElementById('js-pin-gate').style.display  = '';
   jobSearchClear();
@@ -1535,7 +1542,6 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('js-pin-gate').style.display  = 'none';
     document.getElementById('js-search-ui').style.display = 'block';
   }
-  // Scroll to section if hash is present
   if (window.location.hash === '#job-search') {
     var section = document.getElementById('job-search');
     if (section) setTimeout(function(){ section.scrollIntoView({ behavior:'smooth', block:'start' }); }, 300);
@@ -1585,16 +1591,16 @@ async function jobSearchAndEmail() {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
       body:    JSON.stringify({
-        mode:        'jobSearch',
-        searchToken: JS_SEARCH_TOKEN,             // Worker validates this
-        roles:       selected.map(function(r){ return r.query; }),
-        location:    location,
-        resumeUrl:   'https://raw.githubusercontent.com/raviCV/ravi-chengalvala/main/ravi-chengalvala-resume.pdf'
-        // NOTE: recipient email is hardcoded in the Worker — NOT passed from here
+        mode:         'jobSearch',
+        sessionToken: jsGetToken(),
+        user:         'ravi',
+        roles:        selected.map(function(r){ return r.query; }),
+        location:     location,
+        resumeUrl:    'https://raw.githubusercontent.com/chengalvala/ravichengalvala.com/main/ravi-chengalvala-resume.pdf'
       })
     });
 
-    if (resp.status === 401) throw new Error('Invalid token — update JS_SEARCH_TOKEN and the Worker secret.');
+    if (resp.status === 401) { jsLockScout(); throw new Error('Session expired. Please re-enter your PIN.'); }
     if (!resp.ok)            throw new Error('Worker returned ' + resp.status);
     var data = await resp.json();
     var jobs = data.jobs || [];
@@ -1826,12 +1832,9 @@ function escHtml(str) {
 
 <script>
 // ══════════════════════════════════════════════════════════════
-//  SURAJ JOB SCOUT — CONFIGURATION
-//  Set SJS_PIN to a PIN only Suraj/Ravi knows.
-//  SJS_SEARCH_TOKEN must match JOB_SEARCH_TOKEN in Cloudflare Worker.
+//  SAI JOB SCOUT — NO SECRETS IN HTML
+//  All PINs live in Cloudflare Worker secrets: SURAJ_PIN
 // ══════════════════════════════════════════════════════════════
-const SJS_PIN          = 'sai2026';    // e.g. 'suraj2025'
-const SJS_SEARCH_TOKEN = 'donotforgettoprotect me';         // same as JS_SEARCH_TOKEN / JOB_SEARCH_TOKEN
 
 const SJS_ROLES = [
   { label:'AI Engineer',              query:'AI Engineer Healthcare',                    active:true  },
@@ -1845,29 +1848,45 @@ const SJS_ROLES = [
   { label:'Medical Imaging AI',       query:'Medical Imaging AI Engineer',               active:false },
 ];
 
-const SJS_RECIPIENT   = 'venkatachengalvala@gmail.com';
-const SJS_MIN_SALARY  = 120000;
+// Recipient and salary configured in Cloudflare Worker secrets
 
 // ── AUTH ──────────────────────────────────────────────────────
-function sjsIsAuth() { return sessionStorage.getItem('sjs_auth') === '1'; }
+function sjsIsAuth() { return !!sessionStorage.getItem('sjs_session_token'); }
+function sjsGetToken() { return sessionStorage.getItem('sjs_session_token') || ''; }
 
-function sjsCheckPin() {
-  var val = document.getElementById('sjs-pin-input').value;
-  if (val === SJS_PIN) {
-    sessionStorage.setItem('sjs_auth', '1');
-    document.getElementById('sjs-pin-gate').style.display  = 'none';
-    document.getElementById('sjs-search-ui').style.display = 'block';
-    document.getElementById('sjs-pin-error').style.display = 'none';
-    document.getElementById('sjs-pin-input').value = '';
-  } else {
+async function sjsCheckPin() {
+  var val = document.getElementById('sjs-pin-input').value.trim();
+  if (!val) return;
+  var btn = document.querySelector('#sjs-pin-gate button');
+  btn.textContent = '...'; btn.disabled = true;
+  try {
+    var resp = await fetch(WORKER_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ mode: 'validatePin', user: 'suraj', pin: val })
+    });
+    var data = await resp.json();
+    if (data.sessionToken) {
+      sessionStorage.setItem('sjs_session_token', data.sessionToken);
+      document.getElementById('sjs-pin-gate').style.display  = 'none';
+      document.getElementById('sjs-search-ui').style.display = 'block';
+      document.getElementById('sjs-pin-error').style.display = 'none';
+      document.getElementById('sjs-pin-input').value = '';
+    } else {
+      document.getElementById('sjs-pin-error').style.display = 'inline';
+      document.getElementById('sjs-pin-input').value = '';
+      document.getElementById('sjs-pin-input').focus();
+    }
+  } catch(e) {
+    document.getElementById('sjs-pin-error').textContent = 'Connection error. Try again.';
     document.getElementById('sjs-pin-error').style.display = 'inline';
-    document.getElementById('sjs-pin-input').value = '';
-    document.getElementById('sjs-pin-input').focus();
+  } finally {
+    btn.textContent = 'Unlock'; btn.disabled = false;
   }
 }
 
 function sjsLock() {
-  sessionStorage.removeItem('sjs_auth');
+  sessionStorage.removeItem('sjs_session_token');
   document.getElementById('sjs-search-ui').style.display = 'none';
   document.getElementById('sjs-pin-gate').style.display  = '';
   sjsClear();
@@ -1893,7 +1912,7 @@ document.addEventListener('DOMContentLoaded', function() {
     };
     container.appendChild(chip);
   });
-  // Restore auth
+  // Restore session if token still valid
   if (sjsIsAuth()) {
     document.getElementById('sjs-pin-gate').style.display  = 'none';
     document.getElementById('sjs-search-ui').style.display = 'block';
@@ -1929,19 +1948,18 @@ async function sjsSearchAndEmail() {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
       body:    JSON.stringify({
-        mode:        'jobSearch',
-        searchToken: SJS_SEARCH_TOKEN,
-        roles:       selected.map(function(r){ return r.query; }),
-        location:    location,
-        recipientOverride: SJS_RECIPIENT,
-        recipientName:     'Sai Chengalvala',
-        minSalary:   SJS_MIN_SALARY,
-        domains:     ['healthcare', 'health', 'pharma', 'biotech', 'clinical', 'medical', 'hospital', 'genomics', 'life sciences'],
-        resumeUrl:   'https://raw.githubusercontent.com/chengalvala/ravichengalvala.com/main/suraj-resume.pdf'
+        mode:         'jobSearch',
+        sessionToken: sjsGetToken(),
+        user:         'suraj',
+        roles:        selected.map(function(r){ return r.query; }),
+        location:     location,
+        minSalary:    120000,
+        domains:      ['healthcare', 'health', 'pharma', 'biotech', 'clinical', 'medical', 'hospital', 'genomics', 'life sciences'],
+        resumeUrl:    'https://raw.githubusercontent.com/chengalvala/ravichengalvala.com/main/suraj-resume.pdf'
       })
     });
 
-    if (resp.status === 401) throw new Error('Invalid token — check SJS_SEARCH_TOKEN.');
+    if (resp.status === 401) { sjsLock(); throw new Error('Session expired. Please re-enter your PIN.'); }
     if (!resp.ok)            throw new Error('Worker returned ' + resp.status);
     var data = await resp.json();
     var jobs = data.jobs || [];
