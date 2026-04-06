@@ -1487,8 +1487,8 @@
 //  Change JS_PIN and JS_SEARCH_TOKEN to values only you know.
 //  Set JS_SEARCH_TOKEN as a Cloudflare Worker Secret named JOB_SEARCH_TOKEN.
 // ══════════════════════════════════════════════════════════════════
-const JS_PIN          = 'ravi2026';          // e.g. '271828' or 'ravi2024!'
-const JS_SEARCH_TOKEN = 'keepmeprotected';        // long random string — match in Worker secret
+const JS_PIN          = 'CHANGE_ME_PIN';          // e.g. '271828' or 'ravi2024!'
+const JS_SEARCH_TOKEN = 'CHANGE_ME_TOKEN';        // long random string — match in Worker secret
 
 const JS_ROLES = [
   { label:'VP of Technology',           query:'VP of Technology',                active:true  },
@@ -1668,6 +1668,351 @@ function escHtml(str) {
   return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 </script>
+
+<!-- ══════════════════════════════════════════════════════════════
+     VENKATA SAI SURAJ CHENGALVALA — AI Job Scout
+     Private section — PIN gated — results to venkatachengalvala@gmail.com
+     ══════════════════════════════════════════════════════════════ -->
+<section id="suraj-job-search" style="background:var(--navy-mid);border-top:1px solid var(--navy-border);">
+  <div class="section-inner" style="max-width:1000px;">
+
+    <!-- ── PIN GATE ─────────────────────────────────────────── -->
+    <div id="sjs-pin-gate" style="text-align:center;padding:4rem 0;">
+
+      <div style="margin:0 auto 2rem;width:72px;height:72px;border-radius:50%;background:rgba(100,180,255,0.08);border:1.5px solid rgba(100,180,255,0.4);display:flex;align-items:center;justify-content:center;">
+        <svg viewBox="0 0 24 24" style="width:32px;height:32px;fill:none;stroke:#7EC8F5;stroke-width:1.8;">
+          <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+        </svg>
+      </div>
+
+      <p style="margin:0 0 0.3rem;font-size:0.72rem;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:#7EC8F5;">AI Job Scout</p>
+      <h2 style="font-family:var(--serif);font-size:clamp(1.6rem,3vw,2.2rem);margin-bottom:0.4rem;color:var(--white);">
+        Sai <em style="color:#7EC8F5;font-style:italic;">Chengalvala</em>
+      </h2>
+      <p style="font-size:0.85rem;color:var(--white-faint);margin-bottom:0.4rem;">
+        AI Engineer · Healthcare AI · University of Michigan, Ann Arbor
+      </p>
+      <p style="font-size:0.9rem;color:var(--white-dim);margin-bottom:2rem;max-width:360px;margin-left:auto;margin-right:auto;">
+        Enter access PIN to search and email opportunities.
+      </p>
+
+      <div style="display:inline-flex;flex-direction:column;align-items:center;gap:0.75rem;">
+        <div style="display:flex;gap:0.5rem;align-items:center;">
+          <input
+            id="sjs-pin-input"
+            type="password"
+            inputmode="numeric"
+            maxlength="12"
+            placeholder="Enter PIN"
+            autocomplete="off"
+            onkeydown="if(event.key==='Enter')sjsCheckPin()"
+            style="
+              width:180px;padding:0.7rem 1rem;text-align:center;letter-spacing:0.2em;
+              background:var(--navy);border:1px solid rgba(100,180,255,0.3);
+              border-radius:4px;color:var(--white);font-family:var(--sans);
+              font-size:1rem;outline:none;transition:border-color 0.2s;
+            "
+            onfocus="this.style.borderColor='rgba(100,180,255,0.7)'"
+            onblur="this.style.borderColor='rgba(100,180,255,0.3)'"
+          />
+          <button onclick="sjsCheckPin()" style="
+            padding:0.7rem 1.2rem;background:#4A9FD4;color:#080C18;
+            border:none;border-radius:4px;font-family:var(--sans);
+            font-size:0.82rem;font-weight:600;letter-spacing:0.06em;
+            text-transform:uppercase;cursor:pointer;
+          ">Unlock</button>
+        </div>
+        <span id="sjs-pin-error" style="font-size:0.8rem;color:#e05c5c;display:none;">Incorrect PIN. Try again.</span>
+      </div>
+    </div>
+
+    <!-- ── SEARCH UI (shown after PIN) ──────────────────────── -->
+    <div id="sjs-search-ui" style="display:none;">
+
+      <!-- Header -->
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:2rem;">
+        <div>
+          <div class="section-label" style="margin-bottom:0.75rem;">
+            <span class="line"></span>
+            <span style="font-size:0.72rem;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:#7EC8F5;">AI Job Scout</span>
+          </div>
+          <h2 style="margin-bottom:0.3rem;color:var(--white);">
+            Sai <em style="color:#7EC8F5;">Chengalvala</em>
+          </h2>
+          <p style="font-size:0.85rem;color:var(--white-faint);margin:0;">
+            B.S. Computer Science &amp; Molecular Biology · University of Michigan · Healthcare AI Specialist
+          </p>
+        </div>
+        <button onclick="sjsLock()" style="
+          padding:0.55rem 1rem;background:transparent;
+          border:1px solid var(--navy-border);border-radius:4px;
+          color:var(--white-faint);font-family:var(--sans);
+          font-size:0.78rem;cursor:pointer;flex-shrink:0;
+          transition:border-color 0.2s,color 0.2s;
+        " onmouseover="this.style.borderColor='rgba(100,180,255,0.5)';this.style.color='#7EC8F5'"
+           onmouseout="this.style.borderColor='var(--navy-border)';this.style.color='var(--white-faint)'">
+          🔒 Lock
+        </button>
+      </div>
+
+      <p style="font-size:1rem;color:var(--white-dim);line-height:1.8;max-width:640px;margin-bottom:2rem;">
+        Searches Healthcare AI, Pharma, BioTech, and related domains. Results emailed to
+        <strong style="color:var(--white);">venkatachengalvala@gmail.com</strong>.
+        Minimum salary filter: <strong style="color:#7EC8F5;">$120,000+</strong>.
+      </p>
+
+      <!-- Role chips -->
+      <div id="sjs-role-chips" style="display:flex;flex-wrap:wrap;gap:0.6rem;margin-bottom:2rem;"></div>
+
+      <!-- Controls -->
+      <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:2.5rem;">
+        <input
+          id="sjs-location"
+          type="text"
+          placeholder="Location (e.g. Remote, Michigan, USA)"
+          value="Remote, USA"
+          style="
+            flex:1;min-width:220px;max-width:340px;
+            background:var(--navy);border:1px solid rgba(100,180,255,0.25);
+            border-radius:4px;padding:0.7rem 1rem;
+            color:var(--white);font-family:var(--sans);font-size:0.9rem;
+            outline:none;transition:border-color 0.2s;
+          "
+          onfocus="this.style.borderColor='rgba(100,180,255,0.6)'"
+          onblur="this.style.borderColor='rgba(100,180,255,0.25)'"
+        />
+        <button
+          id="sjs-search-btn"
+          onclick="sjsSearchAndEmail()"
+          style="
+            padding:0.72rem 1.8rem;background:#4A9FD4;color:#080C18;
+            border:none;border-radius:4px;font-family:var(--sans);
+            font-size:0.85rem;font-weight:600;letter-spacing:0.06em;
+            text-transform:uppercase;cursor:pointer;
+            transition:opacity 0.2s;white-space:nowrap;
+          "
+        >🔍 Search &amp; Email Results</button>
+
+        <button
+          id="sjs-clear-btn"
+          onclick="sjsClear()"
+          style="
+            padding:0.72rem 1.2rem;background:transparent;
+            border:1px solid var(--navy-border);border-radius:4px;
+            color:var(--white-dim);font-family:var(--sans);
+            font-size:0.82rem;cursor:pointer;display:none;
+          "
+        >Clear</button>
+      </div>
+
+      <!-- Status -->
+      <div id="sjs-status" style="display:none;align-items:center;gap:0.75rem;margin-bottom:1.5rem;font-size:0.88rem;color:var(--white-dim);">
+        <span style="display:inline-block;width:16px;height:16px;border:2px solid rgba(100,180,255,0.4);border-top-color:#7EC8F5;border-radius:50%;animation:js-spin 0.7s linear infinite;flex-shrink:0;"></span>
+        <span id="sjs-status-text">Searching…</span>
+      </div>
+
+      <!-- Email banner -->
+      <div id="sjs-email-banner" style="display:none;padding:1rem 1.25rem;background:rgba(100,180,255,0.08);border:1px solid rgba(100,180,255,0.35);border-radius:4px;margin-bottom:1.5rem;font-size:0.88rem;color:#7EC8F5;"></div>
+
+      <!-- Results grid -->
+      <div id="sjs-results" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem;"></div>
+
+      <!-- Count -->
+      <p id="sjs-count" style="display:none;margin-top:1.25rem;font-size:0.8rem;color:var(--white-faint);letter-spacing:0.04em;"></p>
+
+    </div><!-- /#sjs-search-ui -->
+  </div>
+</section>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+//  SURAJ JOB SCOUT — CONFIGURATION
+//  Set SJS_PIN to a PIN only Suraj/Ravi knows.
+//  SJS_SEARCH_TOKEN must match JOB_SEARCH_TOKEN in Cloudflare Worker.
+// ══════════════════════════════════════════════════════════════
+const SJS_PIN          = 'sai2026';    // e.g. 'suraj2025'
+const SJS_SEARCH_TOKEN = 'donotforgettoprotect me';         // same as JS_SEARCH_TOKEN / JOB_SEARCH_TOKEN
+
+const SJS_ROLES = [
+  { label:'AI Engineer',              query:'AI Engineer Healthcare',                    active:true  },
+  { label:'Backend Software Engineer',query:'Backend Software Engineer Python Healthcare',active:true  },
+  { label:'Python AI Developer',      query:'Python AI Developer',                       active:true  },
+  { label:'ML Engineer',              query:'Machine Learning Engineer Healthcare',      active:true  },
+  { label:'Healthcare AI Engineer',   query:'Healthcare AI Engineer',                    active:true  },
+  { label:'Clinical AI Developer',    query:'Clinical AI Developer',                     active:false },
+  { label:'Biotech AI Engineer',      query:'AI Engineer Biotech',                       active:false },
+  { label:'Pharma AI Engineer',       query:'AI Engineer Pharma',                        active:false },
+  { label:'Medical Imaging AI',       query:'Medical Imaging AI Engineer',               active:false },
+];
+
+const SJS_RECIPIENT   = 'venkatachengalvala@gmail.com';
+const SJS_MIN_SALARY  = 120000;
+
+// ── AUTH ──────────────────────────────────────────────────────
+function sjsIsAuth() { return sessionStorage.getItem('sjs_auth') === '1'; }
+
+function sjsCheckPin() {
+  var val = document.getElementById('sjs-pin-input').value;
+  if (val === SJS_PIN) {
+    sessionStorage.setItem('sjs_auth', '1');
+    document.getElementById('sjs-pin-gate').style.display  = 'none';
+    document.getElementById('sjs-search-ui').style.display = 'block';
+    document.getElementById('sjs-pin-error').style.display = 'none';
+    document.getElementById('sjs-pin-input').value = '';
+  } else {
+    document.getElementById('sjs-pin-error').style.display = 'inline';
+    document.getElementById('sjs-pin-input').value = '';
+    document.getElementById('sjs-pin-input').focus();
+  }
+}
+
+function sjsLock() {
+  sessionStorage.removeItem('sjs_auth');
+  document.getElementById('sjs-search-ui').style.display = 'none';
+  document.getElementById('sjs-pin-gate').style.display  = '';
+  sjsClear();
+}
+
+// ── INIT ──────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', function() {
+  // Render chips
+  var container = document.getElementById('sjs-role-chips');
+  SJS_ROLES.forEach(function(r) {
+    var chip = document.createElement('span');
+    chip.className = 'js-role-chip' + (r.active ? ' active' : '');
+    chip.style.borderColor = r.active ? 'rgba(100,180,255,0.5)' : '';
+    chip.style.color       = r.active ? '#7EC8F5' : '';
+    chip.style.background  = r.active ? 'rgba(100,180,255,0.1)' : '';
+    chip.textContent = r.label;
+    chip.onclick = function() {
+      r.active = !r.active;
+      chip.classList.toggle('active', r.active);
+      chip.style.borderColor = r.active ? 'rgba(100,180,255,0.5)' : '';
+      chip.style.color       = r.active ? '#7EC8F5' : '';
+      chip.style.background  = r.active ? 'rgba(100,180,255,0.1)' : '';
+    };
+    container.appendChild(chip);
+  });
+  // Restore auth
+  if (sjsIsAuth()) {
+    document.getElementById('sjs-pin-gate').style.display  = 'none';
+    document.getElementById('sjs-search-ui').style.display = 'block';
+  }
+});
+
+// ── SEARCH + EMAIL ────────────────────────────────────────────
+async function sjsSearchAndEmail() {
+  if (!sjsIsAuth()) { sjsLock(); return; }
+
+  var selected = SJS_ROLES.filter(function(r){ return r.active; });
+  if (!selected.length) { alert('Select at least one role.'); return; }
+
+  var location = document.getElementById('sjs-location').value.trim() || 'USA';
+  var btn      = document.getElementById('sjs-search-btn');
+  var status   = document.getElementById('sjs-status');
+  var stTxt    = document.getElementById('sjs-status-text');
+  var results  = document.getElementById('sjs-results');
+  var count    = document.getElementById('sjs-count');
+  var banner   = document.getElementById('sjs-email-banner');
+  var clearBtn = document.getElementById('sjs-clear-btn');
+
+  btn.disabled = true; btn.style.opacity = '0.6';
+  status.style.display = 'flex';
+  stTxt.textContent = 'Searching Healthcare AI, Pharma & BioTech job boards…';
+  results.innerHTML = '';
+  count.style.display  = 'none';
+  banner.style.display = 'none';
+  clearBtn.style.display = 'none';
+
+  try {
+    var resp = await fetch(WORKER_URL, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({
+        mode:        'jobSearch',
+        searchToken: SJS_SEARCH_TOKEN,
+        roles:       selected.map(function(r){ return r.query; }),
+        location:    location,
+        recipientOverride: SJS_RECIPIENT,
+        recipientName:     'Sai Chengalvala',
+        minSalary:   SJS_MIN_SALARY,
+        domains:     ['healthcare', 'health', 'pharma', 'biotech', 'clinical', 'medical', 'hospital', 'genomics', 'life sciences'],
+        resumeUrl:   'https://raw.githubusercontent.com/chengalvala/ravichengalvala.com/main/suraj-resume.pdf'
+      })
+    });
+
+    if (resp.status === 401) throw new Error('Invalid token — check SJS_SEARCH_TOKEN.');
+    if (!resp.ok)            throw new Error('Worker returned ' + resp.status);
+    var data = await resp.json();
+    var jobs = data.jobs || [];
+
+    // Client-side dedup
+    var seen = new Set();
+    var unique = jobs.filter(function(j) {
+      var key = (j.url||'') + '||' + (j.title||'').toLowerCase() + '||' + (j.company||'').toLowerCase();
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+
+    if (!unique.length) {
+      stTxt.textContent = 'No results found. Try different roles or location.';
+      document.querySelector('#sjs-status span').style.display = 'none';
+      return;
+    }
+
+    // Render cards (blue accent instead of gold)
+    unique.forEach(function(job) {
+      var card = document.createElement('div');
+      card.className = 'js-job-card';
+      card.style.borderColor = 'rgba(100,180,255,0.15)';
+      card.onmouseenter = function(){ this.style.borderColor='rgba(100,180,255,0.45)'; };
+      card.onmouseleave = function(){ this.style.borderColor='rgba(100,180,255,0.15)'; };
+      var html = '<div class="js-job-title">' + escHtml(job.title||'Position') + '</div>';
+      html += '<div class="js-job-company" style="color:#7EC8F5;">' + escHtml(job.company||'') + '</div>';
+      var meta = [];
+      if (job.location) meta.push('📍 ' + escHtml(job.location));
+      if (job.type)     meta.push(escHtml(job.type));
+      if (job.posted)   meta.push(escHtml(job.posted));
+      if (meta.length)  html += '<div class="js-job-meta">' + meta.join(' &nbsp;·&nbsp; ') + '</div>';
+      if (job.salary)   html += '<div class="js-job-meta">💰 ' + escHtml(job.salary) + '</div>';
+      if (job.recruiter && job.recruiter.name) {
+        var rec = '👤 ' + escHtml(job.recruiter.name);
+        if (job.recruiter.email)    rec += ' — <a href="mailto:' + escHtml(job.recruiter.email) + '" style="color:#7EC8F5;text-decoration:none;">' + escHtml(job.recruiter.email) + '</a>';
+        if (job.recruiter.linkedin) rec += ' &nbsp;<a href="' + escHtml(job.recruiter.linkedin) + '" target="_blank" rel="noopener" style="color:#7EC8F5;text-decoration:none;">LinkedIn ↗</a>';
+        html += '<div class="js-job-recruiter" style="border-left-color:rgba(100,180,255,0.4);">' + rec + '</div>';
+      }
+      if (job.url) html += '<a class="js-job-link" style="color:#7EC8F5;" href="' + escHtml(job.url) + '" target="_blank" rel="noopener">View Job</a>';
+      card.innerHTML = html;
+      results.appendChild(card);
+    });
+
+    count.textContent = unique.length + ' unique opportunit' + (unique.length===1?'y':'ies') + ' across ' + selected.length + ' role' + (selected.length===1?'':'s') + '.';
+    count.style.display = 'block';
+    clearBtn.style.display = 'inline-block';
+    if (data.emailSent) {
+      banner.textContent = '✉ Results emailed to venkatachengalvala@gmail.com — check your inbox!';
+      banner.style.display = 'block';
+    }
+    status.style.display = 'none';
+
+  } catch(err) {
+    stTxt.textContent = '⚠ ' + (err.message || 'Search failed') + '. Please try again.';
+    console.error('Suraj job search error:', err);
+  } finally {
+    btn.disabled = false; btn.style.opacity = '1';
+  }
+}
+
+function sjsClear() {
+  document.getElementById('sjs-results').innerHTML = '';
+  document.getElementById('sjs-count').style.display   = 'none';
+  document.getElementById('sjs-email-banner').style.display = 'none';
+  document.getElementById('sjs-status').style.display  = 'none';
+  document.getElementById('sjs-clear-btn').style.display = 'none';
+}
+</script>
+
 
 <!-- AVA AI VOICE SECTION -->
 <section id="ask-ava" style="background: var(--navy-mid); border-top: 1px solid var(--navy-border); border-bottom: 1px solid var(--navy-border);">
