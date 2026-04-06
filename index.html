@@ -1293,7 +1293,7 @@
 -->
 
 <!-- Hidden section — not in nav, only reachable via direct scroll or hash -->
-<section id="job-search" style="background:var(--navy);border-top:1px solid var(--navy-border);display:none;" aria-hidden="true">
+<section id="job-search" style="background:var(--navy);border-top:1px solid var(--navy-border);">
   <div class="section-inner" style="max-width:1000px;">
 
     <!-- ── PIN GATE ──────────────────────────────────────── -->
@@ -1529,24 +1529,18 @@ function jsLockScout() {
   jobSearchClear();
 }
 
-// ── SHOW SECTION (only when #job-search hash is present) ──────────
-function jsInitSection() {
-  var section = document.getElementById('job-search');
-  if (!section) return;
-  var show = (window.location.hash === '#job-search');
-  if (show) {
-    section.style.display = '';
-    section.removeAttribute('aria-hidden');
-    // If already authed in this session, skip PIN
-    if (jsIsAuth()) {
-      document.getElementById('js-pin-gate').style.display  = 'none';
-      document.getElementById('js-search-ui').style.display = 'block';
-    }
-    section.scrollIntoView({ behavior:'smooth', block:'start' });
+// ── INIT: restore auth state on page load ──────────────────────
+document.addEventListener('DOMContentLoaded', function() {
+  if (jsIsAuth()) {
+    document.getElementById('js-pin-gate').style.display  = 'none';
+    document.getElementById('js-search-ui').style.display = 'block';
   }
-}
-window.addEventListener('hashchange', jsInitSection);
-document.addEventListener('DOMContentLoaded', jsInitSection);
+  // Scroll to section if hash is present
+  if (window.location.hash === '#job-search') {
+    var section = document.getElementById('job-search');
+    if (section) setTimeout(function(){ section.scrollIntoView({ behavior:'smooth', block:'start' }); }, 300);
+  }
+});
 
 // ── RENDER ROLE CHIPS ─────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', function() {
