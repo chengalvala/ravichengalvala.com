@@ -1381,7 +1381,21 @@
             placeholder="Location (e.g. Michigan, Remote, USA)"
             value="Michigan, USA"
             style="
-              flex:1;min-width:220px;max-width:340px;
+              flex:1;min-width:180px;max-width:260px;
+              background:var(--navy-mid);border:1px solid var(--navy-border);
+              border-radius:4px;padding:0.7rem 1rem;
+              color:var(--white);font-family:var(--sans);font-size:0.9rem;
+              outline:none;transition:border-color 0.2s;
+            "
+            onfocus="this.style.borderColor='var(--gold-dim)'"
+            onblur="this.style.borderColor='var(--navy-border)'"
+          />
+          <input
+            id="js-company-filter"
+            type="text"
+            placeholder="Company (optional, e.g. Ford)"
+            style="
+              flex:1;min-width:180px;max-width:240px;
               background:var(--navy-mid);border:1px solid var(--navy-border);
               border-radius:4px;padding:0.7rem 1rem;
               color:var(--white);font-family:var(--sans);font-size:0.9rem;
@@ -1625,7 +1639,8 @@ async function jobSearchAndEmail() {
   var selected = JS_ROLES.filter(function(r){ return r.active; });
   if (!selected.length) { alert('Select at least one role.'); return; }
 
-  var location  = document.getElementById('js-location').value.trim() || 'USA';
+  var location      = document.getElementById('js-location').value.trim() || 'USA';
+  var companyFilter = (document.getElementById('js-company-filter').value || '').trim();
   var btn       = document.getElementById('js-search-btn');
   var status    = document.getElementById('js-status');
   var statusTxt = document.getElementById('js-status-text');
@@ -1638,7 +1653,9 @@ async function jobSearchAndEmail() {
   btn.disabled = true;  btn.style.opacity = '0.6';
   spinner.style.display = 'inline-block';
   status.style.display = 'flex';
-  statusTxt.textContent = 'Searching live job boards…';
+  statusTxt.textContent = companyFilter
+    ? 'Searching ' + companyFilter + ' for matching roles…'
+    : 'Searching live job boards…';
   results.innerHTML = '';
   count.style.display  = 'none';
   banner.style.display = 'none';
@@ -1654,6 +1671,7 @@ async function jobSearchAndEmail() {
         user:         'ravi',
         roles:        selected.map(function(r){ return r.query; }),
         location:     location,
+        company:      companyFilter,
         resumeUrl:    'https://raw.githubusercontent.com/chengalvala/ravichengalvala.com/main/ravi-chengalvala-resume.pdf'
       })
     });
