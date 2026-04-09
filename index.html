@@ -1810,7 +1810,8 @@ async function companySearchAndEmail() {
     'Preparing your personalised results…',
   ];
   var msgIdx = 0;
-  var progressTimer = setInterval(function() {
+  var progressTimer = null;
+  progressTimer = setInterval(function() {
     msgIdx = Math.min(msgIdx + 1, progressMsgs.length - 1);
     statusTxt.textContent = progressMsgs[msgIdx];
   }, 3500);
