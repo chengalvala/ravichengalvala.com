@@ -1305,7 +1305,6 @@
           <input
             id="js-pin-input"
             type="password"
-            inputmode="numeric"
             maxlength="12"
             placeholder="Enter PIN"
             autocomplete="off"
@@ -1894,7 +1893,6 @@ function escHtml(str) {
           <input
             id="sjs-pin-input"
             type="password"
-            inputmode="numeric"
             maxlength="12"
             placeholder="Enter PIN"
             autocomplete="off"
@@ -1908,7 +1906,7 @@ function escHtml(str) {
             onfocus="this.style.borderColor='rgba(100,180,255,0.7)'"
             onblur="this.style.borderColor='rgba(100,180,255,0.3)'"
           />
-          <button onclick="sjsCheckPin()" style="
+          <button id="sjs-unlock-btn" onclick="sjsCheckPin()" style="
             padding:0.7rem 1.2rem;background:#4A9FD4;color:#080C18;
             border:none;border-radius:4px;font-family:var(--sans);
             font-size:0.82rem;font-weight:600;letter-spacing:0.06em;
@@ -2044,8 +2042,8 @@ function sjsGetToken() { return sessionStorage.getItem('sjs_session_token') || '
 async function sjsCheckPin() {
   var val = document.getElementById('sjs-pin-input').value.trim();
   if (!val) return;
-  var btn = document.querySelector('#sjs-pin-gate button');
-  btn.textContent = '...'; btn.disabled = true;
+  var btn = document.getElementById('sjs-unlock-btn');
+  if (btn) { btn.textContent = '...'; btn.disabled = true; }
   try {
     var resp = await fetch(WORKER_URL, {
       method: 'POST',
