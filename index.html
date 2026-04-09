@@ -1320,6 +1320,7 @@
             onblur="this.style.borderColor='var(--navy-border)'"
           />
           <button
+            id="js-unlock-btn"
             onclick="jsCheckPin()"
             style="
               padding:0.7rem 1.2rem;background:var(--gold);color:var(--navy);
@@ -1559,8 +1560,8 @@ function jsGetToken() {
 async function jsCheckPin() {
   var input = document.getElementById('js-pin-input').value.trim();
   if (!input) return;
-  var btn = document.querySelector('#js-pin-gate button');
-  btn.textContent = '...'; btn.disabled = true;
+  var btn = document.getElementById('js-unlock-btn');
+  if (btn) { btn.textContent = '...'; btn.disabled = true; }
   try {
     var resp = await fetch(WORKER_URL, {
       method: 'POST',
@@ -1583,7 +1584,7 @@ async function jsCheckPin() {
     document.getElementById('js-pin-error').textContent = 'Connection error. Try again.';
     document.getElementById('js-pin-error').style.display = 'inline';
   } finally {
-    btn.textContent = 'Unlock'; btn.disabled = false;
+    if (btn) { btn.textContent = 'Unlock'; btn.disabled = false; }
   }
 }
 
@@ -3015,4 +3016,11 @@ function updateChatInputHint(code, name) {
     }
   }
 }
-</scrip
+</script>
+
+<!-- ElevenLabs Conversational AI widget -->
+<elevenlabs-convai agent-id="agent_8901km66z7j7fad9e45qyxem2v8y" avatar-image-url="https://ravichengalvala.com/ava-avatar.png" dismissible="true"></elevenlabs-convai>
+<script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
+
+</body>
+</html>
