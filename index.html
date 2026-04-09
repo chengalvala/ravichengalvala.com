@@ -1676,6 +1676,7 @@ async function jobSearchAndEmail() {
       })
     });
 
+    clearInterval(progressTimer);
     if (resp.status === 401) { jsLockScout(); throw new Error('Session expired. Please re-enter your PIN.'); }
     if (!resp.ok)            throw new Error('Worker returned ' + resp.status);
     var data = await resp.json();
@@ -1795,11 +1796,24 @@ async function companySearchAndEmail() {
   btn.disabled = true;  btn.style.opacity = '0.6';
   spinner.style.display = 'inline-block';
   status.style.display  = 'flex';
-  statusTxt.textContent = 'Searching ' + company + ' jobs…';
+  statusTxt.textContent = 'Searching ' + company + ' on live job boards…';
   results.innerHTML     = '';
   count.style.display   = 'none';
   banner.style.display  = 'none';
   clearBtn.style.display = 'none';
+
+  // Progress messages while waiting
+  var progressMsgs = [
+    'Searching ' + company + ' on live job boards…',
+    'Filtering for senior leadership roles…',
+    'Scoring matches against your profile…',
+    'Preparing your personalised results…',
+  ];
+  var msgIdx = 0;
+  var progressTimer = setInterval(function() {
+    msgIdx = Math.min(msgIdx + 1, progressMsgs.length - 1);
+    statusTxt.textContent = progressMsgs[msgIdx];
+  }, 3500);
 
   try {
     var resp = await fetch(WORKER_URL, {
@@ -1814,6 +1828,7 @@ async function companySearchAndEmail() {
       })
     });
 
+    clearInterval(progressTimer);
     if (resp.status === 401) { jsLockScout(); throw new Error('Session expired. Please re-enter your PIN.'); }
     if (!resp.ok)            throw new Error('Worker returned ' + resp.status);
     var data = await resp.json();
@@ -1988,7 +2003,10 @@ function escHtml(str) {
         <!-- Controls -->
         <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:2.5rem;">
           <input id="sjs-location" type="text" placeholder="Location (e.g. Remote, Michigan, USA)" value="Remote, USA"
-            style="flex:1;min-width:220px;max-width:340px;background:var(--navy);border:1px solid rgba(100,180,255,0.25);border-radius:4px;padding:0.7rem 1rem;color:var(--white);font-family:var(--sans);font-size:0.9rem;outline:none;transition:border-color 0.2s;"
+            style="flex:1;min-width:180px;max-width:260px;background:var(--navy);border:1px solid rgba(100,180,255,0.25);border-radius:4px;padding:0.7rem 1rem;color:var(--white);font-family:var(--sans);font-size:0.9rem;outline:none;transition:border-color 0.2s;"
+            onfocus="this.style.borderColor='rgba(100,180,255,0.6)'" onblur="this.style.borderColor='rgba(100,180,255,0.25)'" />
+          <input id="sjs-company-filter" type="text" placeholder="Company (optional, e.g. Epic, Pfizer)"
+            style="flex:1;min-width:180px;max-width:240px;background:var(--navy);border:1px solid rgba(100,180,255,0.25);border-radius:4px;padding:0.7rem 1rem;color:var(--white);font-family:var(--sans);font-size:0.9rem;outline:none;transition:border-color 0.2s;"
             onfocus="this.style.borderColor='rgba(100,180,255,0.6)'" onblur="this.style.borderColor='rgba(100,180,255,0.25)'" />
           <button id="sjs-search-btn" onclick="sjsSearchAndEmail()" style="
             padding:0.72rem 1.8rem;background:#4A9FD4;color:#080C18;border:none;border-radius:4px;
@@ -2135,7 +2153,8 @@ async function sjsSearchAndEmail() {
   var selected = SJS_ROLES.filter(function(r){ return r.active; });
   if (!selected.length) { alert('Select at least one role.'); return; }
 
-  var location = document.getElementById('sjs-location').value.trim() || 'USA';
+  var location      = document.getElementById('sjs-location').value.trim() || 'USA';
+  var companyFilter = (document.getElementById('sjs-company-filter').value || '').trim();
   var btn      = document.getElementById('sjs-search-btn');
   var status   = document.getElementById('sjs-status');
   var stTxt    = document.getElementById('sjs-status-text');
@@ -2146,7 +2165,9 @@ async function sjsSearchAndEmail() {
 
   btn.disabled = true; btn.style.opacity = '0.6';
   status.style.display = 'flex';
-  stTxt.textContent = 'Searching Healthcare AI, Pharma & BioTech job boards…';
+  stTxt.textContent = companyFilter
+    ? 'Searching ' + companyFilter + ' for healthcare AI roles…'
+    : 'Searching Healthcare AI, Pharma & BioTech job boards…';
   results.innerHTML = '';
   count.style.display  = 'none';
   banner.style.display = 'none';
@@ -2162,6 +2183,7 @@ async function sjsSearchAndEmail() {
         user:         'suraj',
         roles:        selected.map(function(r){ return r.query; }),
         location:     location,
+        company:      companyFilter,
         minSalary:    120000,
         domains:      ['healthcare', 'health', 'pharma', 'biotech', 'clinical', 'medical', 'hospital', 'genomics', 'life sciences'],
         resumeUrl:    'https://raw.githubusercontent.com/chengalvala/ravichengalvala.com/main/suraj-resume.pdf'
