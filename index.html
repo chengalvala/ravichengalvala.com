@@ -1014,18 +1014,17 @@
     <img src="ava-avatar.png" alt="Ava" style="width:22px;height:22px;border-radius:50%;object-fit:cover;border:1.5px solid rgba(201,150,42,0.7);flex-shrink:0;" />
     <span data-i18n="nav.ava">Talk to Ava</span>
   </button>
-  <button id="recruiter-nav-btn" onclick="rpOpen()" style="
+  <button id="recruiter-nav-btn" title="Recruiter portal — coming soon" style="
     display:inline-flex;align-items:center;gap:0.45rem;
     font-size:0.8rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;
-    padding:0.55rem 1.2rem;border:1px solid rgba(100,180,255,0.4);
-    color:#7EC8F5;background:rgba(100,180,255,0.07);border-radius:2px;
-    cursor:pointer;transition:background 0.2s,border-color 0.2s;font-family:var(--sans);
-  " onmouseover="this.style.background='rgba(100,180,255,0.15)';this.style.borderColor='rgba(100,180,255,0.7)'"
-     onmouseout="this.style.background='rgba(100,180,255,0.07)';this.style.borderColor='rgba(100,180,255,0.4)'">
-    <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:#7EC8F5;stroke-width:2;">
+    padding:0.55rem 1.2rem;border:1px solid rgba(100,180,255,0.2);
+    color:rgba(126,200,245,0.4);background:rgba(100,180,255,0.03);border-radius:2px;
+    cursor:not-allowed;font-family:var(--sans);opacity:0.6;
+  " disabled>
+    <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:rgba(126,200,245,0.4);stroke-width:2;">
       <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
     </svg>
-    Recruiter Access
+    Recruiter Access <span style="font-size:0.65rem;letter-spacing:0.05em;opacity:0.7;">(soon)</span>
   </button>
   <a href="#contact" class="nav-cta" data-i18n="nav.cta">Get in Touch</a>
 </nav>
@@ -1068,15 +1067,14 @@
       <div class="hero-actions">
         <a href="#consulting" class="btn-primary" data-i18n="hero.btn.primary">Consulting Services</a>
         <a href="#contact" class="btn-outline" data-i18n="hero.btn.outline">Connect with Me</a>
-        <button onclick="rpOpen()" style="
+        <button title="Recruiter portal — coming soon" style="
           padding:0.75rem 1.6rem;background:transparent;
-          border:1px solid rgba(100,180,255,0.5);color:#7EC8F5;
+          border:1px solid rgba(100,180,255,0.2);color:rgba(126,200,245,0.4);
           font-weight:500;font-size:0.85rem;letter-spacing:0.06em;
-          text-transform:uppercase;border-radius:2px;cursor:pointer;
-          transition:background 0.2s,border-color 0.2s;font-family:var(--sans);
-        " onmouseover="this.style.background='rgba(100,180,255,0.12)'"
-           onmouseout="this.style.background='transparent'">
-          🏢 Recruiter / Hiring Manager
+          text-transform:uppercase;border-radius:2px;cursor:not-allowed;
+          font-family:var(--sans);opacity:0.6;
+        " disabled>
+          🏢 Recruiter / Hiring Manager <span style="font-size:0.7rem;">(soon)</span>
         </button>
       </div>
     </div>
@@ -1344,72 +1342,132 @@
       </div>
 
       <h2 style="margin-bottom:0.75rem;">Live <em>opportunity search</em>,<br/>delivered to your inbox.</h2>
-      <p style="font-size:1rem;color:var(--white-dim);line-height:1.8;max-width:640px;margin-bottom:2.5rem;">
-        Select roles, set location, then click Search — Ava fetches live listings and emails a
+      <p style="font-size:1rem;color:var(--white-dim);line-height:1.8;max-width:640px;margin-bottom:2rem;">
+        Search by role or by company — Ava fetches live listings and emails a
         deduplicated summary to ravi@ravichengalvala.com.
       </p>
 
-      <!-- Role chips -->
-      <div id="js-role-chips" style="display:flex;flex-wrap:wrap;gap:0.6rem;margin-bottom:2rem;"></div>
-
-      <!-- Controls row -->
-      <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:2.5rem;">
-        <input
-          id="js-location"
-          type="text"
-          placeholder="Location (e.g. Michigan, Remote, USA)"
-          value="Michigan, USA"
-          style="
-            flex:1;min-width:220px;max-width:340px;
-            background:var(--navy-mid);border:1px solid var(--navy-border);
-            border-radius:4px;padding:0.7rem 1rem;
-            color:var(--white);font-family:var(--sans);font-size:0.9rem;
-            outline:none;transition:border-color 0.2s;
-          "
-          onfocus="this.style.borderColor='var(--gold-dim)'"
-          onblur="this.style.borderColor='var(--navy-border)'"
-        />
-        <button
-          id="js-search-btn"
-          onclick="jobSearchAndEmail()"
-          style="
-            padding:0.72rem 1.8rem;background:var(--gold);color:var(--navy);
-            border:none;border-radius:4px;font-family:var(--sans);
-            font-size:0.85rem;font-weight:600;letter-spacing:0.06em;
-            text-transform:uppercase;cursor:pointer;
-            transition:background 0.2s,opacity 0.2s;white-space:nowrap;
-          "
-          onmouseover="this.style.background='var(--gold-light)'"
-          onmouseout="this.style.background='var(--gold)'"
-        >🔍 Search &amp; Email Results</button>
-
-        <button
-          onclick="jsLockScout()"
-          title="Lock — return to PIN screen"
-          style="
-            padding:0.72rem 1rem;background:transparent;
-            border:1px solid var(--navy-border);border-radius:4px;
-            color:var(--white-faint);font-family:var(--sans);
-            font-size:0.82rem;cursor:pointer;transition:border-color 0.2s,color 0.2s;
-          "
-          onmouseover="this.style.borderColor='var(--gold-dim)';this.style.color='var(--gold-light)'"
-          onmouseout="this.style.borderColor='var(--navy-border)';this.style.color='var(--white-faint)'"
-        >🔒 Lock</button>
-
-        <button
-          id="js-clear-btn"
-          onclick="jobSearchClear()"
-          style="
-            padding:0.72rem 1.2rem;background:transparent;
-            border:1px solid var(--navy-border);border-radius:4px;
-            color:var(--white-dim);font-family:var(--sans);
-            font-size:0.82rem;font-weight:500;cursor:pointer;
-            transition:border-color 0.2s,color 0.2s;display:none;
-          "
-          onmouseover="this.style.borderColor='var(--gold-dim)';this.style.color='var(--gold-light)'"
-          onmouseout="this.style.borderColor='var(--navy-border)';this.style.color='var(--white-dim)'"
-        >Clear</button>
+      <!-- ── TAB BAR ── -->
+      <div style="display:flex;gap:0;margin-bottom:2rem;border-bottom:1px solid var(--navy-border);">
+        <button id="js-tab-role-btn" onclick="jsShowTab('role')" style="
+          padding:0.6rem 1.5rem;background:transparent;border:none;border-bottom:2px solid var(--gold);
+          color:var(--gold-light);font-family:var(--sans);font-size:0.82rem;font-weight:600;
+          letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;margin-bottom:-1px;
+          transition:color 0.2s;">🎯 Role Scout</button>
+        <button id="js-tab-company-btn" onclick="jsShowTab('company')" style="
+          padding:0.6rem 1.5rem;background:transparent;border:none;border-bottom:2px solid transparent;
+          color:var(--white-faint);font-family:var(--sans);font-size:0.82rem;font-weight:500;
+          letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;margin-bottom:-1px;
+          transition:color 0.2s;">🏢 Company Scout</button>
+        <div style="flex:1;"></div>
+        <button onclick="jsLockScout()" title="Lock — return to PIN screen" style="
+          padding:0.6rem 1rem;background:transparent;border:none;
+          color:var(--white-faint);font-family:var(--sans);font-size:0.82rem;
+          cursor:pointer;transition:color 0.2s;margin-bottom:-1px;"
+          onmouseover="this.style.color='var(--gold-light)'"
+          onmouseout="this.style.color='var(--white-faint)'">🔒 Lock</button>
       </div>
+
+      <!-- ── TAB: ROLE SCOUT ── -->
+      <div id="js-tab-role">
+        <!-- Role chips -->
+        <div id="js-role-chips" style="display:flex;flex-wrap:wrap;gap:0.6rem;margin-bottom:2rem;"></div>
+
+        <!-- Controls row -->
+        <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:2.5rem;">
+          <input
+            id="js-location"
+            type="text"
+            placeholder="Location (e.g. Michigan, Remote, USA)"
+            value="Michigan, USA"
+            style="
+              flex:1;min-width:220px;max-width:340px;
+              background:var(--navy-mid);border:1px solid var(--navy-border);
+              border-radius:4px;padding:0.7rem 1rem;
+              color:var(--white);font-family:var(--sans);font-size:0.9rem;
+              outline:none;transition:border-color 0.2s;
+            "
+            onfocus="this.style.borderColor='var(--gold-dim)'"
+            onblur="this.style.borderColor='var(--navy-border)'"
+          />
+          <button
+            id="js-search-btn"
+            onclick="jobSearchAndEmail()"
+            style="
+              padding:0.72rem 1.8rem;background:var(--gold);color:var(--navy);
+              border:none;border-radius:4px;font-family:var(--sans);
+              font-size:0.85rem;font-weight:600;letter-spacing:0.06em;
+              text-transform:uppercase;cursor:pointer;
+              transition:background 0.2s,opacity 0.2s;white-space:nowrap;
+            "
+            onmouseover="this.style.background='var(--gold-light)'"
+            onmouseout="this.style.background='var(--gold)'"
+          >🔍 Search &amp; Email Results</button>
+          <button
+            id="js-clear-btn"
+            onclick="jobSearchClear()"
+            style="
+              padding:0.72rem 1.2rem;background:transparent;
+              border:1px solid var(--navy-border);border-radius:4px;
+              color:var(--white-dim);font-family:var(--sans);
+              font-size:0.82rem;font-weight:500;cursor:pointer;
+              transition:border-color 0.2s,color 0.2s;display:none;
+            "
+            onmouseover="this.style.borderColor='var(--gold-dim)';this.style.color='var(--gold-light)'"
+            onmouseout="this.style.borderColor='var(--navy-border)';this.style.color='var(--white-dim)'"
+          >Clear</button>
+        </div>
+      </div><!-- /#js-tab-role -->
+
+      <!-- ── TAB: COMPANY SCOUT ── -->
+      <div id="js-tab-company" style="display:none;">
+        <p style="font-size:0.9rem;color:var(--white-dim);line-height:1.7;max-width:580px;margin-bottom:1.5rem;">
+          Enter a company name to find all open roles at that organization — results are emailed to your inbox alongside your resume link.
+        </p>
+        <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:2.5rem;">
+          <input
+            id="js-company-input"
+            type="text"
+            placeholder="e.g. Ford, Microsoft, Google, Stellantis…"
+            style="
+              flex:1;min-width:260px;max-width:420px;
+              background:var(--navy-mid);border:1px solid var(--navy-border);
+              border-radius:4px;padding:0.7rem 1rem;
+              color:var(--white);font-family:var(--sans);font-size:0.9rem;
+              outline:none;transition:border-color 0.2s;
+            "
+            onfocus="this.style.borderColor='var(--gold-dim)'"
+            onblur="this.style.borderColor='var(--navy-border)'"
+            onkeydown="if(event.key==='Enter')companySearchAndEmail()"
+          />
+          <button
+            id="js-company-search-btn"
+            onclick="companySearchAndEmail()"
+            style="
+              padding:0.72rem 1.8rem;background:var(--gold);color:var(--navy);
+              border:none;border-radius:4px;font-family:var(--sans);
+              font-size:0.85rem;font-weight:600;letter-spacing:0.06em;
+              text-transform:uppercase;cursor:pointer;
+              transition:background 0.2s,opacity 0.2s;white-space:nowrap;
+            "
+            onmouseover="this.style.background='var(--gold-light)'"
+            onmouseout="this.style.background='var(--gold)'"
+          >🏢 Search &amp; Email Results</button>
+          <button
+            id="js-company-clear-btn"
+            onclick="jobSearchClear()"
+            style="
+              padding:0.72rem 1.2rem;background:transparent;
+              border:1px solid var(--navy-border);border-radius:4px;
+              color:var(--white-dim);font-family:var(--sans);
+              font-size:0.82rem;font-weight:500;cursor:pointer;
+              transition:border-color 0.2s,color 0.2s;display:none;
+            "
+            onmouseover="this.style.borderColor='var(--gold-dim)';this.style.color='var(--gold-light)'"
+            onmouseout="this.style.borderColor='var(--navy-border)';this.style.color='var(--white-dim)'"
+          >Clear</button>
+        </div>
+      </div><!-- /#js-tab-company -->
 
       <!-- Status bar -->
       <div id="js-status" style="display:none;align-items:center;gap:0.75rem;margin-bottom:1.5rem;font-size:0.88rem;color:var(--white-dim);">
@@ -1471,7 +1529,7 @@
   .js-job-link::after { content:'→'; }
 </style>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ══════════════════════════════════════════════════════════════════
 //  RAVI JOB SCOUT — NO SECRETS IN HTML
 //  PINs and tokens live entirely in Cloudflare Worker secrets.
@@ -1608,7 +1666,7 @@ async function jobSearchAndEmail() {
     // Client-side dedup (second layer)
     var seen = new Set();
     var unique = jobs.filter(function(j) {
-      var key = (j.url||'') + '||' + (j.title||'').toLowerCase() + '||' + (j.company||'').toLowerCase();
+      var key = (j.title||'').toLowerCase().replace(/\s+/g,' ').trim() + '||' + (j.company||'').toLowerCase().replace(/\s+/g,' ').trim();
       if (seen.has(key)) return false;
       seen.add(key);
       return true;
@@ -1668,6 +1726,134 @@ function jobSearchClear() {
   document.getElementById('js-status').style.display  = 'none';
   document.getElementById('js-status-spinner').style.display = 'inline-block';
   document.getElementById('js-clear-btn').style.display = 'none';
+  var ccb = document.getElementById('js-company-clear-btn');
+  if (ccb) ccb.style.display = 'none';
+}
+
+// ── TAB SWITCHER ─────────────────────────────────────────────────
+function jsShowTab(tab) {
+  var roleTab    = document.getElementById('js-tab-role');
+  var companyTab = document.getElementById('js-tab-company');
+  var roleBtn    = document.getElementById('js-tab-role-btn');
+  var companyBtn = document.getElementById('js-tab-company-btn');
+  jobSearchClear();
+  if (tab === 'role') {
+    roleTab.style.display    = '';
+    companyTab.style.display = 'none';
+    roleBtn.style.borderBottomColor = 'var(--gold)';
+    roleBtn.style.color             = 'var(--gold-light)';
+    roleBtn.style.fontWeight        = '600';
+    companyBtn.style.borderBottomColor = 'transparent';
+    companyBtn.style.color             = 'var(--white-faint)';
+    companyBtn.style.fontWeight        = '500';
+  } else {
+    roleTab.style.display    = 'none';
+    companyTab.style.display = '';
+    companyBtn.style.borderBottomColor = 'var(--gold)';
+    companyBtn.style.color             = 'var(--gold-light)';
+    companyBtn.style.fontWeight        = '600';
+    roleBtn.style.borderBottomColor = 'transparent';
+    roleBtn.style.color             = 'var(--white-faint)';
+    roleBtn.style.fontWeight        = '500';
+  }
+}
+
+// ── COMPANY SEARCH + EMAIL ────────────────────────────────────────
+async function companySearchAndEmail() {
+  if (!jsIsAuth()) { jsLockScout(); return; }
+
+  var company = (document.getElementById('js-company-input').value || '').trim();
+  if (!company) { alert('Please enter a company name.'); return; }
+
+  var btn       = document.getElementById('js-company-search-btn');
+  var status    = document.getElementById('js-status');
+  var statusTxt = document.getElementById('js-status-text');
+  var results   = document.getElementById('js-results');
+  var count     = document.getElementById('js-count');
+  var banner    = document.getElementById('js-email-banner');
+  var clearBtn  = document.getElementById('js-company-clear-btn');
+  var spinner   = document.getElementById('js-status-spinner');
+
+  btn.disabled = true;  btn.style.opacity = '0.6';
+  spinner.style.display = 'inline-block';
+  status.style.display  = 'flex';
+  statusTxt.textContent = 'Searching ' + company + ' jobs…';
+  results.innerHTML     = '';
+  count.style.display   = 'none';
+  banner.style.display  = 'none';
+  clearBtn.style.display = 'none';
+
+  try {
+    var resp = await fetch(WORKER_URL, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({
+        mode:         'companyJobSearch',
+        sessionToken: jsGetToken(),
+        user:         'ravi',
+        company:      company,
+        resumeUrl:    'https://raw.githubusercontent.com/chengalvala/ravichengalvala.com/main/ravi-chengalvala-resume.pdf'
+      })
+    });
+
+    if (resp.status === 401) { jsLockScout(); throw new Error('Session expired. Please re-enter your PIN.'); }
+    if (!resp.ok)            throw new Error('Worker returned ' + resp.status);
+    var data = await resp.json();
+    var jobs = data.jobs || [];
+
+    // Client-side dedup
+    var seen   = new Set();
+    var unique = jobs.filter(function(j) {
+      var key = (j.title||'').toLowerCase().replace(/\s+/g,' ').trim() + '||' + (j.company||'').toLowerCase().replace(/\s+/g,' ').trim();
+      if (seen.has(key)) return false;
+      seen.add(key); return true;
+    });
+
+    if (!unique.length) {
+      statusTxt.textContent = 'No open roles found at "' + company + '". Try a different spelling or company name.';
+      spinner.style.display = 'none';
+      return;
+    }
+
+    // Render cards
+    unique.forEach(function(job) {
+      var card = document.createElement('div');
+      card.className = 'js-job-card';
+      var html = '<div class="js-job-title">' + escHtml(job.title||'Position') + '</div>';
+      html += '<div class="js-job-company">' + escHtml(job.company||company) + '</div>';
+      var meta = [];
+      if (job.location) meta.push('📍 ' + escHtml(job.location));
+      if (job.type)     meta.push(escHtml(job.type));
+      if (job.posted)   meta.push(escHtml(job.posted));
+      if (meta.length)  html += '<div class="js-job-meta">' + meta.join(' &nbsp;·&nbsp; ') + '</div>';
+      if (job.salary)   html += '<div class="js-job-meta">💰 ' + escHtml(job.salary) + '</div>';
+      if (job.recruiter && job.recruiter.name) {
+        var rec = '👤 ' + escHtml(job.recruiter.name);
+        if (job.recruiter.email)    rec += ' — <a href="mailto:' + escHtml(job.recruiter.email) + '" style="color:var(--gold-light);text-decoration:none;">' + escHtml(job.recruiter.email) + '</a>';
+        if (job.recruiter.linkedin) rec += ' &nbsp;<a href="' + escHtml(job.recruiter.linkedin) + '" target="_blank" rel="noopener" style="color:var(--gold-light);text-decoration:none;">LinkedIn ↗</a>';
+        html += '<div class="js-job-recruiter">' + rec + '</div>';
+      }
+      if (job.url) html += '<a class="js-job-link" href="' + escHtml(job.url) + '" target="_blank" rel="noopener">View Job</a>';
+      card.innerHTML = html;
+      results.appendChild(card);
+    });
+
+    count.textContent = unique.length + ' open role' + (unique.length===1?'':'s') + ' found at ' + company + '.';
+    count.style.display    = 'block';
+    clearBtn.style.display = 'inline-block';
+    if (data.emailSent) {
+      banner.textContent   = '✉ Results emailed to ravi@ravichengalvala.com — check your inbox!';
+      banner.style.display = 'block';
+    }
+    status.style.display = 'none';
+
+  } catch(err) {
+    statusTxt.textContent = '⚠ ' + (err.message||'Search failed') + '. Please try again.';
+    spinner.style.display = 'none';
+    console.error('Company search error:', err);
+  } finally {
+    btn.disabled = false;  btn.style.opacity = '1';
+  }
 }
 
 function escHtml(str) {
@@ -1763,7 +1949,7 @@ function escHtml(str) {
 
       <p style="font-size:1rem;color:var(--white-dim);line-height:1.8;max-width:640px;margin-bottom:2rem;">
         Searches Healthcare AI, Pharma, BioTech, and related domains. Results emailed to
-        <strong style="color:var(--white);">venkatachengalvala@gmail.com</strong>.
+        <strong style="color:var(--white);"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="384e5d5653594c595b505d565f59544e595459785f55595154165b5755">[email&#160;protected]</a></strong>.
         Minimum salary filter: <strong style="color:#7EC8F5;">$120,000+</strong>.
       </p>
 
@@ -1830,7 +2016,7 @@ function escHtml(str) {
   </div>
 </section>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ══════════════════════════════════════════════════════════════
 //  SAI JOB SCOUT — NO SECRETS IN HTML
 //  All PINs live in Cloudflare Worker secrets: SURAJ_PIN
@@ -1967,7 +2153,7 @@ async function sjsSearchAndEmail() {
     // Client-side dedup
     var seen = new Set();
     var unique = jobs.filter(function(j) {
-      var key = (j.url||'') + '||' + (j.title||'').toLowerCase() + '||' + (j.company||'').toLowerCase();
+      var key = (j.title||'').toLowerCase().replace(/\s+/g,' ').trim() + '||' + (j.company||'').toLowerCase().replace(/\s+/g,' ').trim();
       if (seen.has(key)) return false;
       seen.add(key);
       return true;
@@ -2829,13 +3015,4 @@ function updateChatInputHint(code, name) {
     }
   }
 }
-</script>
-
-
-<!-- ElevenLabs Conversational AI widget — official embed pattern from ElevenLabs docs.
-     Element is placed first; script registers the custom element and auto-upgrades it. -->
-<elevenlabs-convai agent-id="agent_8901km66z7j7fad9e45qyxem2v8y" avatar-image-url="https://ravichengalvala.com/ava-avatar.png" dismissible="true"></elevenlabs-convai>
-<script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
-
-</body>
-</html>
+</scrip
