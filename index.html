@@ -1946,55 +1946,61 @@ function escHtml(str) {
         </button>
       </div>
 
-      <p style="font-size:1rem;color:var(--white-dim);line-height:1.8;max-width:640px;margin-bottom:2rem;">
-        Searches Healthcare AI, Pharma, BioTech, and related domains. Results emailed to
-        <strong style="color:var(--white);"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="384e5d5653594c595b505d565f59544e595459785f55595154165b5755">[email&#160;protected]</a></strong>.
+      <p style="font-size:1rem;color:var(--white-dim);line-height:1.8;max-width:640px;margin-bottom:1.5rem;">
+        Search by role or by company — results emailed to <strong style="color:var(--white);">venkatachengalvala@gmail.com</strong>.
         Minimum salary filter: <strong style="color:#7EC8F5;">$120,000+</strong>.
       </p>
 
-      <!-- Role chips -->
-      <div id="sjs-role-chips" style="display:flex;flex-wrap:wrap;gap:0.6rem;margin-bottom:2rem;"></div>
-
-      <!-- Controls -->
-      <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:2.5rem;">
-        <input
-          id="sjs-location"
-          type="text"
-          placeholder="Location (e.g. Remote, Michigan, USA)"
-          value="Remote, USA"
-          style="
-            flex:1;min-width:220px;max-width:340px;
-            background:var(--navy);border:1px solid rgba(100,180,255,0.25);
-            border-radius:4px;padding:0.7rem 1rem;
-            color:var(--white);font-family:var(--sans);font-size:0.9rem;
-            outline:none;transition:border-color 0.2s;
-          "
-          onfocus="this.style.borderColor='rgba(100,180,255,0.6)'"
-          onblur="this.style.borderColor='rgba(100,180,255,0.25)'"
-        />
-        <button
-          id="sjs-search-btn"
-          onclick="sjsSearchAndEmail()"
-          style="
-            padding:0.72rem 1.8rem;background:#4A9FD4;color:#080C18;
-            border:none;border-radius:4px;font-family:var(--sans);
-            font-size:0.85rem;font-weight:600;letter-spacing:0.06em;
-            text-transform:uppercase;cursor:pointer;
-            transition:opacity 0.2s;white-space:nowrap;
-          "
-        >🔍 Search &amp; Email Results</button>
-
-        <button
-          id="sjs-clear-btn"
-          onclick="sjsClear()"
-          style="
-            padding:0.72rem 1.2rem;background:transparent;
-            border:1px solid var(--navy-border);border-radius:4px;
-            color:var(--white-dim);font-family:var(--sans);
-            font-size:0.82rem;cursor:pointer;display:none;
-          "
-        >Clear</button>
+      <!-- Tab bar -->
+      <div style="display:flex;gap:0;margin-bottom:2rem;border-bottom:1px solid var(--navy-border);">
+        <button id="sjs-tab-role-btn" onclick="sjsShowTab('role')" style="
+          padding:0.6rem 1.5rem;background:transparent;border:none;border-bottom:2px solid #7EC8F5;
+          color:#7EC8F5;font-family:var(--sans);font-size:0.82rem;font-weight:600;
+          letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;margin-bottom:-1px;">🎯 Role Scout</button>
+        <button id="sjs-tab-company-btn" onclick="sjsShowTab('company')" style="
+          padding:0.6rem 1.5rem;background:transparent;border:none;border-bottom:2px solid transparent;
+          color:var(--white-faint);font-family:var(--sans);font-size:0.82rem;font-weight:500;
+          letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;margin-bottom:-1px;">🏢 Company Scout</button>
       </div>
+
+      <!-- Tab: Role Scout -->
+      <div id="sjs-tab-role">
+        <!-- Role chips -->
+        <div id="sjs-role-chips" style="display:flex;flex-wrap:wrap;gap:0.6rem;margin-bottom:2rem;"></div>
+        <!-- Controls -->
+        <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:2.5rem;">
+          <input id="sjs-location" type="text" placeholder="Location (e.g. Remote, Michigan, USA)" value="Remote, USA"
+            style="flex:1;min-width:220px;max-width:340px;background:var(--navy);border:1px solid rgba(100,180,255,0.25);border-radius:4px;padding:0.7rem 1rem;color:var(--white);font-family:var(--sans);font-size:0.9rem;outline:none;transition:border-color 0.2s;"
+            onfocus="this.style.borderColor='rgba(100,180,255,0.6)'" onblur="this.style.borderColor='rgba(100,180,255,0.25)'" />
+          <button id="sjs-search-btn" onclick="sjsSearchAndEmail()" style="
+            padding:0.72rem 1.8rem;background:#4A9FD4;color:#080C18;border:none;border-radius:4px;
+            font-family:var(--sans);font-size:0.85rem;font-weight:600;letter-spacing:0.06em;
+            text-transform:uppercase;cursor:pointer;transition:opacity 0.2s;white-space:nowrap;">🔍 Search &amp; Email Results</button>
+          <button id="sjs-clear-btn" onclick="sjsClear()" style="
+            padding:0.72rem 1.2rem;background:transparent;border:1px solid var(--navy-border);border-radius:4px;
+            color:var(--white-dim);font-family:var(--sans);font-size:0.82rem;cursor:pointer;display:none;">Clear</button>
+        </div>
+      </div><!-- /#sjs-tab-role -->
+
+      <!-- Tab: Company Scout -->
+      <div id="sjs-tab-company" style="display:none;">
+        <p style="font-size:0.9rem;color:var(--white-dim);line-height:1.7;max-width:580px;margin-bottom:1.5rem;">
+          Enter a company name to find open roles — Claude scores each against Sai's profile and emails matches at 60%+.
+        </p>
+        <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:2.5rem;">
+          <input id="sjs-company-input" type="text" placeholder="e.g. Pfizer, Google, Epic Systems, Mayo Clinic…"
+            style="flex:1;min-width:260px;max-width:420px;background:var(--navy);border:1px solid rgba(100,180,255,0.25);border-radius:4px;padding:0.7rem 1rem;color:var(--white);font-family:var(--sans);font-size:0.9rem;outline:none;transition:border-color 0.2s;"
+            onfocus="this.style.borderColor='rgba(100,180,255,0.6)'" onblur="this.style.borderColor='rgba(100,180,255,0.25)'"
+            onkeydown="if(event.key==='Enter')sjsCompanySearch()" />
+          <button id="sjs-company-search-btn" onclick="sjsCompanySearch()" style="
+            padding:0.72rem 1.8rem;background:#4A9FD4;color:#080C18;border:none;border-radius:4px;
+            font-family:var(--sans);font-size:0.85rem;font-weight:600;letter-spacing:0.06em;
+            text-transform:uppercase;cursor:pointer;transition:opacity 0.2s;white-space:nowrap;">🏢 Search &amp; Email Results</button>
+          <button id="sjs-company-clear-btn" onclick="sjsClear()" style="
+            padding:0.72rem 1.2rem;background:transparent;border:1px solid var(--navy-border);border-radius:4px;
+            color:var(--white-dim);font-family:var(--sans);font-size:0.82rem;cursor:pointer;display:none;">Clear</button>
+        </div>
+      </div><!-- /#sjs-tab-company -->
 
       <!-- Status -->
       <div id="sjs-status" style="display:none;align-items:center;gap:0.75rem;margin-bottom:1.5rem;font-size:0.88rem;color:var(--white-dim);">
@@ -2209,10 +2215,125 @@ async function sjsSearchAndEmail() {
 
 function sjsClear() {
   document.getElementById('sjs-results').innerHTML = '';
-  document.getElementById('sjs-count').style.display   = 'none';
+  document.getElementById('sjs-count').style.display        = 'none';
   document.getElementById('sjs-email-banner').style.display = 'none';
-  document.getElementById('sjs-status').style.display  = 'none';
-  document.getElementById('sjs-clear-btn').style.display = 'none';
+  document.getElementById('sjs-status').style.display       = 'none';
+  document.getElementById('sjs-clear-btn').style.display    = 'none';
+  var ccb = document.getElementById('sjs-company-clear-btn');
+  if (ccb) ccb.style.display = 'none';
+}
+
+function sjsShowTab(tab) {
+  var roleTab    = document.getElementById('sjs-tab-role');
+  var companyTab = document.getElementById('sjs-tab-company');
+  var roleBtn    = document.getElementById('sjs-tab-role-btn');
+  var companyBtn = document.getElementById('sjs-tab-company-btn');
+  sjsClear();
+  if (tab === 'role') {
+    roleTab.style.display    = '';
+    companyTab.style.display = 'none';
+    roleBtn.style.borderBottomColor = '#7EC8F5';
+    roleBtn.style.color             = '#7EC8F5';
+    roleBtn.style.fontWeight        = '600';
+    companyBtn.style.borderBottomColor = 'transparent';
+    companyBtn.style.color             = 'var(--white-faint)';
+    companyBtn.style.fontWeight        = '500';
+  } else {
+    roleTab.style.display    = 'none';
+    companyTab.style.display = '';
+    companyBtn.style.borderBottomColor = '#7EC8F5';
+    companyBtn.style.color             = '#7EC8F5';
+    companyBtn.style.fontWeight        = '600';
+    roleBtn.style.borderBottomColor = 'transparent';
+    roleBtn.style.color             = 'var(--white-faint)';
+    roleBtn.style.fontWeight        = '500';
+  }
+}
+
+async function sjsCompanySearch() {
+  if (!sjsIsAuth()) { sjsLock(); return; }
+
+  var company = (document.getElementById('sjs-company-input').value || '').trim();
+  if (!company) { alert('Please enter a company name.'); return; }
+
+  var btn       = document.getElementById('sjs-company-search-btn');
+  var status    = document.getElementById('sjs-status');
+  var statusTxt = document.getElementById('sjs-status-text');
+  var results   = document.getElementById('sjs-results');
+  var count     = document.getElementById('sjs-count');
+  var banner    = document.getElementById('sjs-email-banner');
+  var clearBtn  = document.getElementById('sjs-company-clear-btn');
+
+  btn.disabled = true; btn.style.opacity = '0.6';
+  status.style.display = 'flex';
+  statusTxt.textContent = 'Searching ' + company + ' for Sai…';
+  results.innerHTML = ''; count.style.display = 'none';
+  banner.style.display = 'none'; clearBtn.style.display = 'none';
+
+  try {
+    var resp = await fetch(WORKER_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        mode:         'surajCompanyJobSearch',
+        sessionToken: sjsGetToken(),
+        user:         'suraj',
+        company:      company,
+        resumeUrl:    'https://raw.githubusercontent.com/chengalvala/ravichengalvala.com/main/ravi-chengalvala-resume.pdf'
+      })
+    });
+
+    if (resp.status === 401) { sjsLock(); throw new Error('Session expired. Please re-enter your PIN.'); }
+    if (!resp.ok)            throw new Error('Worker returned ' + resp.status);
+    var data = await resp.json();
+    var jobs = data.jobs || [];
+
+    if (!jobs.length) {
+      statusTxt.textContent = 'No matching roles found at "' + company + '" at 60%+ threshold.';
+      status.style.display = 'flex'; btn.disabled = false; btn.style.opacity = '1';
+      return;
+    }
+
+    jobs.forEach(function(job) {
+      var card = document.createElement('div');
+      card.className = 'js-job-card';
+      card.style.borderColor = 'rgba(100,180,255,0.2)';
+      card.onmouseenter = function(){ this.style.borderColor='rgba(100,180,255,0.45)'; };
+      card.onmouseleave = function(){ this.style.borderColor='rgba(100,180,255,0.2)'; };
+      var scoreColor = job.matchScore>=90?'#4CAF50':job.matchScore>=80?'#8BC34A':'#4A9FD4';
+      var html = job.matchScore ? '<div style="display:inline-block;background:'+scoreColor+';color:#080C18;font-size:11px;font-weight:700;padding:2px 9px;border-radius:10px;margin-bottom:6px;">'+job.matchScore+'% MATCH</div><br/>' : '';
+      html += '<div class="js-job-title">' + escHtml(job.title||'Position') + '</div>';
+      html += '<div class="js-job-company" style="color:#7EC8F5;">' + escHtml(job.company||company) + '</div>';
+      var meta = [];
+      if (job.location) meta.push('📍 ' + escHtml(job.location));
+      if (job.type)     meta.push(escHtml(job.type));
+      if (job.posted)   meta.push(escHtml(job.posted));
+      if (meta.length)  html += '<div class="js-job-meta">' + meta.join(' &nbsp;·&nbsp; ') + '</div>';
+      if (job.salary)   html += '<div class="js-job-meta">💰 ' + escHtml(job.salary) + '</div>';
+      if (job.matchReasons && job.matchReasons.length) {
+        html += '<div class="js-job-recruiter" style="border-left-color:rgba(100,180,255,0.4);margin-top:6px;"><strong style="font-size:11px;color:#7EC8F5;text-transform:uppercase;letter-spacing:0.06em;">Why it fits</strong><ul style="margin:4px 0 0;padding-left:16px;">';
+        job.matchReasons.forEach(function(r){ html += '<li style="font-size:12px;color:var(--white-dim);margin-bottom:2px;">'+escHtml(r)+'</li>'; });
+        html += '</ul></div>';
+      }
+      if (job.url) html += '<a class="js-job-link" style="color:#7EC8F5;" href="' + escHtml(job.url) + '" target="_blank" rel="noopener">View Job</a>';
+      card.innerHTML = html;
+      results.appendChild(card);
+    });
+
+    count.textContent = jobs.length + ' matched role' + (jobs.length===1?'':'s') + ' at ' + company + ' (60%+ fit).';
+    count.style.display = 'block';
+    clearBtn.style.display = 'inline-block';
+    if (data.emailSent) {
+      banner.textContent = '✉ Results emailed to venkatachengalvala@gmail.com!';
+      banner.style.display = 'block';
+    }
+    status.style.display = 'none';
+  } catch(err) {
+    statusTxt.textContent = '⚠ ' + (err.message||'Search failed') + '. Please try again.';
+    console.error('Sai company search error:', err);
+  } finally {
+    btn.disabled = false; btn.style.opacity = '1';
+  }
 }
 </script>
 
