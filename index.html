@@ -1676,7 +1676,6 @@ async function jobSearchAndEmail() {
       })
     });
 
-    clearInterval(progressTimer);
     if (resp.status === 401) { jsLockScout(); throw new Error('Session expired. Please re-enter your PIN.'); }
     if (!resp.ok)            throw new Error('Worker returned ' + resp.status);
     var data = await resp.json();
@@ -1882,6 +1881,7 @@ async function companySearchAndEmail() {
     status.style.display = 'none';
 
   } catch(err) {
+    clearInterval(progressTimer);
     statusTxt.textContent = '⚠ ' + (err.message||'Search failed') + '. Please try again.';
     spinner.style.display = 'none';
     console.error('Company search error:', err);
