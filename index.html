@@ -1684,7 +1684,7 @@ async function jobSearchAndEmail() {
     // Client-side dedup (second layer)
     var seen = new Set();
     var unique = jobs.filter(function(j) {
-      var key = (j.title||'').toLowerCase().replace(/\s+/g,' ').trim() + '||' + (j.company||'').toLowerCase().replace(/\s+/g,' ').trim();
+      var key = (j.title||'').toLowerCase().replace(/\s+/g,' ').trim() + '||' + (j.company||'').toLowerCase().replace(/\s+/g,' ').trim() + '||' + (j.location||'').toLowerCase().replace(/\s+/g,' ').trim();
       if (seen.has(key)) return false;
       seen.add(key);
       return true;
@@ -1837,7 +1837,7 @@ async function companySearchAndEmail() {
     // Client-side dedup
     var seen   = new Set();
     var unique = jobs.filter(function(j) {
-      var key = (j.title||'').toLowerCase().replace(/\s+/g,' ').trim() + '||' + (j.company||'').toLowerCase().replace(/\s+/g,' ').trim();
+      var key = (j.title||'').toLowerCase().replace(/\s+/g,' ').trim() + '||' + (j.company||'').toLowerCase().replace(/\s+/g,' ').trim() + '||' + (j.location||'').toLowerCase().replace(/\s+/g,' ').trim();
       if (seen.has(key)) return false;
       seen.add(key); return true;
     });
@@ -2002,6 +2002,9 @@ function escHtml(str) {
         <!-- Role chips -->
         <div id="sjs-role-chips" style="display:flex;flex-wrap:wrap;gap:0.6rem;margin-bottom:2rem;"></div>
         <!-- Controls -->
+        <p style="font-size:0.78rem;color:var(--white-faint);margin-bottom:0.75rem;">
+          💡 Leave company blank to search all companies · Enter a company name to search only that employer
+        </p>
         <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:2.5rem;">
           <input id="sjs-location" type="text" placeholder="Location (e.g. Remote, Michigan, USA)" value="Remote, USA"
             style="flex:1;min-width:180px;max-width:260px;background:var(--navy);border:1px solid rgba(100,180,255,0.25);border-radius:4px;padding:0.7rem 1rem;color:var(--white);font-family:var(--sans);font-size:0.9rem;outline:none;transition:border-color 0.2s;"
@@ -2195,7 +2198,7 @@ async function sjsSearchAndEmail() {
     // Client-side dedup
     var seen = new Set();
     var unique = jobs.filter(function(j) {
-      var key = (j.title||'').toLowerCase().replace(/\s+/g,' ').trim() + '||' + (j.company||'').toLowerCase().replace(/\s+/g,' ').trim();
+      var key = (j.title||'').toLowerCase().replace(/\s+/g,' ').trim() + '||' + (j.company||'').toLowerCase().replace(/\s+/g,' ').trim() + '||' + (j.location||'').toLowerCase().replace(/\s+/g,' ').trim();
       if (seen.has(key)) return false;
       seen.add(key);
       return true;
