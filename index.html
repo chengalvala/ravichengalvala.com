@@ -2179,15 +2179,11 @@ async function sjsSearchAndEmail() {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
       body:    JSON.stringify({
-        mode:         'jobSearch',
+        mode:         'surajJobSearch',
         sessionToken: sjsGetToken(),
-        user:         'suraj',
         roles:        selected.map(function(r){ return r.query; }),
         location:     location,
-        company:      companyFilter,
-        minSalary:    120000,
-        domains:      ['healthcare', 'health', 'pharma', 'biotech', 'clinical', 'medical', 'hospital', 'genomics', 'life sciences'],
-        resumeUrl:    'https://raw.githubusercontent.com/chengalvala/ravichengalvala.com/main/suraj-resume.pdf'
+        company:      companyFilter
       })
     });
 
