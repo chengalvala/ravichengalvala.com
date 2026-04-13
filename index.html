@@ -1344,7 +1344,7 @@
       <h2 style="margin-bottom:0.75rem;">Live <em>opportunity search</em>,<br/>delivered to your inbox.</h2>
       <p style="font-size:1rem;color:var(--white-dim);line-height:1.8;max-width:640px;margin-bottom:2rem;">
         Search by role or by company — Ava fetches live listings and emails a
-        deduplicated summary to ravi@ravichengalvala.com.
+        deduplicated summary to <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="cebcafb8a78ebcafb8a7ada6aba0a9afa2b8afa2afe0ada1a3">[email&#160;protected]</a>.
       </p>
 
       <!-- ── TAB BAR ── -->
@@ -1543,7 +1543,7 @@
   .js-job-link::after { content:'→'; }
 </style>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ══════════════════════════════════════════════════════════════════
 //  RAVI JOB SCOUT — NO SECRETS IN HTML
 //  PINs and tokens live entirely in Cloudflare Worker secrets.
@@ -1714,7 +1714,19 @@ async function jobSearchAndEmail() {
         if (job.recruiter.linkedin) rec += ' &nbsp;<a href="' + escHtml(job.recruiter.linkedin) + '" target="_blank" rel="noopener" style="color:var(--gold-light);text-decoration:none;">LinkedIn ↗</a>';
         html += '<div class="js-job-recruiter">' + rec + '</div>';
       }
-      if (job.url) html += '<a class="js-job-link" href="' + escHtml(job.url) + '" target="_blank" rel="noopener">View Job</a>';
+      // Match score badge
+      if (job.matchScore) {
+        var sc = job.matchScore>=85?'#4CAF50':job.matchScore>=70?'#8BC34A':'#C9962A';
+        html += '<div style="display:inline-block;background:'+sc+'22;color:'+sc+';border:1px solid '+sc+'55;border-radius:10px;padding:2px 9px;font-size:12px;font-weight:700;margin-bottom:8px;">~'+job.matchScore+'% est. fit</div><br/>';
+      }
+      // Action buttons row
+      html += '<div style="display:flex;gap:7px;flex-wrap:wrap;align-items:center;margin-top:10px;">';
+      var jobHref = job.url || ('https://www.google.com/search?q='+encodeURIComponent((job.title||'')+'%20'+(job.company||'')+'%20job'));
+      html += '<a class="js-job-link" style="margin-top:0;" href="' + escHtml(jobHref) + '" target="_blank" rel="noopener">' + (job.url ? 'View Job ↗' : 'Search Job ↗') + '</a>';
+      if (job.customResumeHtmlUrl) html += '<a href="' + escHtml(job.customResumeHtmlUrl) + '" target="_blank" rel="noopener" style="font-size:11px;font-weight:600;color:var(--white-dim);text-decoration:none;border:1px solid rgba(255,255,255,0.15);border-radius:3px;padding:4px 10px;background:rgba(255,255,255,0.05);">&#8595; HTML</a>';
+      if (job.customResumePdfUrl)  html += '<a href="' + escHtml(job.customResumePdfUrl)  + '" target="_blank" rel="noopener" style="font-size:11px;font-weight:600;color:var(--gold-light);text-decoration:none;border:1px solid rgba(201,150,42,0.4);border-radius:3px;padding:4px 10px;background:rgba(201,150,42,0.08);">&#8595; PDF</a>';
+      if (!job.customResumeHtmlUrl && !job.customResumePdfUrl) html += '<a href="https://ravichengalvala.com/ravi-chengalvala-resume.pdf" target="_blank" rel="noopener" style="font-size:11px;font-weight:600;color:var(--gold-light);text-decoration:none;border:1px solid rgba(201,150,42,0.4);border-radius:3px;padding:4px 10px;background:rgba(201,150,42,0.08);">&#8595; Resume</a>';
+      html += '</div>';
       card.innerHTML = html;
       results.appendChild(card);
     });
@@ -1866,7 +1878,20 @@ async function companySearchAndEmail() {
         if (job.recruiter.linkedin) rec += ' &nbsp;<a href="' + escHtml(job.recruiter.linkedin) + '" target="_blank" rel="noopener" style="color:var(--gold-light);text-decoration:none;">LinkedIn ↗</a>';
         html += '<div class="js-job-recruiter">' + rec + '</div>';
       }
-      if (job.url) html += '<a class="js-job-link" href="' + escHtml(job.url) + '" target="_blank" rel="noopener">View Job</a>';
+      // Match score badge
+      if (job.matchScore) {
+        var sc = job.matchScore>=85?'#4CAF50':job.matchScore>=70?'#8BC34A':'#C9962A';
+        html += '<div style="display:inline-block;background:'+sc+'22;color:'+sc+';border:1px solid '+sc+'55;border-radius:10px;padding:2px 9px;font-size:12px;font-weight:700;margin-bottom:8px;">~'+job.matchScore+'% est. fit</div><br/>';
+      }
+      if (job.matchReason) html += '<div style="font-size:12px;color:var(--white-dim);padding:6px 10px;background:rgba(201,150,42,0.06);border-left:2px solid var(--gold-dim);border-radius:2px;margin-bottom:8px;">'+escHtml(job.matchReason)+'</div>';
+      // Action buttons row
+      html += '<div style="display:flex;gap:7px;flex-wrap:wrap;align-items:center;margin-top:10px;">';
+      var jobHref = job.url || ('https://www.google.com/search?q='+encodeURIComponent((job.title||'')+'%20'+(job.company||company)+'%20job'));
+      html += '<a class="js-job-link" style="margin-top:0;" href="' + escHtml(jobHref) + '" target="_blank" rel="noopener">' + (job.url ? 'View Job ↗' : 'Search Job ↗') + '</a>';
+      if (job.customResumeHtmlUrl) html += '<a href="' + escHtml(job.customResumeHtmlUrl) + '" target="_blank" rel="noopener" style="font-size:11px;font-weight:600;color:var(--white-dim);text-decoration:none;border:1px solid rgba(255,255,255,0.15);border-radius:3px;padding:4px 10px;background:rgba(255,255,255,0.05);">&#8595; HTML</a>';
+      if (job.customResumePdfUrl)  html += '<a href="' + escHtml(job.customResumePdfUrl)  + '" target="_blank" rel="noopener" style="font-size:11px;font-weight:600;color:var(--gold-light);text-decoration:none;border:1px solid rgba(201,150,42,0.4);border-radius:3px;padding:4px 10px;background:rgba(201,150,42,0.08);">&#8595; PDF</a>';
+      if (!job.customResumeHtmlUrl && !job.customResumePdfUrl) html += '<a href="https://ravichengalvala.com/ravi-chengalvala-resume.pdf" target="_blank" rel="noopener" style="font-size:11px;font-weight:600;color:var(--gold-light);text-decoration:none;border:1px solid rgba(201,150,42,0.4);border-radius:3px;padding:4px 10px;background:rgba(201,150,42,0.08);">&#8595; Resume</a>';
+      html += '</div>';
       card.innerHTML = html;
       results.appendChild(card);
     });
@@ -1981,7 +2006,7 @@ function escHtml(str) {
       </div>
 
       <p style="font-size:1rem;color:var(--white-dim);line-height:1.8;max-width:640px;margin-bottom:1.5rem;">
-        Search by role or by company — results emailed to <strong style="color:var(--white);">venkatachengalvala@gmail.com</strong>.
+        Search by role or by company — results emailed to <strong style="color:var(--white);"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d6a0b3b8bdb7a2b7b5beb3b8b1b7baa0b7bab796b1bbb7bfbaf8b5b9bb">[email&#160;protected]</a></strong>.
         Minimum salary filter: <strong style="color:#7EC8F5;">$120,000+</strong>.
       </p>
 
@@ -2061,7 +2086,7 @@ function escHtml(str) {
   </div>
 </section>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ══════════════════════════════════════════════════════════════
 //  SAI JOB SCOUT — NO SECRETS IN HTML
 //  All PINs live in Cloudflare Worker secrets: SURAJ_PIN
@@ -2231,7 +2256,24 @@ async function sjsSearchAndEmail() {
         if (job.recruiter.linkedin) rec += ' &nbsp;<a href="' + escHtml(job.recruiter.linkedin) + '" target="_blank" rel="noopener" style="color:#7EC8F5;text-decoration:none;">LinkedIn ↗</a>';
         html += '<div class="js-job-recruiter" style="border-left-color:rgba(100,180,255,0.4);">' + rec + '</div>';
       }
-      if (job.url) html += '<a class="js-job-link" style="color:#7EC8F5;" href="' + escHtml(job.url) + '" target="_blank" rel="noopener">View Job</a>';
+      // Match score badge
+      if (job.matchScore) {
+        var sc = job.matchScore>=85?'#4CAF50':job.matchScore>=70?'#8BC34A':'#4A9FD4';
+        html += '<div style="display:inline-block;background:'+sc+'22;color:'+sc+';border:1px solid '+sc+'55;border-radius:10px;padding:2px 9px;font-size:12px;font-weight:700;margin-bottom:8px;">~'+job.matchScore+'% est. fit</div><br/>';
+      }
+      if (job.matchReasons && job.matchReasons.length) {
+        html += '<div style="font-size:12px;padding:6px 10px;background:rgba(100,180,255,0.07);border-left:2px solid rgba(100,180,255,0.4);border-radius:2px;margin-bottom:8px;"><ul style="margin:0;padding-left:14px;">';
+        job.matchReasons.forEach(function(r){ html += '<li style="color:var(--white-dim);margin-bottom:2px;">'+escHtml(r)+'</li>'; });
+        html += '</ul></div>';
+      }
+      // Action buttons row
+      html += '<div style="display:flex;gap:7px;flex-wrap:wrap;align-items:center;margin-top:10px;">';
+      var jobHref = job.url || ('https://www.google.com/search?q='+encodeURIComponent((job.title||'')+'%20'+(job.company||'')+'%20job'));
+      html += '<a class="js-job-link" style="margin-top:0;color:#7EC8F5;" href="' + escHtml(jobHref) + '" target="_blank" rel="noopener">' + (job.url ? 'View Job ↗' : 'Search Job ↗') + '</a>';
+      if (job.customResumeHtmlUrl) html += '<a href="' + escHtml(job.customResumeHtmlUrl) + '" target="_blank" rel="noopener" style="font-size:11px;font-weight:600;color:var(--white-dim);text-decoration:none;border:1px solid rgba(255,255,255,0.15);border-radius:3px;padding:4px 10px;background:rgba(255,255,255,0.05);">&#8595; HTML</a>';
+      if (job.customResumePdfUrl)  html += '<a href="' + escHtml(job.customResumePdfUrl)  + '" target="_blank" rel="noopener" style="font-size:11px;font-weight:600;color:#7EC8F5;text-decoration:none;border:1px solid rgba(100,180,255,0.4);border-radius:3px;padding:4px 10px;background:rgba(100,180,255,0.08);">&#8595; PDF</a>';
+      if (!job.customResumeHtmlUrl && !job.customResumePdfUrl) html += '<a href="https://ravichengalvala.com/suraj-resume.pdf" target="_blank" rel="noopener" style="font-size:11px;font-weight:600;color:#7EC8F5;text-decoration:none;border:1px solid rgba(100,180,255,0.4);border-radius:3px;padding:4px 10px;background:rgba(100,180,255,0.08);">&#8595; Resume</a>';
+      html += '</div>';
       card.innerHTML = html;
       results.appendChild(card);
     });
@@ -2355,7 +2397,14 @@ async function sjsCompanySearch() {
         job.matchReasons.forEach(function(r){ html += '<li style="font-size:12px;color:var(--white-dim);margin-bottom:2px;">'+escHtml(r)+'</li>'; });
         html += '</ul></div>';
       }
-      if (job.url) html += '<a class="js-job-link" style="color:#7EC8F5;" href="' + escHtml(job.url) + '" target="_blank" rel="noopener">View Job</a>';
+      // Action buttons row
+      html += '<div style="display:flex;gap:7px;flex-wrap:wrap;align-items:center;margin-top:10px;">';
+      var jobHref = job.url || ('https://www.google.com/search?q='+encodeURIComponent((job.title||'')+'%20'+(job.company||company)+'%20job'));
+      html += '<a class="js-job-link" style="margin-top:0;color:#7EC8F5;" href="' + escHtml(jobHref) + '" target="_blank" rel="noopener">' + (job.url ? 'View Job ↗' : 'Search Job ↗') + '</a>';
+      if (job.customResumeHtmlUrl) html += '<a href="' + escHtml(job.customResumeHtmlUrl) + '" target="_blank" rel="noopener" style="font-size:11px;font-weight:600;color:var(--white-dim);text-decoration:none;border:1px solid rgba(255,255,255,0.15);border-radius:3px;padding:4px 10px;background:rgba(255,255,255,0.05);">&#8595; HTML</a>';
+      if (job.customResumePdfUrl)  html += '<a href="' + escHtml(job.customResumePdfUrl)  + '" target="_blank" rel="noopener" style="font-size:11px;font-weight:600;color:#7EC8F5;text-decoration:none;border:1px solid rgba(100,180,255,0.4);border-radius:3px;padding:4px 10px;background:rgba(100,180,255,0.08);">&#8595; PDF</a>';
+      if (!job.customResumeHtmlUrl && !job.customResumePdfUrl) html += '<a href="https://ravichengalvala.com/suraj-resume.pdf" target="_blank" rel="noopener" style="font-size:11px;font-weight:600;color:#7EC8F5;text-decoration:none;border:1px solid rgba(100,180,255,0.4);border-radius:3px;padding:4px 10px;background:rgba(100,180,255,0.08);">&#8595; Resume</a>';
+      html += '</div>';
       card.innerHTML = html;
       results.appendChild(card);
     });
@@ -3511,18 +3560,4 @@ function updateChatInputHint(code, name) {
   // Sync ElevenLabs Ava widget language via override-language attribute
   const widget = document.querySelector('elevenlabs-convai');
   if (widget) {
-    if (code === 'en') {
-      widget.removeAttribute('override-language');
-    } else {
-      widget.setAttribute('override-language', code);
-    }
-  }
-}
-</script>
-
-<!-- ElevenLabs Conversational AI widget -->
-<elevenlabs-convai agent-id="agent_8901km66z7j7fad9e45qyxem2v8y" avatar-image-url="https://ravichengalvala.com/ava-avatar.png" dismissible="true"></elevenlabs-convai>
-<script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
-
-</body>
-</html>
+    if (code === 'en') 
