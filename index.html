@@ -2263,11 +2263,6 @@ async function sjsSearchAndEmail() {
         var sc = job.matchScore>=85?'#4CAF50':job.matchScore>=70?'#8BC34A':'#4A9FD4';
         html += '<div style="display:inline-block;background:'+sc+'22;color:'+sc+';border:1px solid '+sc+'55;border-radius:10px;padding:2px 9px;font-size:12px;font-weight:700;margin-bottom:8px;">~'+job.matchScore+'% est. fit</div><br/>';
       }
-      if (job.matchReasons && job.matchReasons.length) {
-        html += '<div style="font-size:12px;padding:6px 10px;background:rgba(100,180,255,0.07);border-left:2px solid rgba(100,180,255,0.4);border-radius:2px;margin-bottom:8px;"><ul style="margin:0;padding-left:14px;">';
-        job.matchReasons.forEach(function(r){ html += '<li style="color:var(--white-dim);margin-bottom:2px;">'+escHtml(r)+'</li>'; });
-        html += '</ul></div>';
-      }
       // Action buttons row
       html += '<div style="display:flex;gap:7px;flex-wrap:wrap;align-items:center;margin-top:10px;">';
       var jobHref = job.url || ('https://www.google.com/search?q='+encodeURIComponent((job.title||'')+'%20'+(job.company||'')+'%20job'));
@@ -2385,7 +2380,7 @@ async function sjsCompanySearch() {
       card.onmouseenter = function(){ this.style.borderColor='rgba(100,180,255,0.45)'; };
       card.onmouseleave = function(){ this.style.borderColor='rgba(100,180,255,0.2)'; };
       var scoreColor = job.matchScore>=90?'#4CAF50':job.matchScore>=80?'#8BC34A':'#4A9FD4';
-      var html = job.matchScore ? '<div style="display:inline-block;background:'+scoreColor+';color:#080C18;font-size:11px;font-weight:700;padding:2px 9px;border-radius:10px;margin-bottom:6px;">'+job.matchScore+'% MATCH</div><br/>' : '';
+      var html = job.matchScore ? '<div style="display:inline-block;background:'+scoreColor+'22;color:'+scoreColor+';border:1px solid '+scoreColor+'55;border-radius:10px;padding:2px 9px;font-size:12px;font-weight:700;margin-bottom:8px;">~'+job.matchScore+'% est. fit</div><br/>' : '';
       html += '<div class="js-job-title">' + escHtml(job.title||'Position') + '</div>';
       html += '<div class="js-job-company" style="color:#7EC8F5;">' + escHtml(job.company||company) + '</div>';
       var meta = [];
@@ -2394,11 +2389,6 @@ async function sjsCompanySearch() {
       if (job.posted)   meta.push(escHtml(job.posted));
       if (meta.length)  html += '<div class="js-job-meta">' + meta.join(' &nbsp;·&nbsp; ') + '</div>';
       if (job.salary)   html += '<div class="js-job-meta">💰 ' + escHtml(job.salary) + '</div>';
-      if (job.matchReasons && job.matchReasons.length) {
-        html += '<div class="js-job-recruiter" style="border-left-color:rgba(100,180,255,0.4);margin-top:6px;"><strong style="font-size:11px;color:#7EC8F5;text-transform:uppercase;letter-spacing:0.06em;">Why it fits</strong><ul style="margin:4px 0 0;padding-left:16px;">';
-        job.matchReasons.forEach(function(r){ html += '<li style="font-size:12px;color:var(--white-dim);margin-bottom:2px;">'+escHtml(r)+'</li>'; });
-        html += '</ul></div>';
-      }
       // Action buttons row
       html += '<div style="display:flex;gap:7px;flex-wrap:wrap;align-items:center;margin-top:10px;">';
       var jobHref = job.url || ('https://www.google.com/search?q='+encodeURIComponent((job.title||'')+'%20'+(job.company||company)+'%20job'));
