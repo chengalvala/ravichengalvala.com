@@ -1718,7 +1718,7 @@ async function jobSearchAndEmail() {
       // Match score badge
       if (job.matchScore) {
         var sc = job.matchScore>=85?'#4CAF50':job.matchScore>=70?'#8BC34A':'#C9962A';
-        html += '<div style="display:inline-block;background:'+sc+'22;color:'+sc+';border:1px solid '+sc+'55;border-radius:10px;padding:2px 9px;font-size:12px;font-weight:700;margin-bottom:8px;">~'+job.matchScore+'% est. fit</div><br/>';
+        html += '<div style="margin-bottom:8px;"><span style="display:inline-block;background:'+sc+'22;color:'+sc+';border:1px solid '+sc+'55;border-radius:10px;padding:2px 9px;font-size:12px;font-weight:700;">~'+job.matchScore+'% est. fit</span></div>';
       }
       // Action buttons row
       html += '<div style="display:flex;gap:7px;flex-wrap:wrap;align-items:center;margin-top:10px;">';
@@ -1882,7 +1882,7 @@ async function companySearchAndEmail() {
       // Match score badge
       if (job.matchScore) {
         var sc = job.matchScore>=85?'#4CAF50':job.matchScore>=70?'#8BC34A':'#C9962A';
-        html += '<div style="display:inline-block;background:'+sc+'22;color:'+sc+';border:1px solid '+sc+'55;border-radius:10px;padding:2px 9px;font-size:12px;font-weight:700;margin-bottom:8px;">~'+job.matchScore+'% est. fit</div><br/>';
+        html += '<div style="margin-bottom:8px;"><span style="display:inline-block;background:'+sc+'22;color:'+sc+';border:1px solid '+sc+'55;border-radius:10px;padding:2px 9px;font-size:12px;font-weight:700;">~'+job.matchScore+'% est. fit</span></div>';
       }
       if (job.matchReason) html += '<div style="font-size:12px;color:var(--white-dim);padding:6px 10px;background:rgba(201,150,42,0.06);border-left:2px solid var(--gold-dim);border-radius:2px;margin-bottom:8px;">'+escHtml(job.matchReason)+'</div>';
       // Action buttons row
@@ -2261,7 +2261,7 @@ async function sjsSearchAndEmail() {
       // Match score badge
       if (job.matchScore) {
         var sc = job.matchScore>=85?'#4CAF50':job.matchScore>=70?'#8BC34A':'#4A9FD4';
-        html += '<div style="display:inline-block;background:'+sc+'22;color:'+sc+';border:1px solid '+sc+'55;border-radius:10px;padding:2px 9px;font-size:12px;font-weight:700;margin-bottom:8px;">~'+job.matchScore+'% est. fit</div><br/>';
+        html += '<div style="margin-bottom:8px;"><span style="display:inline-block;background:'+sc+'22;color:'+sc+';border:1px solid '+sc+'55;border-radius:10px;padding:2px 9px;font-size:12px;font-weight:700;">~'+job.matchScore+'% est. fit</span></div>';
       }
       // Action buttons row
       html += '<div style="display:flex;gap:7px;flex-wrap:wrap;align-items:center;margin-top:10px;">';
@@ -2380,7 +2380,7 @@ async function sjsCompanySearch() {
       card.onmouseenter = function(){ this.style.borderColor='rgba(100,180,255,0.45)'; };
       card.onmouseleave = function(){ this.style.borderColor='rgba(100,180,255,0.2)'; };
       var scoreColor = job.matchScore>=90?'#4CAF50':job.matchScore>=80?'#8BC34A':'#4A9FD4';
-      var html = job.matchScore ? '<div style="display:inline-block;background:'+scoreColor+'22;color:'+scoreColor+';border:1px solid '+scoreColor+'55;border-radius:10px;padding:2px 9px;font-size:12px;font-weight:700;margin-bottom:8px;">~'+job.matchScore+'% est. fit</div><br/>' : '';
+      var html = job.matchScore ? '<div style="margin-bottom:8px;"><span style="display:inline-block;background:'+scoreColor+'22;color:'+scoreColor+';border:1px solid '+scoreColor+'55;border-radius:10px;padding:2px 9px;font-size:12px;font-weight:700;">~'+job.matchScore+'% est. fit</span></div>' : '';
       html += '<div class="js-job-title">' + escHtml(job.title||'Position') + '</div>';
       html += '<div class="js-job-company" style="color:#7EC8F5;">' + escHtml(job.company||company) + '</div>';
       var meta = [];
